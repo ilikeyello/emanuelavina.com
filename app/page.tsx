@@ -6,67 +6,62 @@ const listItemClass =
 export default function Home() {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)] text-foreground">
-      <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-24 pt-16 sm:px-10 lg:px-16">
-        {/* Hero */}
-        <section className="relative isolate overflow-hidden rounded-3xl min-h-[80vh] sm:min-h-[85vh] lg:min-h-[90vh]">
-          <div className="absolute inset-0">
-            <Image
-              src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2400&q=90"
-              alt="Sunrise over calm water and trees conveying peace"
-              fill
-              className="object-cover scale-110 blur-[1.5px]"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/20 to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#f9f9f7]" />
-          </div>
-          <div className="relative mx-auto flex h-full max-w-6xl items-center px-6 py-16 sm:px-10 lg:px-16">
-            <div className="flex w-full flex-col gap-10 bg-white/65 p-8 backdrop-blur-sm sm:rounded-3xl sm:p-10">
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
-                  Church Web Design Partner
-                </div>
-                <h1 className="font-[var(--font-playfair)] text-4xl leading-tight text-foreground sm:text-5xl">
-                  Your Church’s Mission, Beautifully Represented Online.
-                </h1>
-                <p className="max-w-3xl text-lg leading-8 text-foreground/85">
-                  We’re the digital partner for local ministries—building serene,
-                  accessible websites that welcome visitors and keep your members
-                  connected.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <a
-                    href="#pricing"
-                    className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    See the partnership
-                  </a>
-                  <a
-                    href="#contact"
-                    className="rounded-full border border-foreground/20 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
-                  >
-                    Schedule a call
-                  </a>
-                </div>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-3">
-                {[
-                  "High-contrast, mobile-first design for every age group.",
-                  "Sermons, events, and giving links kept current by our team.",
-                  "Peaceful aesthetics that reflect your ministry’s heart.",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl bg-white/70 p-4 text-base leading-7 text-foreground/85 backdrop-blur"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
+      {/* Hero full-bleed */}
+      <section className="relative isolate min-h-screen w-full overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2600&q=90"
+            alt="Sunrise over calm water and trees conveying peace"
+            fill
+            className="object-cover scale-110 blur-[1px]"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/5" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[#f9f9f7]" />
+        </div>
+        <div className="relative mx-auto flex min-h-screen max-w-6xl items-center px-6 py-20 sm:px-10 lg:px-16">
+          <div className="space-y-8 text-white drop-shadow-[0_10px_35px_rgba(0,0,0,0.35)]">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 text-sm font-medium">
+              Church Web Design Partner
             </div>
+            <h1 className="font-[var(--font-playfair)] text-4xl leading-tight sm:text-5xl">
+              Your Church’s Mission, Beautifully Represented Online.
+            </h1>
+            <p className="max-w-3xl text-lg leading-8 text-white/90">
+              We’re the digital partner for local ministries—building serene, accessible
+              websites that welcome visitors and keep your members connected.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="#pricing"
+                className="rounded-full bg-white px-6 py-3 text-base font-semibold text-foreground transition hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              >
+                See the partnership
+              </a>
+              <a
+                href="#contact"
+                className="rounded-full border border-white/70 px-6 py-3 text-base font-semibold text-white transition hover:border-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              >
+                Schedule a call
+              </a>
+            </div>
+            <ul className="grid gap-3 text-base leading-8 text-white/90 sm:grid-cols-3 sm:gap-4">
+              {[
+                "High-contrast, mobile-first design for every age group.",
+                "Sermons, events, and giving links kept current by our team.",
+                "Peaceful aesthetics that reflect your ministry’s heart.",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-white" aria-hidden />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </section>
+        </div>
+      </section>
 
+      <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-24 pt-16 sm:px-10 lg:px-16">
         {/* Problem / Solution */}
         <section
           id="problem"
