@@ -12,7 +12,7 @@ export default function Home() {
           <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
-                Modern Sanctuary • Church Web Agency
+                Church Web Design Partner
               </div>
               <h1 className="font-[var(--font-playfair)] text-4xl leading-tight text-foreground sm:text-5xl">
                 Your Church’s Mission, Beautifully Represented Online.
@@ -42,14 +42,14 @@ export default function Home() {
               <div className="relative overflow-hidden rounded-3xl border border-border/60 shadow-lg shadow-amber-100/40">
                 <div className="absolute inset-0">
                   <Image
-                    src="https://d1iczxrky3cnb2.cloudfront.net/marketing/hero/church-gathering.jpg"
-                    alt="Soft, minimalist church interior with warm light"
-                    width={1800}
-                    height={1200}
-                    className="h-full w-full scale-110 object-cover blur-[4px]"
+                    src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80"
+                    alt="Sunrise over calm water and trees conveying peace"
+                    width={2000}
+                    height={1333}
+                    className="h-full w-full scale-110 object-cover blur-[3px]"
                     priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-black/30 via-black/10 to-white/15" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-black/35 via-black/15 to-white/10" />
                 </div>
                 <div className="relative space-y-3 bg-white/75 px-6 py-5 backdrop-blur-md">
                   <p className="text-sm font-semibold uppercase tracking-[0.08em] text-amber-700">

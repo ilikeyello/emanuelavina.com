@@ -19,10 +19,10 @@ export function SiteHeader() {
     <header className="sticky top-0 z-30 border-b border-border/60 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
         <Link href="/" className="group flex flex-col leading-none text-foreground">
-          <span className="font-[var(--font-playfair)] text-xl tracking-tight">
+          <span className="font-[var(--font-playfair)] text-3xl leading-none tracking-tight sm:text-4xl">
             Emanuel
           </span>
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/70 group-hover:text-foreground">
+          <span className="-mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 group-hover:text-foreground">
             Web Design
           </span>
         </Link>
