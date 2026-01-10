@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Geist,
+  Geist_Mono,
+  Playfair_Display,
+} from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 
@@ -18,6 +23,12 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  weight: ["600", "700"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Modern Sanctuary Agency | Church Websites",
   description:
@@ -32,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${cormorant.variable} antialiased`}
       >
         <SiteHeader />
         <main>{children}</main>

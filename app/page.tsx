@@ -10,10 +10,10 @@ export default function Home() {
       <section className="relative isolate min-h-screen w-full overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2600&q=90"
-            alt="Sunrise over calm water and trees conveying peace"
+            src="https://images.unsplash.com/photo-1495550400324-b4c0b0f7087b?auto=format&fit=crop&w=2600&q=90"
+            alt="Light-filled modern church exterior against blue sky"
             fill
-            className="object-cover scale-110 blur-[1px]"
+            className="object-cover scale-110 blur-[0.75px]"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/25 to-black/5" />
