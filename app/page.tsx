@@ -8,63 +8,61 @@ export default function Home() {
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)] text-foreground">
       <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-24 pt-16 sm:px-10 lg:px-16">
         {/* Hero */}
-        <section className="relative overflow-hidden rounded-3xl border border-border/60 shadow-xl shadow-amber-100/40">
+        <section className="relative isolate overflow-hidden rounded-3xl min-h-[80vh] sm:min-h-[85vh] lg:min-h-[90vh]">
           <div className="absolute inset-0">
             <Image
-              src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2200&q=80"
+              src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2400&q=90"
               alt="Sunrise over calm water and trees conveying peace"
               fill
-              className="object-cover scale-110 blur-[3px]"
+              className="object-cover scale-110 blur-[1.5px]"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/35 via-black/20 to-white/10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/20 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#f9f9f7]" />
           </div>
-          <div className="relative grid items-center gap-10 bg-white/70 px-8 py-14 backdrop-blur-sm lg:grid-cols-[1.1fr_0.9fr] sm:px-10 lg:px-16">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
-                Church Web Design Partner
+          <div className="relative mx-auto flex h-full max-w-6xl items-center px-6 py-16 sm:px-10 lg:px-16">
+            <div className="flex w-full flex-col gap-10 bg-white/65 p-8 backdrop-blur-sm sm:rounded-3xl sm:p-10">
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
+                  Church Web Design Partner
+                </div>
+                <h1 className="font-[var(--font-playfair)] text-4xl leading-tight text-foreground sm:text-5xl">
+                  Your Church’s Mission, Beautifully Represented Online.
+                </h1>
+                <p className="max-w-3xl text-lg leading-8 text-foreground/85">
+                  We’re the digital partner for local ministries—building serene,
+                  accessible websites that welcome visitors and keep your members
+                  connected.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <a
+                    href="#pricing"
+                    className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  >
+                    See the partnership
+                  </a>
+                  <a
+                    href="#contact"
+                    className="rounded-full border border-foreground/20 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
+                  >
+                    Schedule a call
+                  </a>
+                </div>
               </div>
-              <h1 className="font-[var(--font-playfair)] text-4xl leading-tight text-foreground sm:text-5xl">
-                Your Church’s Mission, Beautifully Represented Online.
-              </h1>
-              <p className="max-w-2xl text-lg leading-8 text-foreground/85">
-                We’re the digital partner for local ministries—building serene,
-                accessible websites that welcome visitors and keep your members
-                connected.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="#pricing"
-                  className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                >
-                  See the partnership
-                </a>
-                <a
-                  href="#contact"
-                  className="rounded-full border border-foreground/20 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
-                >
-                  Schedule a call
-                </a>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  "High-contrast, mobile-first design for every age group.",
+                  "Sermons, events, and giving links kept current by our team.",
+                  "Peaceful aesthetics that reflect your ministry’s heart.",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl bg-white/70 p-4 text-base leading-7 text-foreground/85 backdrop-blur"
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
-            </div>
-            <div className="space-y-3 rounded-3xl border border-border/60 bg-white/80 p-6 shadow-lg backdrop-blur">
-              <p className="text-sm font-semibold uppercase tracking-[0.08em] text-amber-700">
-                Sunday-ready, every week
-              </p>
-              <ul className="space-y-3 text-lg leading-8 text-foreground/80">
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-amber-600" aria-hidden />
-                  High-contrast, mobile-first design for every age group.
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-amber-600" aria-hidden />
-                  Sermons, events, and giving links kept current by our team.
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-amber-600" aria-hidden />
-                  Peaceful aesthetics that reflect your ministry’s heart.
-                </li>
-              </ul>
             </div>
           </div>
         </section>
