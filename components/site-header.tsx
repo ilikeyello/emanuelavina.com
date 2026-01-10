@@ -30,7 +30,7 @@ export function SiteHeader() {
           >
             Emanuel
           </span>
-          <span className="-mt-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 group-hover:text-foreground">
+          <span className="-mt-1 pl-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 group-hover:text-foreground">
             Web Design
           </span>
         </Link>
