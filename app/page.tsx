@@ -10,7 +10,7 @@ export default function Home() {
       <section className="relative isolate min-h-screen w-full overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1495550400324-b4c0b0f7087b?auto=format&fit=crop&w=2600&q=90"
+            src="https://images.unsplash.com/photo-1616593768589-3641738a2e21?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Light-filled modern church exterior against blue sky"
             fill
             className="object-cover scale-110 blur-[0.75px]"
