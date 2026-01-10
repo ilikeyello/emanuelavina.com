@@ -120,44 +120,81 @@ export default function Home() {
               Partnership
             </p>
             <h2 className="font-[var(--font-playfair)] text-3xl leading-tight text-foreground sm:text-4xl">
-              $99/mo Managed Partnership
+              Simple packages for every church.
             </h2>
             <p className="text-lg leading-8 text-foreground/80">
-              A calm, reliable web presence—handled for you.
+              Choose the level of care that fits your ministry. Every plan includes the
+              same calm, reliable web foundation.
             </p>
           </div>
-          <div className="mt-10 grid justify-center">
-            <div className="max-w-xl rounded-3xl border border-border/70 bg-amber-50/70 p-8 shadow-lg shadow-amber-100/60">
-              <ul className="space-y-4">
-                {[
-                  "High-speed hosting",
-                  "Weekly updates",
-                  "Sermon uploads",
-                  "Secure giving integration",
-                ].map((feature) => (
-                  <li key={feature} className={listItemClass}>
-                    <span
-                      className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-700"
-                      aria-hidden
-                    />
-                    <span>{feature}</span>
-                  </li>
-                ))}
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {/* Starter */}
+            <div className="flex flex-col rounded-3xl border border-border/70 bg-amber-50/60 p-6 text-left shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
+                The Starter
+              </p>
+              <h3 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
+                $299 Setup
+              </h3>
+              <p className="text-lg font-semibold text-foreground/90">$50/mo</p>
+              <p className="mt-1 text-sm text-foreground/70">
+                Focused on simplicity and speed for smaller congregations.
+              </p>
+              <p className="mt-3 text-sm text-foreground/70">
+                Includes professional setup, SEO optimization, and domain connection.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
+                <li>• Mobile-friendly, high-contrast design</li>
+                <li>• Service times, basic pages, and contact form</li>
+                <li>• Secure hosting and backups</li>
               </ul>
-              <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <a
-                  href="#contact"
-                  className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                >
-                  Start partnership
-                </a>
-                <a
-                  href="#problem"
-                  className="rounded-full border border-foreground/20 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
-                >
-                  Why it works
-                </a>
+            </div>
+
+            {/* Main (Best Value) */}
+            <div className="relative flex flex-col rounded-3xl border border-amber-600 bg-amber-100/80 p-6 text-left shadow-lg shadow-amber-200">
+              <div className="absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
+                Best Value
               </div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
+                The Main
+              </p>
+              <h3 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
+                $299 Setup
+              </h3>
+              <p className="text-lg font-semibold text-foreground/90">$99/mo</p>
+              <p className="mt-1 text-sm text-foreground/70">
+                Our most popular tier—balanced for most churches.
+              </p>
+              <p className="mt-3 text-sm text-foreground/70">
+                Includes professional setup, SEO optimization, and domain connection.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
+                <li>• Everything in Starter</li>
+                <li>• Weekly content updates and sermon uploads</li>
+                <li>• Event calendar and giving integration</li>
+              </ul>
+            </div>
+
+            {/* Ultimate */}
+            <div className="flex flex-col rounded-3xl border border-border/70 bg-amber-50/60 p-6 text-left shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
+                The Ultimate
+              </p>
+              <h3 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
+                $799 Setup
+              </h3>
+              <p className="text-lg font-semibold text-foreground/90">$99/mo</p>
+              <p className="mt-1 text-sm text-foreground/70">
+                Full digital ministry support for multi-faceted churches.
+              </p>
+              <p className="mt-3 text-sm text-foreground/70">
+                Includes professional setup, SEO optimization, and domain connection.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
+                <li>• Everything in Main</li>
+                <li>• Additional ministry landing pages</li>
+                <li>• Priority content updates and consults</li>
+              </ul>
             </div>
           </div>
         </section>

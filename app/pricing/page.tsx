@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Pricing | Modern Sanctuary Agency",
   description:
-    "$99/mo managed partnership for churches—hosting, updates, sermons, and secure giving handled for you.",
+    "Simple managed church website packages with professional setup, SEO, and domain connection included.",
 };
 
 export default function PricingPage() {
@@ -16,42 +16,82 @@ export default function PricingPage() {
             Partnership
           </p>
           <h1 className="font-[var(--font-playfair)] text-4xl leading-tight text-foreground sm:text-5xl">
-            $99/mo Managed Partnership
+            Simple packages for every church.
           </h1>
           <p className="text-lg leading-8 text-foreground/80">
             Calm, reliable web presence—built and cared for weekly so your team can stay
-            focused on ministry.
+            focused on ministry. Every tier includes professional setup, SEO, and domain
+            connection.
           </p>
         </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* Starter */}
+          <div className="flex flex-col rounded-3xl border border-border/70 bg-white/85 p-6 text-left shadow-sm shadow-amber-100/60">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
+              The Starter
+            </p>
+            <h2 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
+              $299 Setup
+            </h2>
+            <p className="text-lg font-semibold text-foreground/90">$50/mo</p>
+            <p className="mt-1 text-sm text-foreground/70">
+              Focused on simplicity and speed for smaller congregations.
+            </p>
+            <p className="mt-3 text-sm text-foreground/70">
+              Includes professional setup, SEO optimization, and domain connection.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
+              <li>• Mobile-friendly, high-contrast design</li>
+              <li>• Service times, basic pages, and contact form</li>
+              <li>• Secure hosting and backups</li>
+            </ul>
+          </div>
 
-        <div className="rounded-3xl border border-border/70 bg-white/85 p-8 shadow-xl shadow-amber-100/40 backdrop-blur">
-          <ul className="space-y-4 text-lg leading-8 text-foreground/80">
-            {[
-              "High-speed hosting with SSL and backups",
-              "Weekly updates to content, events, and CTAs",
-              "Sermon uploads and archive maintenance",
-              "Secure giving integration and guidance",
-              "Accessibility-minded design (WCAG 2.1)",
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-700" aria-hidden />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href="/contact"
-              className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-            >
-              Start partnership
-            </Link>
-            <Link
-              href="/payment"
-              className="rounded-full border border-foreground/20 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
-            >
-              Payment portal
-            </Link>
+          {/* Main (Best Value) */}
+          <div className="relative flex flex-col rounded-3xl border border-amber-600 bg-amber-100/80 p-6 text-left shadow-lg shadow-amber-200">
+            <div className="absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
+              Best Value
+            </div>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
+              The Main
+            </p>
+            <h2 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
+              $299 Setup
+            </h2>
+            <p className="text-lg font-semibold text-foreground/90">$99/mo</p>
+            <p className="mt-1 text-sm text-foreground/70">
+              Our most popular tier—balanced for most churches.
+            </p>
+            <p className="mt-3 text-sm text-foreground/70">
+              Includes professional setup, SEO optimization, and domain connection.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
+              <li>• Everything in Starter</li>
+              <li>• Weekly content updates and sermon uploads</li>
+              <li>• Event calendar and giving integration</li>
+            </ul>
+          </div>
+
+          {/* Ultimate */}
+          <div className="flex flex-col rounded-3xl border border-border/70 bg-white/85 p-6 text-left shadow-sm shadow-amber-100/60">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
+              The Ultimate
+            </p>
+            <h2 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
+              $799 Setup
+            </h2>
+            <p className="text-lg font-semibold text-foreground/90">$99/mo</p>
+            <p className="mt-1 text-sm text-foreground/70">
+              Full digital ministry support for multi-faceted churches.
+            </p>
+            <p className="mt-3 text-sm text-foreground/70">
+              Includes professional setup, SEO optimization, and domain connection.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
+              <li>• Everything in Main</li>
+              <li>• Additional ministry landing pages</li>
+              <li>• Priority content updates and consults</li>
+            </ul>
           </div>
         </div>
       </div>
