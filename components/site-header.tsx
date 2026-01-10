@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Cormorant_Garamond } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,10 +20,11 @@ const navLinks = [
 ];
 
 export function SiteHeader() {
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-border/60 bg-[#f9f9f7]/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
         <Link href="/" className="group flex flex-col leading-none text-foreground">
           <span
@@ -34,7 +36,7 @@ export function SiteHeader() {
             Web Design
           </span>
         </Link>
-        <nav className="flex flex-wrap items-center gap-3 text-sm font-semibold text-foreground/80">
+        <nav className="hidden items-center gap-3 text-sm font-semibold text-foreground/80 md:flex">
           {navLinks.map((link) => {
             const isActive =
               link.href === "/"
@@ -55,7 +57,49 @@ export function SiteHeader() {
             );
           })}
         </nav>
+
+        <button
+          type="button"
+          aria-label="Toggle navigation menu"
+          className="inline-flex items-center justify-center rounded-full border border-foreground/10 bg-[#f9f9f7]/90 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/80 hover:border-foreground/30 hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50 md:hidden"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <span className="mr-2">Menu</span>
+          <span className="flex flex-col gap-0.5">
+            <span className={`h-[2px] w-4 rounded-full bg-foreground transition ${isOpen ? "translate-y-[3px] rotate-45" : ""}`} />
+            <span className={`h-[2px] w-4 rounded-full bg-foreground transition ${isOpen ? "opacity-0" : ""}`} />
+            <span className={`h-[2px] w-4 rounded-full bg-foreground transition ${isOpen ? "-translate-y-[3px] -rotate-45" : ""}`} />
+          </span>
+        </button>
       </div>
+      {isOpen && (
+        <div className="border-t border-border/60 bg-[#f9f9f7]/95 backdrop-blur md:hidden">
+          <div className="mx-auto max-w-6xl px-6 py-3 sm:px-10 lg:px-16">
+            <nav className="flex flex-col gap-1 text-sm font-semibold text-foreground/80">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === "/"
+                    ? pathname === "/"
+                    : pathname === link.href || pathname.startsWith(`${link.href}/`);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`rounded-xl px-3 py-2 transition ${
+                      isActive
+                        ? "bg-foreground text-background shadow-sm"
+                        : "hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
