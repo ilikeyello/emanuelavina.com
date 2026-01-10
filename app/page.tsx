@@ -5,7 +5,7 @@ const listItemClass =
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)] text-foreground">
+    <main className="min-h-screen bg-[#f9f9f7] text-foreground">
       {/* Hero full-bleed */}
       <section className="relative isolate min-h-screen w-full overflow-hidden">
         <div className="absolute inset-0">
@@ -16,8 +16,8 @@ export default function Home() {
             className="object-cover scale-110 blur-[0.75px]"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/15 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-[#f9f9f7]/35 to-[#f9f9f7]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/18 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#f9f9f7]/55 to-[#f9f9f7]" />
         </div>
         <div className="relative mx-auto flex min-h-screen max-w-6xl items-center px-6 py-20 sm:px-10 lg:px-16">
           <div className="space-y-8 text-white drop-shadow-[0_10px_35px_rgba(0,0,0,0.35)]">
