@@ -25,12 +25,19 @@ const highlights = [
 export function MissionHighlights() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [displayIndex, setDisplayIndex] = useState(0);
 
   useEffect(() => {
     if (isPaused) return;
     
     const id = setInterval(() => {
-      setIndex((prev) => (prev + 1) % highlights.length);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % highlights.length);
+        setDisplayIndex((prev) => (prev + 1) % highlights.length);
+        setIsTransitioning(false);
+      }, 400);
     }, 5200);
     return () => clearInterval(id);
   }, [isPaused]);
@@ -44,14 +51,30 @@ export function MissionHighlights() {
       <div className="min-h-[200px] flex items-center">
         <div className="relative w-full overflow-hidden">
           <div 
-            key={index} 
-            className="space-y-4 animate-[slideInFromRight_0.8s_ease-out] w-full"
+            className={`space-y-4 w-full transition-all duration-400 ${
+              isTransitioning 
+                ? 'opacity-0 -translate-x-full' 
+                : 'opacity-100 translate-x-0'
+            }`}
           >
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
-              {highlights[index].title}
+              {highlights[displayIndex].title}
             </p>
-            <p className="text-xl leading-7 text-foreground/80">{highlights[index].body}</p>
+            <p className="text-xl leading-7 text-foreground/80">{highlights[displayIndex].body}</p>
           </div>
+          {isTransitioning && (
+            <div 
+              className="absolute top-0 left-0 space-y-4 w-full opacity-0 translate-x-full transition-all duration-400"
+              style={{
+                animation: 'slideInFromRight 0.4s ease-out 0.2s forwards'
+              }}
+            >
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
+                {highlights[index].title}
+              </p>
+              <p className="text-xl leading-7 text-foreground/80">{highlights[index].body}</p>
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-6 flex gap-2">
@@ -59,7 +82,10 @@ export function MissionHighlights() {
           <button
             key={i}
             aria-label={`Show highlight ${i + 1}`}
-            onClick={() => setIndex(i)}
+            onClick={() => {
+              setIndex(i);
+              setDisplayIndex(i);
+            }}
             className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
               i === index ? "bg-amber-700 scale-110" : "bg-foreground/20 hover:bg-foreground/40"
             }`}
@@ -76,10 +102,6 @@ export function MissionHighlights() {
             opacity: 1;
             transform: translateX(0);
           }
-        }
-        
-        .animate-\[slideInFromRight_0\.8s_ease-out\] {
-          animation: slideInFromRight 0.8s ease-out;
         }
       `}</style>
     </div>
