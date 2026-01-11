@@ -37,7 +37,7 @@ export function MissionHighlights() {
         setIndex((prev) => (prev + 1) % highlights.length);
         setDisplayIndex((prev) => (prev + 1) % highlights.length);
         setIsTransitioning(false);
-      }, 400);
+      }, 800);
     }, 5200);
     return () => clearInterval(id);
   }, [isPaused]);
@@ -51,7 +51,7 @@ export function MissionHighlights() {
       <div className="min-h-[200px] flex items-center">
         <div className="relative w-full overflow-hidden">
           <div 
-            className={`space-y-4 w-full transition-all duration-400 ${
+            className={`space-y-4 w-full transition-all duration-800 ${
               isTransitioning 
                 ? 'opacity-0 -translate-x-full' 
                 : 'opacity-100 translate-x-0'
@@ -64,9 +64,9 @@ export function MissionHighlights() {
           </div>
           {isTransitioning && (
             <div 
-              className="absolute top-0 left-0 space-y-4 w-full opacity-0 translate-x-full transition-all duration-400"
+              className="absolute top-0 left-0 space-y-4 w-full opacity-0 translate-x-full"
               style={{
-                animation: 'slideInFromRight 0.4s ease-out 0.2s forwards'
+                animation: 'slideInFromRight 0.8s ease-out forwards'
               }}
             >
               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
@@ -94,11 +94,11 @@ export function MissionHighlights() {
       </div>
       <style jsx>{`
         @keyframes slideInFromRight {
-          from {
+          0% {
             opacity: 0;
             transform: translateX(100%);
           }
-          to {
+          100% {
             opacity: 1;
             transform: translateX(0);
           }
