@@ -40,17 +40,24 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
-        <Link href="/" className="group flex flex-col leading-none text-foreground">
+        <Link
+          href="/"
+          className={`group flex flex-col leading-none ${isAtTop ? "text-white" : "text-foreground"}`}
+        >
           <span
             className={`${logoSerif.className} text-3xl leading-none tracking-tight sm:text-4xl font-semibold`}
           >
             Emanuel
           </span>
-          <span className="-mt-1 pl-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 group-hover:text-foreground">
+          <span
+            className={`-mt-1 pl-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${
+              isAtTop ? "text-white/70 group-hover:text-white" : "text-foreground/70 group-hover:text-foreground"
+            }`}
+          >
             Web Design
           </span>
         </Link>
-        <nav className="hidden items-center gap-3 text-sm font-semibold text-foreground/80 md:flex">
+        <nav className="hidden items-center gap-3 text-sm font-semibold md:flex">
           {navLinks.map((link) => {
             const isActive =
               link.href === "/"
@@ -63,7 +70,9 @@ export function SiteHeader() {
                 className={`rounded-full px-3 py-2 transition ${
                   isActive
                     ? "bg-foreground text-background shadow-sm"
-                    : "hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50"
+                    : isAtTop
+                      ? "text-white/90 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
+                      : "text-foreground/80 hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50"
                 }`}
               >
                 {link.label}
@@ -75,14 +84,30 @@ export function SiteHeader() {
         <button
           type="button"
           aria-label="Toggle navigation menu"
-          className="inline-flex items-center justify-center rounded-full border border-foreground/10 bg-[#f9f9f7]/90 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-foreground/80 hover:border-foreground/30 hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50 md:hidden"
+          className={`inline-flex items-center justify-center rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] md:hidden ${
+            isAtTop
+              ? "border border-white/40 bg-white/10 text-white hover:border-white/60 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              : "border border-foreground/10 bg-[#f9f9f7]/90 text-foreground/80 hover:border-foreground/30 hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50"
+          }`}
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <span className="mr-2">Menu</span>
           <span className="flex flex-col gap-0.5">
-            <span className={`h-[2px] w-4 rounded-full bg-foreground transition ${isOpen ? "translate-y-[3px] rotate-45" : ""}`} />
-            <span className={`h-[2px] w-4 rounded-full bg-foreground transition ${isOpen ? "opacity-0" : ""}`} />
-            <span className={`h-[2px] w-4 rounded-full bg-foreground transition ${isOpen ? "-translate-y-[3px] -rotate-45" : ""}`} />
+            <span
+              className={`h-[2px] w-4 rounded-full transition ${
+                isAtTop ? "bg-white" : "bg-foreground"
+              } ${isOpen ? "translate-y-[3px] rotate-45" : ""}`}
+            />
+            <span
+              className={`h-[2px] w-4 rounded-full transition ${
+                isAtTop ? "bg-white" : "bg-foreground"
+              } ${isOpen ? "opacity-0" : ""}`}
+            />
+            <span
+              className={`h-[2px] w-4 rounded-full transition ${
+                isAtTop ? "bg-white" : "bg-foreground"
+              } ${isOpen ? "-translate-y-[3px] -rotate-45" : ""}`}
+            />
           </span>
         </button>
       </div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { MissionHighlights } from "@/components/mission-highlights";
 
 export default function Home() {
   return (
@@ -58,29 +59,19 @@ export default function Home() {
               clarity, and care they feel in person.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "Digital Generosity",
-                body: "Clear, trustworthy giving paths that make it simple to support the mission from anywhere.",
-              },
-              {
-                title: "The Living Word",
-                body: "Sermons and teaching organized, searchable, and easy to revisit throughout the week.",
-              },
-              {
-                title: "Your Church, Anywhere",
-                body: "A calm, mobile-first experience so your community can stay connected on every device.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-border/70 bg-amber-50/60 p-6 shadow-sm"
-              >
-                <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-base leading-7 text-foreground/80">{item.body}</p>
-              </div>
-            ))}
+          <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+            <MissionHighlights />
+            <div className="rounded-2xl border border-border/70 bg-amber-50/60 p-6 shadow-sm">
+              <h3 className="text-lg font-semibold text-foreground">Ministry rhythm</h3>
+              <p className="mt-2 text-base leading-7 text-foreground/80">
+                Weekly updates, sermon posting, and event refreshes—handled so your team can
+                focus on people, not pixels.
+              </p>
+              <p className="mt-3 text-base leading-7 text-foreground/80">
+                Clear accessibility, peaceful visuals, and mobile-first layouts make every
+                interaction feel like a warm welcome.
+              </p>
+            </div>
           </div>
         </section>
 
