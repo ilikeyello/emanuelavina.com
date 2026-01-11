@@ -1,5 +1,8 @@
+"use client";
+
 import type { Metadata } from "next";
 import Link from "next/link";
+import { useState } from "react";
 
 export const metadata: Metadata = {
   title: "Pricing | Modern Sanctuary Agency",
@@ -8,6 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
+  const [openPackage, setOpenPackage] = useState<string | null>(null);
+
+  const handlePackageClick = (packageName: string) => {
+    setOpenPackage(openPackage === packageName ? null : packageName);
+  };
+
   return (
     <div className="bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)]">
       <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 pb-20 pt-24 sm:px-10 lg:px-16">
@@ -26,19 +35,26 @@ export default function PricingPage() {
         </div>
         <div className="mt-6 space-y-4">
           {/* The Digital Front Door */}
-          <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
+          <details 
+            className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60"
+            open={openPackage === 'digital-front-door'}
+            onToggle={(e) => {
+              e.preventDefault();
+              handlePackageClick('digital-front-door');
+            }}
+          >
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
                   The Digital Front Door
                 </p>
-                <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
+                <p className="mt-1 font-[var(--font-playfair)] text-2xl text-foreground">
                   $299 Setup
                 </p>
-                <p className="text-base font-semibold text-foreground/90">$50/mo</p>
-                <p className="mt-2 text-sm font-medium text-foreground/70">Purpose: Presence</p>
-                <p className="mt-1 text-sm leading-6 text-foreground/80">
-                  "Stop being invisible to your community. We build a professional, welcoming space so that when people look for a church, they find yours."
+                <p className="text-lg font-bold text-foreground/90">$50/mo</p>
+                <p className="mt-2 text-base font-medium text-foreground/70">Presence</p>
+                <p className="mt-2 text-base leading-6 text-foreground/90 font-medium">
+                  Stop being invisible to your community. We build a professional, welcoming space so that when people look for a church, they find yours.
                 </p>
               </div>
               <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
@@ -76,7 +92,14 @@ export default function PricingPage() {
           </details>
 
           {/* The Gospel Outreach (Most Popular) */}
-          <details className="group relative rounded-3xl border border-amber-600 bg-amber-100/90 p-5 text-left shadow-md shadow-amber-200 open:shadow-lg">
+          <details 
+            className="group relative rounded-3xl border border-amber-600 bg-amber-100/90 p-5 text-left shadow-md shadow-amber-200 open:shadow-lg"
+            open={openPackage === 'gospel-outreach'}
+            onToggle={(e) => {
+              e.preventDefault();
+              handlePackageClick('gospel-outreach');
+            }}
+          >
             <div className="pointer-events-none absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
               Most Popular
             </div>
@@ -85,13 +108,13 @@ export default function PricingPage() {
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
                   The Gospel Outreach
                 </p>
-                <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
+                <p className="mt-1 font-[var(--font-playfair)] text-2xl text-foreground">
                   $299 Setup
                 </p>
-                <p className="text-base font-semibold text-foreground/90">$99/mo</p>
-                <p className="mt-2 text-sm font-medium text-foreground/70">Purpose: Spreading the Word</p>
-                <p className="mt-1 text-sm leading-6 text-foreground/80">
-                  "Don't let the message stop at the church doors. We equip you with sermon archiving, online giving, and event management to reach people wherever they are."
+                <p className="text-lg font-bold text-foreground/90">$99/mo</p>
+                <p className="mt-2 text-base font-medium text-foreground/70">Spreading the Word</p>
+                <p className="mt-2 text-base leading-6 text-foreground/90 font-medium">
+                  Don't let the message stop at the church doors. We equip you with sermon archiving, online giving, and event management to reach people wherever they are.
                 </p>
               </div>
               <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
@@ -130,19 +153,26 @@ export default function PricingPage() {
           </details>
 
           {/* The Ministry Ecosystem */}
-          <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
+          <details 
+            className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60"
+            open={openPackage === 'ministry-ecosystem'}
+            onToggle={(e) => {
+              e.preventDefault();
+              handlePackageClick('ministry-ecosystem');
+            }}
+          >
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
                   The Ministry Ecosystem
                 </p>
-                <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
+                <p className="mt-1 font-[var(--font-playfair)] text-2xl text-foreground">
                   $799 Setup
                 </p>
-                <p className="text-base font-semibold text-foreground/90">$99/mo</p>
-                <p className="mt-2 text-sm font-medium text-foreground/70">Purpose: Advanced Engagement</p>
-                <p className="mt-1 text-sm leading-6 text-foreground/80">
-                  "The full digital companion for your congregation. A powerful web app featuring Bible integration and worship playlists for daily discipleship."
+                <p className="text-lg font-bold text-foreground/90">$99/mo</p>
+                <p className="mt-2 text-base font-medium text-foreground/70">Advanced Engagement</p>
+                <p className="mt-2 text-base leading-6 text-foreground/90 font-medium">
+                  The full digital companion for your congregation. A powerful web app featuring Bible integration and worship playlists for daily discipleship.
                 </p>
               </div>
               <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
