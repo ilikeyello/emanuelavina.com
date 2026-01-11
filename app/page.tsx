@@ -29,10 +29,16 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="/pricing"
+                href="/about"
                 className="rounded-full bg-white px-6 py-3 text-base font-semibold text-foreground transition hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
               >
                 Learn More
+              </a>
+              <a
+                href="/pricing"
+                className="rounded-full border border-white/40 bg-white/10 px-6 py-3 text-base font-semibold text-white transition hover:bg-white/20 hover:border-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              >
+                View Packages
               </a>
             </div>
           </div>
