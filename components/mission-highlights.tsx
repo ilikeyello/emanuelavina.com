@@ -38,7 +38,7 @@ export function MissionHighlights() {
         setDisplayIndex((prev) => (prev + 1) % highlights.length);
         setIsTransitioning(false);
       }, 800);
-    }, 5200);
+    }, 8000);
     return () => clearInterval(id);
   }, [isPaused]);
 
