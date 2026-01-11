@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <div className="bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)]">
-      <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 pb-20 pt-16 sm:px-10 lg:px-16">
+      <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 pb-20 pt-24 sm:px-10 lg:px-16">
         <div className="space-y-4">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
             Partnership
