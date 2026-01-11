@@ -18,9 +18,6 @@ export default function Home() {
         </div>
         <div className="relative mx-auto flex min-h-screen max-w-6xl items-center px-6 py-20 sm:px-10 lg:px-16">
           <div className="space-y-8 text-white drop-shadow-[0_10px_35px_rgba(0,0,0,0.35)]">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 text-sm font-medium">
-              Ministry-first web partner
-            </div>
             <h1 className="font-[var(--font-playfair)] text-4xl leading-tight sm:text-5xl">
               You connect the world to God&apos;s love. We connect you to the world.
             </h1>

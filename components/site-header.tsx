@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Cormorant_Garamond } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,10 +21,24 @@ const navLinks = [
 
 export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const handleScroll = () => setIsAtTop(window.scrollY < 12);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-[#f9f9f7]/85 backdrop-blur">
+    <header
+      className={`sticky top-0 z-30 border-b transition-colors duration-300 ${
+        isAtTop
+          ? "border-transparent bg-transparent"
+          : "border-border/60 bg-[#f9f9f7]/85 backdrop-blur"
+      }`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
         <Link href="/" className="group flex flex-col leading-none text-foreground">
           <span
