@@ -24,22 +24,29 @@ const highlights = [
 
 export function MissionHighlights() {
   const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    if (isPaused) return;
+    
     const id = setInterval(() => {
       setIndex((prev) => (prev + 1) % highlights.length);
     }, 5200);
     return () => clearInterval(id);
-  }, []);
+  }, [isPaused]);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-amber-50/70 p-8 shadow-sm">
-      <div className="min-h-[200px]">
-        <div key={index} className="space-y-4 animate-[slideFadeIn_0.8s_ease-out]">
+    <div 
+      className="relative overflow-hidden rounded-2xl border border-border/70 bg-amber-50/70 p-8 shadow-sm"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="min-h-[200px] flex items-center">
+        <div key={index} className="space-y-4 animate-[slideFadeIn_0.8s_ease-out] w-full">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
             {highlights[index].title}
           </p>
-          <p className="text-lg leading-7 text-foreground/80">{highlights[index].body}</p>
+          <p className="text-xl leading-7 text-foreground/80">{highlights[index].body}</p>
         </div>
       </div>
       <div className="mt-6 flex gap-2">
