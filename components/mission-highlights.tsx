@@ -15,6 +15,11 @@ const highlights = [
     title: "Your Church, Anywhere",
     body: "A calm, mobile-first experience so your community can stay connected on every device.",
   },
+  {
+    title: "Ministry rhythm",
+    body:
+      "Weekly updates, sermon posting, and event refreshes—handled so your team can focus on people, not pixels. Clear accessibility, peaceful visuals, and mobile-first layouts make every interaction feel like a warm welcome.",
+  },
 ];
 
 export function MissionHighlights() {
@@ -23,13 +28,13 @@ export function MissionHighlights() {
   useEffect(() => {
     const id = setInterval(() => {
       setIndex((prev) => (prev + 1) % highlights.length);
-    }, 3200);
+    }, 5200);
     return () => clearInterval(id);
   }, []);
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-amber-50/70 p-6 shadow-sm">
-      <div className="min-h-[170px] space-y-3 transition-all duration-500 ease-out">
+      <div key={index} className="min-h-[190px] space-y-3 animate-[fadeSlide_0.6s_ease-out]">
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
           {highlights[index].title}
         </p>
@@ -47,6 +52,18 @@ export function MissionHighlights() {
           />
         ))}
       </div>
+      <style jsx>{`
+        @keyframes fadeSlide {
+          from {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }
