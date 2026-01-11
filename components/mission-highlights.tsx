@@ -33,21 +33,23 @@ export function MissionHighlights() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-amber-50/70 p-6 shadow-sm">
-      <div key={index} className="min-h-[190px] space-y-3 animate-[slideFadeIn_0.7s_ease-out]">
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
-          {highlights[index].title}
-        </p>
-        <p className="text-base leading-7 text-foreground/80">{highlights[index].body}</p>
+    <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-amber-50/70 p-8 shadow-sm">
+      <div className="min-h-[200px]">
+        <div key={index} className="space-y-4 animate-[slideFadeIn_0.8s_ease-out]">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
+            {highlights[index].title}
+          </p>
+          <p className="text-lg leading-7 text-foreground/80">{highlights[index].body}</p>
+        </div>
       </div>
-      <div className="mt-4 flex gap-2">
+      <div className="mt-6 flex gap-2">
         {highlights.map((_, i) => (
           <button
             key={i}
             aria-label={`Show highlight ${i + 1}`}
             onClick={() => setIndex(i)}
-            className={`h-2.5 w-2.5 rounded-full transition ${
-              i === index ? "bg-amber-700" : "bg-foreground/20 hover:bg-foreground/40"
+            className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+              i === index ? "bg-amber-700 scale-110" : "bg-foreground/20 hover:bg-foreground/40"
             }`}
           />
         ))}
@@ -56,7 +58,7 @@ export function MissionHighlights() {
         @keyframes slideFadeIn {
           from {
             opacity: 0;
-            transform: translateX(32px);
+            transform: translateX(40px);
           }
           to {
             opacity: 1;
