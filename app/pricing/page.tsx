@@ -24,75 +24,138 @@ export default function PricingPage() {
             connection.
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="mt-4 space-y-4">
           {/* Starter */}
-          <div className="flex flex-col rounded-3xl border border-border/70 bg-white/85 p-6 text-left shadow-sm shadow-amber-100/60">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
-              The Starter
-            </p>
-            <h2 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
-              $299 Setup
-            </h2>
-            <p className="text-lg font-semibold text-foreground/90">$50/mo</p>
-            <p className="mt-1 text-sm text-foreground/70">
-              Focused on simplicity and speed for smaller congregations.
-            </p>
-            <p className="mt-3 text-sm text-foreground/70">
-              Includes professional setup, SEO optimization, and domain connection.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
-              <li>• Mobile-friendly, high-contrast design</li>
-              <li>• Service times, basic pages, and contact form</li>
-              <li>• Secure hosting and backups</li>
-            </ul>
-          </div>
+          <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
+            <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
+                  The Starter
+                </p>
+                <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
+                  $299 Setup
+                </p>
+                <p className="text-base font-semibold text-foreground/90">$50/mo</p>
+              </div>
+              <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
+                Hide details
+              </span>
+              <span className="text-sm font-medium text-foreground/70 group-open:hidden">
+                Click to see details
+              </span>
+            </summary>
+            <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
+              <p>
+                Focused on simplicity and speed for smaller congregations that need a
+                calm, trustworthy web presence.
+              </p>
+              <p>
+                Includes professional setup, SEO optimization, and domain connection.
+              </p>
+              <ul className="list-disc space-y-1 pl-6">
+                <li>Mobile-friendly, high-contrast design</li>
+                <li>Service times, basic pages, and contact form</li>
+                <li>Secure hosting and backups</li>
+              </ul>
+              <div className="pt-3">
+                <Link
+                  href="/payment?plan=starter"
+                  className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                >
+                  Purchase Starter
+                </Link>
+              </div>
+            </div>
+          </details>
 
           {/* Main (Best Value) */}
-          <div className="relative flex flex-col rounded-3xl border border-amber-600 bg-amber-100/80 p-6 text-left shadow-lg shadow-amber-200">
-            <div className="absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
+          <details className="group relative rounded-3xl border border-amber-600 bg-amber-100/90 p-5 text-left shadow-md shadow-amber-200 open:shadow-lg">
+            <div className="pointer-events-none absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
               Best Value
             </div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
-              The Main
-            </p>
-            <h2 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
-              $299 Setup
-            </h2>
-            <p className="text-lg font-semibold text-foreground/90">$99/mo</p>
-            <p className="mt-1 text-sm text-foreground/70">
-              Our most popular tier—balanced for most churches.
-            </p>
-            <p className="mt-3 text-sm text-foreground/70">
-              Includes professional setup, SEO optimization, and domain connection.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
-              <li>• Everything in Starter</li>
-              <li>• Weekly content updates and sermon uploads</li>
-              <li>• Event calendar and giving integration</li>
-            </ul>
-          </div>
+            <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
+                  The Main
+                </p>
+                <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
+                  $299 Setup
+                </p>
+                <p className="text-base font-semibold text-foreground/90">$99/mo</p>
+              </div>
+              <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
+                Hide details
+              </span>
+              <span className="text-sm font-medium text-foreground/70 group-open:hidden">
+                Click to see details
+              </span>
+            </summary>
+            <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
+              <p>
+                Our most popular tier—balanced for most churches that want weekly
+                support without the complexity of a full digital team.
+              </p>
+              <p>
+                Includes professional setup, SEO optimization, and domain connection.
+              </p>
+              <ul className="list-disc space-y-1 pl-6">
+                <li>Everything in Starter</li>
+                <li>Weekly content updates and sermon uploads</li>
+                <li>Event calendar and giving integration</li>
+              </ul>
+              <div className="pt-3">
+                <Link
+                  href="/payment?plan=main"
+                  className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                >
+                  Purchase Main
+                </Link>
+              </div>
+            </div>
+          </details>
 
           {/* Ultimate */}
-          <div className="flex flex-col rounded-3xl border border-border/70 bg-white/85 p-6 text-left shadow-sm shadow-amber-100/60">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
-              The Ultimate
-            </p>
-            <h2 className="mt-2 font-[var(--font-playfair)] text-2xl text-foreground">
-              $799 Setup
-            </h2>
-            <p className="text-lg font-semibold text-foreground/90">$99/mo</p>
-            <p className="mt-1 text-sm text-foreground/70">
-              Full digital ministry support for multi-faceted churches.
-            </p>
-            <p className="mt-3 text-sm text-foreground/70">
-              Includes professional setup, SEO optimization, and domain connection.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/80">
-              <li>• Everything in Main</li>
-              <li>• Additional ministry landing pages</li>
-              <li>• Priority content updates and consults</li>
-            </ul>
-          </div>
+          <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
+            <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
+                  The Ultimate
+                </p>
+                <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
+                  $799 Setup
+                </p>
+                <p className="text-base font-semibold text-foreground/90">$99/mo</p>
+              </div>
+              <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
+                Hide details
+              </span>
+              <span className="text-sm font-medium text-foreground/70 group-open:hidden">
+                Click to see details
+              </span>
+            </summary>
+            <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
+              <p>
+                Full digital ministry support for multi-faceted churches with
+                additional ministries, campuses, or outreach efforts.
+              </p>
+              <p>
+                Includes professional setup, SEO optimization, and domain connection.
+              </p>
+              <ul className="list-disc space-y-1 pl-6">
+                <li>Everything in Main</li>
+                <li>Additional ministry landing pages</li>
+                <li>Priority content updates and consults</li>
+              </ul>
+              <div className="pt-3">
+                <Link
+                  href="/payment?plan=ultimate"
+                  className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                >
+                  Purchase Ultimate
+                </Link>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
     </div>
