@@ -1,14 +1,7 @@
 "use client";
 
-import type { Metadata } from "next";
 import Link from "next/link";
 import { useState } from "react";
-
-export const metadata: Metadata = {
-  title: "Pricing | Modern Sanctuary Agency",
-  description:
-    "Simple managed church website packages with professional setup, SEO, and domain connection included.",
-};
 
 export default function PricingPage() {
   const [openPackage, setOpenPackage] = useState<string | null>(null);
