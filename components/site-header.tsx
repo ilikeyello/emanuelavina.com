@@ -33,7 +33,7 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-30 border-b transition-colors duration-300 ${
+      className={`fixed top-0 z-30 w-full border-b transition-colors duration-300 ${
         isAtTop
           ? "border-transparent bg-transparent"
           : "border-border/60 bg-[#f9f9f7]/85 backdrop-blur"
