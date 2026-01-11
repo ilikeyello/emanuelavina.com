@@ -32,7 +32,7 @@ export default function Home() {
                 href="/pricing"
                 className="rounded-full bg-white px-6 py-3 text-base font-semibold text-foreground transition hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
               >
-                View pricing
+                Learn More
               </a>
             </div>
           </div>
