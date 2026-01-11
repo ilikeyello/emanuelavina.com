@@ -42,11 +42,16 @@ export function MissionHighlights() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="min-h-[200px] flex items-center">
-        <div key={index} className="space-y-4 animate-[slideFadeIn_0.8s_ease-out] w-full">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
-            {highlights[index].title}
-          </p>
-          <p className="text-xl leading-7 text-foreground/80">{highlights[index].body}</p>
+        <div className="relative w-full overflow-hidden">
+          <div 
+            key={index} 
+            className="space-y-4 animate-[slideInFromRight_0.8s_ease-out] w-full"
+          >
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
+              {highlights[index].title}
+            </p>
+            <p className="text-xl leading-7 text-foreground/80">{highlights[index].body}</p>
+          </div>
         </div>
       </div>
       <div className="mt-6 flex gap-2">
@@ -62,15 +67,19 @@ export function MissionHighlights() {
         ))}
       </div>
       <style jsx>{`
-        @keyframes slideFadeIn {
+        @keyframes slideInFromRight {
           from {
             opacity: 0;
-            transform: translateX(40px);
+            transform: translateX(100%);
           }
           to {
             opacity: 1;
             transform: translateX(0);
           }
+        }
+        
+        .animate-\[slideInFromRight_0\.8s_ease-out\] {
+          animation: slideInFromRight 0.8s ease-out;
         }
       `}</style>
     </div>
