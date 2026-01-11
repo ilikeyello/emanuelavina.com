@@ -121,11 +121,11 @@ export function SiteHeader() {
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-40 bg-black/20 md:hidden"
+            className="fixed inset-0 z-50 bg-black/20 md:hidden"
             onClick={() => setIsOpen(false)}
           />
           {/* Slide-out menu */}
-          <div className={`fixed right-0 top-0 z-50 h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-transform duration-300 ease-out ${
+          <div className={`fixed right-0 top-0 z-[60] h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-transform duration-300 ease-out ${
             isHomePage ? 'bg-[#f9f9f7]/95 backdrop-blur' : 'bg-[#f9f9f7]'
           }`}>
             <div className="flex h-full flex-col px-6 py-6">
