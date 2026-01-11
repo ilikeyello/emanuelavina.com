@@ -22,7 +22,7 @@ export default function Home() {
               Ministry-first web partner
             </div>
             <h1 className="font-[var(--font-playfair)] text-4xl leading-tight sm:text-5xl">
-              You connect the world to God’s love. We connect the world to you.
+              You connect the world to God&apos;s love. We connect you to the world.
             </h1>
             <p className="max-w-3xl text-lg leading-8 text-white/90">
               For most people, your website is the first hand your community shakes before
@@ -31,30 +31,12 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#pricing"
+                href="/pricing"
                 className="rounded-full bg-white px-6 py-3 text-base font-semibold text-foreground transition hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
               >
-                See the partnership
-              </a>
-              <a
-                href="#contact"
-                className="rounded-full border border-white/70 px-6 py-3 text-base font-semibold text-white transition hover:border-white hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
-              >
-                Schedule a call
+                View pricing
               </a>
             </div>
-            <ul className="grid gap-3 text-base leading-8 text-white/90 sm:grid-cols-3 sm:gap-4">
-              {[
-                "High-contrast, mobile-first design for every age group.",
-                "Sermons, events, and giving links kept current by our team.",
-                "Peaceful aesthetics that reflect your ministry’s heart.",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-white" aria-hidden />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
@@ -79,7 +61,7 @@ export default function Home() {
               clarity, and care they feel in person.
             </p>
           </div>
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {[
               {
                 title: "Digital Generosity",
