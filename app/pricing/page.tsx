@@ -25,17 +25,21 @@ export default function PricingPage() {
           </p>
         </div>
         <div className="mt-6 space-y-4">
-          {/* Starter */}
+          {/* The Digital Front Door */}
           <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
-                  The Starter
+                  The Digital Front Door
                 </p>
                 <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
                   $299 Setup
                 </p>
                 <p className="text-base font-semibold text-foreground/90">$50/mo</p>
+                <p className="mt-2 text-sm font-medium text-foreground/70">Purpose: Presence</p>
+                <p className="mt-1 text-sm leading-6 text-foreground/80">
+                  "Stop being invisible to your community. We build a professional, welcoming space so that when people look for a church, they find yours."
+                </p>
               </div>
               <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
                 Hide details
@@ -46,42 +50,49 @@ export default function PricingPage() {
             </summary>
             <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
               <p>
-                Focused on simplicity and speed for smaller congregations that need a
-                calm, trustworthy web presence.
+                Your church's digital presence starts here. A clean, professional website that makes your church visible and approachable to anyone searching online.
               </p>
               <p>
-                Includes professional setup, SEO optimization, and domain connection.
+                Includes everything you need to establish a strong online presence with minimal maintenance.
               </p>
               <ul className="list-disc space-y-1 pl-6">
-                <li>Mobile-friendly, high-contrast design</li>
-                <li>Service times, basic pages, and contact form</li>
-                <li>Secure hosting and backups</li>
+                <li>Mobile-friendly, high-contrast design for accessibility</li>
+                <li>Essential pages: Home, About, Services, Contact</li>
+                <li>Basic service times and location information</li>
+                <li>Contact form and basic prayer request functionality</li>
+                <li>Secure hosting with weekly backups</li>
+                <li>Basic SEO optimization for local search</li>
+                <li>Domain connection and SSL certificate</li>
               </ul>
               <div className="pt-3">
                 <Link
-                  href="/payment?plan=starter"
+                  href="/payment?plan=digital-front-door"
                   className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                 >
-                  Purchase Starter
+                  Purchase Digital Front Door
                 </Link>
               </div>
             </div>
           </details>
 
-          {/* Main (Best Value) */}
+          {/* The Gospel Outreach (Most Popular) */}
           <details className="group relative rounded-3xl border border-amber-600 bg-amber-100/90 p-5 text-left shadow-md shadow-amber-200 open:shadow-lg">
             <div className="pointer-events-none absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
-              Growth Plan
+              Most Popular
             </div>
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-800">
-                  The Main
+                  The Gospel Outreach
                 </p>
                 <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
                   $299 Setup
                 </p>
                 <p className="text-base font-semibold text-foreground/90">$99/mo</p>
+                <p className="mt-2 text-sm font-medium text-foreground/70">Purpose: Spreading the Word</p>
+                <p className="mt-1 text-sm leading-6 text-foreground/80">
+                  "Don't let the message stop at the church doors. We equip you with sermon archiving, online giving, and event management to reach people wherever they are."
+                </p>
               </div>
               <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
                 Hide details
@@ -92,39 +103,47 @@ export default function PricingPage() {
             </summary>
             <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
               <p>
-                Our Growth Plan for churches ready to expand their reach with steady,
-                week-by-week support.
+                Extend your ministry beyond Sunday morning. This package equips your church with digital tools to share the Gospel and engage your community throughout the week.
               </p>
               <p>
-                Includes professional setup, SEO optimization, and domain connection.
+                Perfect for churches ready to expand their reach and provide ongoing spiritual nourishment online.
               </p>
               <ul className="list-disc space-y-1 pl-6">
-                <li>Everything in Starter</li>
+                <li>Everything in The Digital Front Door</li>
+                <li>Sermon archiving with audio and video support</li>
+                <li>Online giving platform with recurring donations</li>
+                <li>Event calendar with registration capabilities</li>
+                <li>Blog or news section for announcements</li>
+                <li>Staff directory and ministry team pages</li>
+                <li>Advanced SEO and Google Analytics setup</li>
                 <li>Weekly content updates and sermon uploads</li>
-                <li>Event calendar and giving integration</li>
               </ul>
               <div className="pt-3">
                 <Link
-                  href="/payment?plan=main"
+                  href="/payment?plan=gospel-outreach"
                   className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                 >
-                  Purchase Main
+                  Purchase Gospel Outreach
                 </Link>
               </div>
             </div>
           </details>
 
-          {/* Ultimate */}
+          {/* The Ministry Ecosystem */}
           <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">
-                  The Ultimate
+                  The Ministry Ecosystem
                 </p>
                 <p className="mt-1 font-[var(--font-playfair)] text-xl text-foreground">
                   $799 Setup
                 </p>
                 <p className="text-base font-semibold text-foreground/90">$99/mo</p>
+                <p className="mt-2 text-sm font-medium text-foreground/70">Purpose: Advanced Engagement</p>
+                <p className="mt-1 text-sm leading-6 text-foreground/80">
+                  "The full digital companion for your congregation. A powerful web app featuring Bible integration and worship playlists for daily discipleship."
+                </p>
               </div>
               <span className="hidden text-sm font-medium text-foreground/70 group-open:inline">
                 Hide details
@@ -135,23 +154,29 @@ export default function PricingPage() {
             </summary>
             <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
               <p>
-                Full digital ministry support for multi-faceted churches with
-                additional ministries, campuses, or outreach efforts.
+                Transform your website into a comprehensive digital ministry platform. This ecosystem provides daily discipleship tools and deep engagement opportunities.
               </p>
               <p>
-                Includes professional setup, SEO optimization, and domain connection.
+                Ideal for established churches seeking to create a vibrant online community and support spiritual growth throughout the week.
               </p>
               <ul className="list-disc space-y-1 pl-6">
-                <li>Everything in Main</li>
-                <li>Additional ministry landing pages</li>
-                <li>Priority content updates and consults</li>
+                <li>Everything in The Gospel Outreach</li>
+                <li>Integrated Bible study tools and reading plans</li>
+                <li>Worship playlist integration with Spotify/Apple Music</li>
+                <li>Small group management and communication tools</li>
+                <li>Volunteer scheduling and management system</li>
+                <li>Member portal with personalized content</li>
+                <li>Live streaming integration and archives</li>
+                <li>Mobile app companion for iOS and Android</li>
+                <li>Advanced analytics and engagement tracking</li>
+                <li>Priority support and monthly strategy calls</li>
               </ul>
               <div className="pt-3">
                 <Link
-                  href="/payment?plan=ultimate"
+                  href="/payment?plan=ministry-ecosystem"
                   className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                 >
-                  Purchase Ultimate
+                  Purchase Ministry Ecosystem
                 </Link>
               </div>
             </div>
