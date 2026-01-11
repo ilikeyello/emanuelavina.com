@@ -34,7 +34,7 @@ export function MissionHighlights() {
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-amber-50/70 p-6 shadow-sm">
-      <div key={index} className="min-h-[190px] space-y-3 animate-[fadeSlide_0.6s_ease-out]">
+      <div key={index} className="min-h-[190px] space-y-3 animate-[slideFadeIn_0.7s_ease-out]">
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-700">
           {highlights[index].title}
         </p>
@@ -53,14 +53,14 @@ export function MissionHighlights() {
         ))}
       </div>
       <style jsx>{`
-        @keyframes fadeSlide {
+        @keyframes slideFadeIn {
           from {
             opacity: 0;
-            transform: translateY(12px);
+            transform: translateX(32px);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
           }
         }
       `}</style>

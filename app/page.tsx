@@ -59,19 +59,8 @@ export default function Home() {
               clarity, and care they feel in person.
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="max-w-3xl">
             <MissionHighlights />
-            <div className="rounded-2xl border border-border/70 bg-amber-50/60 p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-foreground">Ministry rhythm</h3>
-              <p className="mt-2 text-base leading-7 text-foreground/80">
-                Weekly updates, sermon posting, and event refreshes—handled so your team can
-                focus on people, not pixels.
-              </p>
-              <p className="mt-3 text-base leading-7 text-foreground/80">
-                Clear accessibility, peaceful visuals, and mobile-first layouts make every
-                interaction feel like a warm welcome.
-              </p>
-            </div>
           </div>
         </section>
 
