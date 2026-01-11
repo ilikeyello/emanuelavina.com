@@ -19,14 +19,15 @@ export default function Home() {
         <div className="relative mx-auto flex min-h-screen max-w-6xl items-center px-6 py-20 sm:px-10 lg:px-16">
           <div className="space-y-8 text-white drop-shadow-[0_10px_35px_rgba(0,0,0,0.35)]">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 text-sm font-medium">
-              Church Web Design Partner
+              Ministry-first web partner
             </div>
             <h1 className="font-[var(--font-playfair)] text-4xl leading-tight sm:text-5xl">
-              Your Church’s Mission, Beautifully Represented Online.
+              You connect the world to God’s love. We connect the world to you.
             </h1>
             <p className="max-w-3xl text-lg leading-8 text-white/90">
-              We’re the digital partner for local ministries—building serene, accessible
-              websites that welcome visitors and keep your members connected.
+              For most people, your website is the first hand your community shakes before
+              they ever step into the sanctuary. We make that first touch warm, clear, and
+              easy to follow.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -59,46 +60,43 @@ export default function Home() {
       </section>
 
       <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-24 pt-16 sm:px-10 lg:px-16">
-        {/* Problem / Solution */}
+        {/* Mission / Problem / Solution */}
         <section
           id="problem"
           className="grid gap-10 rounded-3xl border border-border/70 bg-white/80 px-8 py-12 shadow-lg shadow-amber-100/30 backdrop-blur lg:grid-cols-2"
         >
-          <div className="space-y-4">
+          <div className="space-y-5">
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-amber-700">
-              The Digital Front Door
+              Mission & Presence
             </p>
             <h2 className="font-[var(--font-playfair)] text-3xl leading-tight text-foreground sm:text-4xl">
-              80% of new visitors check your website before stepping into the sanctuary.
+              Ministry is your calling. Making it visible is ours.
             </h2>
             <p className="text-lg leading-8 text-foreground/80">
-              That first impression should feel like a warm greeting from your welcome
-              team. We craft calm, trustworthy experiences that guide people to visit in
-              person and stay connected online.
+              The Gospel is timeless, but the way people find it has changed. Most
+              visitors meet your church through a screen long before they ever walk
+              through your doors. Your online presence should echo the same welcome,
+              clarity, and care they feel in person.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-5 sm:grid-cols-3">
             {[
               {
-                title: "Accessible by design",
-                body: "WCAG-minded layouts, large type, clear contrast, and ARIA-rich navigation.",
+                title: "Digital Generosity",
+                body: "Clear, trustworthy giving paths that make it simple to support the mission from anywhere.",
               },
               {
-                title: "Ministry-first content",
-                body: "Service times, sermons, events, and giving kept accurate—every week.",
+                title: "The Living Word",
+                body: "Sermons and teaching organized, searchable, and easy to revisit throughout the week.",
               },
               {
-                title: "Reliable & secure",
-                body: "Managed hosting, backups, SSL, and safe giving integrations.",
-              },
-              {
-                title: "Peaceful visuals",
-                body: "Soft neutrals, elegant serif headlines, and generous whitespace.",
+                title: "Your Church, Anywhere",
+                body: "A calm, mobile-first experience so your community can stay connected on every device.",
               },
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-2xl border border-border/70 bg-amber-50/60 p-5 shadow-sm"
+                className="rounded-2xl border border-border/70 bg-amber-50/60 p-6 shadow-sm"
               >
                 <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
                 <p className="mt-2 text-base leading-7 text-foreground/80">{item.body}</p>

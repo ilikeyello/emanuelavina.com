@@ -24,7 +24,7 @@ export default function PricingPage() {
             connection.
           </p>
         </div>
-        <div className="mt-4 space-y-4">
+        <div className="mt-6 space-y-4">
           {/* Starter */}
           <details className="group rounded-3xl border border-border/70 bg-white/90 p-5 text-left shadow-sm shadow-amber-100/60">
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
@@ -71,7 +71,7 @@ export default function PricingPage() {
           {/* Main (Best Value) */}
           <details className="group relative rounded-3xl border border-amber-600 bg-amber-100/90 p-5 text-left shadow-md shadow-amber-200 open:shadow-lg">
             <div className="pointer-events-none absolute -top-3 right-4 rounded-full bg-amber-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-50">
-              Best Value
+              Growth Plan
             </div>
             <summary className="flex cursor-pointer items-center justify-between gap-4 list-none">
               <div>
@@ -92,8 +92,8 @@ export default function PricingPage() {
             </summary>
             <div className="mt-4 space-y-3 text-sm leading-7 text-foreground/80">
               <p>
-                Our most popular tier—balanced for most churches that want weekly
-                support without the complexity of a full digital team.
+                Our Growth Plan for churches ready to expand their reach with steady,
+                week-by-week support.
               </p>
               <p>
                 Includes professional setup, SEO optimization, and domain connection.
