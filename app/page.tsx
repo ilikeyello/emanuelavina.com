@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { MissionHighlights } from "@/components/mission-highlights";
 
 export default function Home() {
   return (
@@ -46,27 +45,49 @@ export default function Home() {
       </section>
 
       <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-24 pt-16 sm:px-10 lg:px-16">
-        {/* Mission / Problem / Solution */}
+        {/* Mission & Presence */}
         <section
           id="problem"
-          className="grid gap-10 rounded-3xl border border-border/70 bg-white/80 px-8 py-12 shadow-lg shadow-amber-100/30 backdrop-blur lg:grid-cols-2"
+          className="rounded-3xl border border-border/70 bg-white/80 px-8 py-12 shadow-lg shadow-amber-100/30 backdrop-blur"
         >
-          <div className="space-y-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-amber-700">
-              Mission & Presence
-            </p>
-            <h2 className="font-[var(--font-playfair)] text-3xl leading-tight text-foreground sm:text-4xl">
-              Ministry is your calling. Making it visible is ours.
-            </h2>
-            <p className="text-lg leading-8 text-foreground/80">
-              The Gospel is timeless, but the way people find it has changed. Most
-              visitors meet your church through a screen long before they ever walk
-              through your doors. Your online presence should echo the same welcome,
-              clarity, and care they feel in person.
-            </p>
-          </div>
-          <div className="max-w-3xl">
-            <MissionHighlights />
+          <div className="mx-auto max-w-4xl space-y-8">
+            <div className="space-y-5 text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.12em] text-amber-700">
+                What We Do
+              </p>
+              <h2 className="font-[var(--font-playfair)] text-3xl leading-tight text-foreground sm:text-4xl">
+                Ministry is your calling. Making it visible is ours.
+              </h2>
+            </div>
+            
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">We Build Your Digital Front Door</h3>
+                <p className="text-lg leading-8 text-foreground/80">
+                  Most people meet your church through a screen long before they walk through your doors. 
+                  We create a warm, professional website that welcomes visitors, shares your mission, 
+                  and makes it easy for them to connect with your community.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">We Handle the Technology So You Don't Have To</h3>
+                <p className="text-lg leading-8 text-foreground/80">
+                  From secure hosting and sermon uploads to calendar updates and prayer requests, 
+                  we manage all the technical details. Your team stays focused on ministry while 
+                  we ensure your website stays fresh, functional, and found by those searching for hope.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">We Speak Your Language</h3>
+                <p className="text-lg leading-8 text-foreground/80">
+                  We understand church culture and ministry priorities. We don't just build websites— 
+                  we build digital ministry tools that serve your mission, honor your values, and 
+                  help you reach more people with the Gospel.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
