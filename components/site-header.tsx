@@ -123,12 +123,16 @@ export function SiteHeader() {
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-50 bg-black/20 md:hidden"
+            className={`fixed inset-0 z-50 bg-black/20 md:hidden transition-opacity duration-300 ${
+              isOpen ? 'opacity-100' : 'opacity-0'
+            }`}
             onClick={() => setIsOpen(false)}
           />
           {/* Slide-out menu */}
           <div 
-            className="fixed right-0 top-0 z-[70] h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-transform duration-300 ease-out"
+            className={`fixed right-0 top-0 z-[70] h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-transform duration-300 ease-out ${
+              isOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
             style={{ 
               backgroundColor: 'white',
               backgroundImage: 'none',
