@@ -38,13 +38,14 @@ export function SiteHeader() {
   const shouldShowTransparent = isHomePage && isAtTop;
 
   return (
-    <header
-      className={`fixed top-0 z-30 w-full border-b transition-colors duration-300 ${
-        shouldShowTransparent
-          ? "border-transparent bg-transparent"
-          : "border-border/60 bg-[#f9f9f7]/85 backdrop-blur"
-      }`}
-    >
+    <>
+      <header
+        className={`fixed top-0 z-30 w-full border-b transition-colors duration-300 ${
+          shouldShowTransparent
+            ? "border-transparent bg-transparent"
+            : "border-border/60 bg-[#f9f9f7]/85 backdrop-blur"
+        }`}
+      >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-10 lg:px-16">
         <Link
           href="/"
@@ -190,5 +191,6 @@ export function SiteHeader() {
           </div>
         </>
       )}
+    </>
   );
 }
