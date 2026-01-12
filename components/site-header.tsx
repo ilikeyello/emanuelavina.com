@@ -119,26 +119,24 @@ export function SiteHeader() {
         </button>
       </div>
       </header>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <div 
-            className={`fixed inset-0 z-50 bg-black/20 md:hidden transition-opacity duration-300 ${
-              isOpen ? 'opacity-100' : 'opacity-0'
-            }`}
-            onClick={() => setIsOpen(false)}
-          />
-          {/* Slide-out menu */}
-          <div 
-            className={`fixed right-0 top-0 z-[70] h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-transform duration-300 ease-out ${
-              isOpen ? 'translate-x-0' : 'translate-x-full'
-            }`}
-            style={{ 
-              backgroundColor: 'white',
-              backgroundImage: 'none',
-              background: 'white'
-            }}
-          >
+      {/* Backdrop - always rendered but controlled by opacity */}
+      <div 
+        className={`fixed inset-0 z-50 bg-black/20 md:hidden transition-opacity duration-300 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsOpen(false)}
+      />
+      {/* Slide-out menu - always rendered but controlled by transform */}
+      <div 
+        className={`fixed right-0 top-0 z-[70] h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-all duration-500 ease-out ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ 
+          backgroundColor: 'white',
+          backgroundImage: 'none',
+          background: 'white'
+        }}
+      >
             <div 
               className="flex h-full flex-col px-6 py-6"
               style={{ 
@@ -193,8 +191,6 @@ export function SiteHeader() {
               </nav>
             </div>
           </div>
-        </>
-      )}
     </>
   );
 }
