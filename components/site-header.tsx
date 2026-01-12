@@ -125,8 +125,8 @@ export function SiteHeader() {
             onClick={() => setIsOpen(false)}
           />
           {/* Slide-out menu */}
-          <div className="fixed right-0 top-0 z-[60] h-full w-4/5 max-w-sm border-l border-border/60 bg-[#f9f9f7] shadow-xl md:hidden transform transition-transform duration-300 ease-out" style={{ backgroundColor: '#F9F9F7' }}>
-            <div className="flex h-full flex-col px-6 py-6 bg-[#f9f9f7]" style={{ backgroundColor: '#F9F9F7' }}>
+          <div className="fixed right-0 top-0 z-[70] h-full w-4/5 max-w-sm border-l border-border/60 shadow-xl md:hidden transform transition-transform duration-300 ease-out bg-white" style={{ backgroundColor: '#F9F9F7' }}>
+            <div className="flex h-full flex-col px-6 py-6 bg-white" style={{ backgroundColor: '#F9F9F7' }}>
               <div className="flex items-center justify-between mb-8">
                 <div className="flex flex-col leading-none">
                   <span
