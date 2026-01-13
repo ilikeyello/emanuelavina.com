@@ -35,26 +35,55 @@ export default function AboutPage() {
               From the initial design to weekly sermon uploads, we handle every technical aspect 
               so your digital presence works as smoothly as your Sunday services.
             </p>
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">Complete Digital Ministry Solutions</h3>
-              <ul className="space-y-3 text-lg leading-8 text-foreground/80">
-                <li className="flex items-start gap-3">
-                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
-                  <span>Custom website design that reflects your church's unique character</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
-                  <span>Weekly content updates, sermon uploads, and event management</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
-                  <span>Secure hosting, backups, and ongoing technical support</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
-                  <span>Online giving integration and member communication tools</span>
-                </li>
-              </ul>
+            
+            {/* Service Distribution Chart */}
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">Complete Digital Ministry Solutions</h3>
+                <ul className="space-y-3 text-lg leading-8 text-foreground/80">
+                  <li className="flex items-start gap-3">
+                    <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
+                    <span>Custom website design that reflects your church's unique character</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
+                    <span>Weekly content updates, sermon uploads, and event management</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
+                    <span>Secure hosting, backups, and ongoing technical support</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-2 h-2.5 w-2.5 rounded-full bg-amber-200" aria-hidden />
+                    <span>Online giving integration and member communication tools</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">Service Focus</h3>
+                <div className="space-y-3">
+                  {[
+                    { label: 'Design & Development', value: 35, color: 'bg-amber-500' },
+                    { label: 'Content Management', value: 30, color: 'bg-blue-500' },
+                    { label: 'Technical Support', value: 20, color: 'bg-green-500' },
+                    { label: 'Strategy & Consulting', value: 15, color: 'bg-purple-500' },
+                  ].map((item) => (
+                    <div key={item.label} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">{item.label}</span>
+                        <span className="text-foreground/70">{item.value}%</span>
+                      </div>
+                      <div className="h-3 w-full rounded-full bg-amber-100 overflow-hidden">
+                        <div 
+                          className={`h-full ${item.color} transition-all duration-1000 ease-out`}
+                          style={{ width: `${item.value}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -70,21 +99,108 @@ export default function AboutPage() {
               We've seen too many ministry leaders frustrated by websites that don't work, 
               sermons that never get uploaded, and online systems that confuse rather than connect.
             </p>
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">The Gospel Deserves Better</h3>
-              <p className="text-lg leading-8 text-foreground/80">
-                The message of hope shouldn't be hidden behind broken links or confusing navigation. 
-                Your website should be a welcoming front door—clear, peaceful, and ready to serve 
-                everyone who walks through it, whether they're searching for hope or looking for service times.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-foreground">Ministry Leaders Should Minister</h3>
-              <p className="text-lg leading-8 text-foreground/80">
-                You're called to shepherd people, not troubleshoot plugins. We believe church leaders 
-                should spend their time in prayer, preparation, and pastoral care—not wrestling with 
-                technology that was supposed to help, not hinder.
-              </p>
+            
+            {/* Impact Visualization */}
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">The Problem We Solve</h3>
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <h4 className="text-lg font-semibold text-foreground">The Gospel Deserves Better</h4>
+                    <p className="text-lg leading-8 text-foreground/80">
+                      The message of hope shouldn't be hidden behind broken links or confusing navigation. 
+                      Your website should be a welcoming front door—clear, peaceful, and ready to serve 
+                      everyone who walks through it, whether they're searching for hope or looking for service times.
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <h4 className="text-lg font-semibold text-foreground">Ministry Leaders Should Minister</h4>
+                    <p className="text-lg leading-8 text-foreground/80">
+                      You're called to shepherd people, not troubleshoot plugins. We believe church leaders 
+                      should spend their time in prayer, preparation, and pastoral care—not wrestling with 
+                      technology that was supposed to help, not hinder.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">Church Technology Challenges</h3>
+                <div className="relative h-64 w-full">
+                  {/* Pie Chart */}
+                  <svg viewBox="0 0 200 200" className="h-full w-full">
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#fbbf24"
+                      strokeWidth="40"
+                      strokeDasharray="125.6 376.8"
+                      strokeDashoffset="0"
+                      transform="rotate(-90 100 100)"
+                      className="transition-all duration-1000 ease-out"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#3b82f6"
+                      strokeWidth="40"
+                      strokeDasharray="100.48 401.92"
+                      strokeDashoffset="-125.6"
+                      transform="rotate(-90 100 100)"
+                      className="transition-all duration-1000 ease-out"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#10b981"
+                      strokeWidth="40"
+                      strokeDasharray="75.36 427.04"
+                      strokeDashoffset="-226.08"
+                      transform="rotate(-90 100 100)"
+                      className="transition-all duration-1000 ease-out"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="80"
+                      fill="none"
+                      stroke="#8b5cf6"
+                      strokeWidth="40"
+                      strokeDasharray="50.24 452.16"
+                      strokeDashoffset="-301.44"
+                      transform="rotate(-90 100 100)"
+                      className="transition-all duration-1000 ease-out"
+                    />
+                    <text x="100" y="100" textAnchor="middle" className="text-2xl font-bold fill-foreground">
+                      100%
+                    </text>
+                  </svg>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-amber-500" />
+                    <span>Outdated Sites (33%)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-blue-500" />
+                    <span>No Updates (27%)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-green-500" />
+                    <span>Poor Accessibility (20%)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-purple-500" />
+                    <span>Security Issues (20%)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -99,35 +215,79 @@ export default function AboutPage() {
               Our process is built around understanding your ministry and creating solutions that 
               actually work for real churches with real people and real schedules.
             </p>
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-foreground">We Listen First</h3>
-                <p className="text-lg leading-8 text-foreground/80">
-                  Every partnership starts with understanding your story, your community, and your challenges. 
-                  We learn about your worship style, your communication needs, and the people you're trying to reach.
-                </p>
+            
+            {/* Process Timeline */}
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="space-y-6">
+                {[
+                  {
+                    step: '1',
+                    title: 'We Listen First',
+                    description: 'Every partnership starts with understanding your story, your community, and your challenges.',
+                    color: 'bg-amber-500'
+                  },
+                  {
+                    step: '2',
+                    title: 'We Design for Peace',
+                    description: 'Our design philosophy is "calm technology." We create websites that are peaceful to look at.',
+                    color: 'bg-blue-500'
+                  },
+                  {
+                    step: '3',
+                    title: 'We Handle Everything',
+                    description: 'From domain setup to sermon uploads, we manage it all. You just send us your content.',
+                    color: 'bg-green-500'
+                  },
+                  {
+                    step: '4',
+                    title: 'We Support Weekly',
+                    description: 'Ministry happens every week, so we\'re here every week with regular updates and support.',
+                    color: 'bg-purple-500'
+                  },
+                ].map((item, index) => (
+                  <div key={item.step} className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className={`h-10 w-10 rounded-full ${item.color} flex items-center justify-center text-white font-bold`}>
+                        {item.step}
+                      </div>
+                      {index < 3 && <div className="h-8 w-0.5 bg-border/60 mt-2" />}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
+                      <p className="text-base leading-7 text-foreground/80">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-foreground">We Design for Peace</h3>
-                <p className="text-lg leading-8 text-foreground/80">
-                  Our design philosophy is "calm technology." We create websites that are peaceful to look at, 
-                  easy to navigate, and accessible to everyone—including elderly members and those with disabilities.
-                </p>
-              </div>
-              <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-foreground">We Handle Everything</h3>
-                <p className="text-lg leading-8 text-foreground/80">
-                  From domain setup to sermon uploads, we manage it all. You just send us your content, 
-                  and we take care of the rest. No plugins to update, no security patches to worry about, 
-                  no technical headaches for your team.
-                </p>
-              </div>
-              <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-foreground">We Support Weekly</h3>
-                <p className="text-lg leading-8 text-foreground/80">
-                  Ministry happens every week, so we're here every week. Regular updates, ongoing support, 
-                  and proactive maintenance ensure your digital presence is always ready when your community needs it.
-                </p>
+              
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">Time Investment</h3>
+                <div className="space-y-3">
+                  {[
+                    { phase: 'Discovery & Planning', weeks: 1, color: 'bg-amber-500' },
+                    { phase: 'Design & Development', weeks: 2, color: 'bg-blue-500' },
+                    { phase: 'Content & Setup', weeks: 1, color: 'bg-green-500' },
+                    { phase: 'Launch & Training', weeks: 1, color: 'bg-purple-500' },
+                  ].map((item) => (
+                    <div key={item.phase} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">{item.phase}</span>
+                        <span className="text-foreground/70">{item.weeks} week{item.weeks > 1 ? 's' : ''}</span>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-amber-100 overflow-hidden">
+                        <div 
+                          className={`h-full ${item.color} transition-all duration-1000 ease-out`}
+                          style={{ width: `${(item.weeks / 5) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                  <p className="text-sm font-medium text-amber-900">
+                    <strong>Total Timeline:</strong> 5 weeks from start to launch
+                  </p>
+                </div>
               </div>
             </div>
           </div>
