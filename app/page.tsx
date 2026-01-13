@@ -194,7 +194,7 @@ export default function Home() {
               Scripture
             </p>
             <blockquote className="font-[var(--font-playfair)] text-2xl leading-tight text-foreground sm:text-3xl italic">
-              "And he said to them, 'Go into all the world and proclaim the gospel to the whole creation.'"
+              "He said to them, 'Go into all the world and preach the gospel to all creation.'"
             </blockquote>
             <cite className="text-lg text-foreground/70">
               — Mark 16:15
