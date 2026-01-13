@@ -87,6 +87,15 @@ export default function Home() {
                   help you reach more people with the Gospel.
                 </p>
               </div>
+              
+              <div className="pt-6 text-center">
+                <a
+                  href="/portfolio"
+                  className="inline-flex rounded-full border border-foreground/20 bg-foreground/10 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-foreground/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                >
+                  View Our Work
+                </a>
+              </div>
             </div>
           </div>
         </section>
