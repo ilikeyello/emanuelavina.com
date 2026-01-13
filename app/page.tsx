@@ -194,10 +194,10 @@ export default function Home() {
               Scripture
             </p>
             <blockquote className="font-[var(--font-playfair)] text-2xl leading-tight text-foreground sm:text-3xl italic">
-              "The word of the LORD came to me, saying, 'Before I formed you in the womb I knew you, before you were born I set you apart; I appointed you as a prophet to the nations.'"
+              "Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, teaching them to observe all that I have commanded you."
             </blockquote>
             <cite className="text-lg text-foreground/70">
-              — Jeremiah 1:4-5
+              — Matthew 28:19-20
             </cite>
             <div className="pt-4">
               <p className="text-lg text-foreground/80">
