@@ -199,11 +199,6 @@ export default function Home() {
             <cite className="text-lg text-foreground/70">
               — Matthew 28:19-20
             </cite>
-            <div className="pt-4">
-              <p className="text-lg text-foreground/80">
-                <span className="font-semibold">Emanuel</span> — "God is with us" (Matthew 1:23)
-              </p>
-            </div>
           </div>
         </section>
       </div>
