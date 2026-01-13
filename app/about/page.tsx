@@ -130,62 +130,31 @@ export default function AboutPage() {
                 <div className="relative h-64 w-full">
                   {/* Pie Chart */}
                   <svg viewBox="0 0 200 200" className="h-full w-full">
-                    {/* Background circle */}
-                    <circle cx="100" cy="100" r="80" fill="#f9f9f7" stroke="#e5e7eb" strokeWidth="1" />
-                    
                     {/* 43% - Never Updated */}
-                    <circle
-                      cx="100"
-                      cy="100"
-                      r="80"
-                      fill="none"
-                      stroke="#fbbf24"
-                      strokeWidth="40"
-                      strokeDasharray="108.16 143.84"
-                      strokeDashoffset="0"
-                      transform="rotate(-90 100 100)"
+                    <path
+                      d="M 100 100 L 100 20 A 80 80 0 0 1 180 100 Z"
+                      fill="#fbbf24"
                       className="transition-all duration-1000 ease-out"
                     />
                     
                     {/* 30% - Not Mobile-Friendly */}
-                    <circle
-                      cx="100"
-                      cy="100"
-                      r="80"
-                      fill="none"
-                      stroke="#3b82f6"
-                      strokeWidth="40"
-                      strokeDasharray="75.36 176.64"
-                      strokeDashoffset="-108.16"
-                      transform="rotate(-90 100 100)"
+                    <path
+                      d="M 100 100 L 180 100 A 80 80 0 0 1 130.4 176.8 Z"
+                      fill="#3b82f6"
                       className="transition-all duration-1000 ease-out"
                     />
                     
                     {/* 21% - Poor Security */}
-                    <circle
-                      cx="100"
-                      cy="100"
-                      r="80"
-                      fill="none"
-                      stroke="#10b981"
-                      strokeWidth="40"
-                      strokeDasharray="52.75 199.25"
-                      strokeDashoffset="-183.52"
-                      transform="rotate(-90 100 100)"
+                    <path
+                      d="M 100 100 L 130.4 176.8 A 80 80 0 0 1 44.8 156.8 Z"
+                      fill="#10b981"
                       className="transition-all duration-1000 ease-out"
                     />
                     
                     {/* 6% - Hard to Find */}
-                    <circle
-                      cx="100"
-                      cy="100"
-                      r="80"
-                      fill="none"
-                      stroke="#8b5cf6"
-                      strokeWidth="40"
-                      strokeDasharray="15.07 236.93"
-                      strokeDashoffset="-236.27"
-                      transform="rotate(-90 100 100)"
+                    <path
+                      d="M 100 100 L 44.8 156.8 A 80 80 0 0 1 100 20 Z"
+                      fill="#8b5cf6"
                       className="transition-all duration-1000 ease-out"
                     />
                     
