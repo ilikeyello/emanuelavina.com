@@ -130,30 +130,30 @@ export default function AboutPage() {
                 <div className="relative h-64 w-full">
                   {/* Pie Chart */}
                   <svg viewBox="0 0 200 200" className="h-full w-full">
-                    {/* 43% - Never Updated */}
+                    {/* 43% - Never Updated (154.8 degrees) */}
                     <path
-                      d="M 100 100 L 100 20 A 80 80 0 0 1 180 100 Z"
+                      d="M 100 100 L 100 20 A 80 80 0 0 1 178.4 120 Z"
                       fill="#fbbf24"
                       className="transition-all duration-1000 ease-out"
                     />
                     
-                    {/* 30% - Not Mobile-Friendly */}
+                    {/* 30% - Not Mobile-Friendly (108 degrees) */}
                     <path
-                      d="M 100 100 L 180 100 A 80 80 0 0 1 130.4 176.8 Z"
+                      d="M 100 100 L 178.4 120 A 80 80 0 0 1 100 180 Z"
                       fill="#3b82f6"
                       className="transition-all duration-1000 ease-out"
                     />
                     
-                    {/* 21% - Poor Security */}
+                    {/* 21% - Poor Security (75.6 degrees) */}
                     <path
-                      d="M 100 100 L 130.4 176.8 A 80 80 0 0 1 44.8 156.8 Z"
+                      d="M 100 100 L 100 180 A 80 80 0 0 1 37.6 143.2 Z"
                       fill="#10b981"
                       className="transition-all duration-1000 ease-out"
                     />
                     
-                    {/* 6% - Hard to Find */}
+                    {/* 6% - Hard to Find (21.6 degrees) */}
                     <path
-                      d="M 100 100 L 44.8 156.8 A 80 80 0 0 1 100 20 Z"
+                      d="M 100 100 L 37.6 143.2 A 80 80 0 0 1 100 20 Z"
                       fill="#8b5cf6"
                       className="transition-all duration-1000 ease-out"
                     />
