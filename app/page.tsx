@@ -194,10 +194,10 @@ export default function Home() {
               Scripture
             </p>
             <blockquote className="font-[var(--font-playfair)] text-2xl leading-tight text-foreground sm:text-3xl italic">
-              "Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, teaching them to observe all that I have commanded you."
+              "And he said to them, 'Go into all the world and proclaim the gospel to the whole creation.'"
             </blockquote>
             <cite className="text-lg text-foreground/70">
-              — Matthew 28:19-20
+              — Mark 16:15
             </cite>
           </div>
         </section>
