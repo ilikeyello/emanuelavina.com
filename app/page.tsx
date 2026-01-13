@@ -130,14 +130,8 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-3 md:justify-end">
                 <a
-                  href="#contact"
-                  className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                >
-                  Start partnership
-                </a>
-                <a
                   href="/pricing"
-                  className="rounded-full border border-foreground/20 px-6 py-3 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
+                  className="rounded-full bg-foreground px-6 py-3 text-base font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                 >
                   See packages
                 </a>
