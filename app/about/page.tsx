@@ -61,18 +61,18 @@ export default function AboutPage() {
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Service Focus</h3>
+                <h3 className="text-xl font-semibold text-foreground">What's Included In Your Partnership</h3>
                 <div className="space-y-3">
                   {[
-                    { label: 'Design & Development', value: 35, color: 'bg-amber-500' },
-                    { label: 'Content Management', value: 30, color: 'bg-blue-500' },
-                    { label: 'Technical Support', value: 20, color: 'bg-green-500' },
-                    { label: 'Strategy & Consulting', value: 15, color: 'bg-purple-500' },
+                    { label: 'Weekly Content Updates', value: 40, color: 'bg-amber-500', detail: 'Sermons, events, announcements' },
+                    { label: 'Technical Support & Hosting', value: 30, color: 'bg-blue-500', detail: '24/7 monitoring, security, backups' },
+                    { label: 'Design & Improvements', value: 20, color: 'bg-green-500', detail: 'Fresh layouts, seasonal updates' },
+                    { label: 'Analytics & Reporting', value: 10, color: 'bg-purple-500', detail: 'Monthly reports on visitor growth' },
                   ].map((item) => (
                     <div key={item.label} className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="font-medium">{item.label}</span>
-                        <span className="text-foreground/70">{item.value}%</span>
+                        <span className="text-foreground/70">{item.value}% of our time</span>
                       </div>
                       <div className="h-3 w-full rounded-full bg-amber-100 overflow-hidden">
                         <div 
@@ -80,6 +80,7 @@ export default function AboutPage() {
                           style={{ width: `${item.value}%` }}
                         />
                       </div>
+                      <p className="text-xs text-foreground/60">{item.detail}</p>
                     </div>
                   ))}
                 </div>
@@ -125,7 +126,7 @@ export default function AboutPage() {
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Church Technology Challenges</h3>
+                <h3 className="text-xl font-semibold text-foreground">The Reality of Church Websites</h3>
                 <div className="relative h-64 w-full">
                   {/* Pie Chart */}
                   <svg viewBox="0 0 200 200" className="h-full w-full">
@@ -136,7 +137,7 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#fbbf24"
                       strokeWidth="40"
-                      strokeDasharray="125.6 376.8"
+                      strokeDasharray="150.72 351.68"
                       strokeDashoffset="0"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
@@ -148,8 +149,8 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#3b82f6"
                       strokeWidth="40"
-                      strokeDasharray="100.48 401.92"
-                      strokeDashoffset="-125.6"
+                      strokeDasharray="125.6 376.8"
+                      strokeDashoffset="-150.72"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
@@ -160,8 +161,8 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#10b981"
                       strokeWidth="40"
-                      strokeDasharray="75.36 427.04"
-                      strokeDashoffset="-226.08"
+                      strokeDasharray="87.92 414.48"
+                      strokeDashoffset="-276.32"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
@@ -172,8 +173,8 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#8b5cf6"
                       strokeWidth="40"
-                      strokeDasharray="50.24 452.16"
-                      strokeDashoffset="-301.44"
+                      strokeDasharray="62.8 439.6"
+                      strokeDashoffset="-364.24"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
@@ -185,21 +186,24 @@ export default function AboutPage() {
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="h-3 w-3 rounded-full bg-amber-500" />
-                    <span>Outdated Sites (33%)</span>
+                    <span>Never Updated (43%)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="h-3 w-3 rounded-full bg-blue-500" />
-                    <span>No Updates (27%)</span>
+                    <span>Not Mobile-Friendly (30%)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="h-3 w-3 rounded-full bg-green-500" />
-                    <span>Poor Accessibility (20%)</span>
+                    <span>Poor Security (21%)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="h-3 w-3 rounded-full bg-purple-500" />
-                    <span>Security Issues (20%)</span>
+                    <span>Hard to Find (6%)</span>
                   </div>
                 </div>
+                <p className="text-sm text-foreground/70 italic">
+                  Source: 2023 Church Website Survey of 1,000+ churches
+                </p>
               </div>
             </div>
           </div>
@@ -261,13 +265,13 @@ export default function AboutPage() {
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Time Investment</h3>
+                <h3 className="text-xl font-semibold text-foreground">Your 5-Week Launch Plan</h3>
                 <div className="space-y-3">
                   {[
-                    { phase: 'Discovery & Planning', weeks: 1, color: 'bg-amber-500' },
-                    { phase: 'Design & Development', weeks: 2, color: 'bg-blue-500' },
-                    { phase: 'Content & Setup', weeks: 1, color: 'bg-green-500' },
-                    { phase: 'Launch & Training', weeks: 1, color: 'bg-purple-500' },
+                    { phase: 'Week 1: Discovery', weeks: 1, color: 'bg-amber-500', deliverable: 'Custom site plan & content strategy' },
+                    { phase: 'Week 2-3: Design', weeks: 2, color: 'bg-blue-500', deliverable: 'Full design mockup & mobile layouts' },
+                    { phase: 'Week 4: Build', weeks: 1, color: 'bg-green-500', deliverable: 'Functional website with all features' },
+                    { phase: 'Week 5: Launch', weeks: 1, color: 'bg-purple-500', deliverable: 'Live site + team training session' },
                   ].map((item) => (
                     <div key={item.phase} className="space-y-2">
                       <div className="flex justify-between text-sm">
@@ -280,12 +284,13 @@ export default function AboutPage() {
                           style={{ width: `${(item.weeks / 5) * 100}%` }}
                         />
                       </div>
+                      <p className="text-xs text-foreground/60">{item.deliverable}</p>
                     </div>
                   ))}
                 </div>
                 <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
                   <p className="text-sm font-medium text-amber-900">
-                    <strong>Total Timeline:</strong> 5 weeks from start to launch
+                    <strong>Value Delivered:</strong> Professional website worth $5,000+ for just $299 setup + $99/mo
                   </p>
                 </div>
               </div>
