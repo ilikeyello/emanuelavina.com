@@ -130,6 +130,10 @@ export default function AboutPage() {
                 <div className="relative h-64 w-full">
                   {/* Pie Chart */}
                   <svg viewBox="0 0 200 200" className="h-full w-full">
+                    {/* Background circle */}
+                    <circle cx="100" cy="100" r="80" fill="#f9f9f7" stroke="#e5e7eb" strokeWidth="1" />
+                    
+                    {/* 43% - Never Updated */}
                     <circle
                       cx="100"
                       cy="100"
@@ -137,11 +141,13 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#fbbf24"
                       strokeWidth="40"
-                      strokeDasharray="150.72 351.68"
+                      strokeDasharray="108.16 143.84"
                       strokeDashoffset="0"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
+                    
+                    {/* 30% - Not Mobile-Friendly */}
                     <circle
                       cx="100"
                       cy="100"
@@ -149,11 +155,13 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#3b82f6"
                       strokeWidth="40"
-                      strokeDasharray="125.6 376.8"
-                      strokeDashoffset="-150.72"
+                      strokeDasharray="75.36 176.64"
+                      strokeDashoffset="-108.16"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
+                    
+                    {/* 21% - Poor Security */}
                     <circle
                       cx="100"
                       cy="100"
@@ -161,11 +169,13 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#10b981"
                       strokeWidth="40"
-                      strokeDasharray="87.92 414.48"
-                      strokeDashoffset="-276.32"
+                      strokeDasharray="52.75 199.25"
+                      strokeDashoffset="-183.52"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
+                    
+                    {/* 6% - Hard to Find */}
                     <circle
                       cx="100"
                       cy="100"
@@ -173,11 +183,12 @@ export default function AboutPage() {
                       fill="none"
                       stroke="#8b5cf6"
                       strokeWidth="40"
-                      strokeDasharray="62.8 439.6"
-                      strokeDashoffset="-364.24"
+                      strokeDasharray="15.07 236.93"
+                      strokeDashoffset="-236.27"
                       transform="rotate(-90 100 100)"
                       className="transition-all duration-1000 ease-out"
                     />
+                    
                     <text x="100" y="100" textAnchor="middle" className="text-2xl font-bold fill-foreground">
                       100%
                     </text>
