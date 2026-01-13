@@ -187,31 +187,25 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer
-          id="contact"
-          className="flex flex-col gap-6 rounded-3xl border border-border/70 bg-white/85 px-8 py-10 text-lg leading-8 text-foreground/80 shadow-lg shadow-amber-100/30 backdrop-blur sm:flex-row sm:items-center sm:justify-between"
-        >
-          <div>
-            <p className="font-semibold text-foreground">Modern Sanctuary Agency</p>
-            <p>Built for the Kingdom.</p>
+        {/* Scripture */}
+        <section className="rounded-3xl border border-border/70 bg-white/80 px-8 py-12 shadow-lg shadow-amber-100/30 backdrop-blur">
+          <div className="mx-auto max-w-4xl space-y-6 text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-amber-700">
+              Scripture
+            </p>
+            <blockquote className="font-[var(--font-playfair)] text-2xl leading-tight text-foreground sm:text-3xl italic">
+              "The word of the LORD came to me, saying, 'Before I formed you in the womb I knew you, before you were born I set you apart; I appointed you as a prophet to the nations.'"
+            </blockquote>
+            <cite className="text-lg text-foreground/70">
+              — Jeremiah 1:4-5
+            </cite>
+            <div className="pt-4">
+              <p className="text-lg text-foreground/80">
+                <span className="font-semibold">Emanuel</span> — "God is with us" (Matthew 1:23)
+              </p>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-4">
-            {[
-              { label: "Email", href: "mailto:hello@modern-sanctuary.agency" },
-              { label: "Book a call", href: "https://cal.com" },
-              { label: "Portfolio", href: "#" },
-            ].map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="rounded-full border border-foreground/20 px-5 py-2 text-base font-semibold text-foreground transition hover:border-foreground/40 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/60"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </footer>
+        </section>
       </div>
     </main>
   );
