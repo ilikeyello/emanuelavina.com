@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact | Modern Sanctuary Agency",
+  title: "Contact | Emanuel Website Design",
   description:
-    "Schedule a calm, ministry-first web consult. We’ll align your site to serve visitors and members every week.",
+    "Schedule a calm, ministry-first consult with Emanuel Website Design to align your site for visitors and members every week.",
 };
 
 export default function ContactPage() {

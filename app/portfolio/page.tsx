@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Portfolio | Modern Sanctuary Agency",
+  title: "Portfolio | Emanuel Website Design",
   description:
-    "Recent Modern Sanctuary church site launches—calm, accessible, ministry-first experiences.",
+    "Recent Emanuel Website Design church site launches—calm, accessible, ministry-first experiences.",
 };
 
 const projects = [

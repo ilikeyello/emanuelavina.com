@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { Cormorant_Garamond } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  OrganizationSwitcher,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 const logoSerif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -16,7 +23,7 @@ const navLinks = [
   { href: "/portfolio", label: "Portfolio" },
   { href: "/pricing", label: "Packages" },
   { href: "/contact", label: "Contact" },
-  { href: "/payment", label: "Payment Portal" },
+  { href: "/dashboard", label: "Client Portal" },
 ];
 
 export function SiteHeader() {
@@ -61,7 +68,7 @@ export function SiteHeader() {
               shouldShowTransparent ? "text-white/70 group-hover:text-white" : "text-foreground/70 group-hover:text-foreground"
             }`}
           >
-            Web Design
+            Website Design
           </span>
         </Link>
         <nav className="hidden items-center gap-3 text-sm font-semibold md:flex">
@@ -78,8 +85,8 @@ export function SiteHeader() {
                   isActive
                     ? "bg-foreground text-background shadow-sm"
                     : shouldShowTransparent
-                      ? "text-white/90 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
-                      : "text-foreground/80 hover:bg-foreground/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/50"
+                        ? "text-white hover:bg-white/10"
+                        : "text-foreground hover:bg-foreground/5"
                 }`}
               >
                 {link.label}
@@ -153,7 +160,7 @@ export function SiteHeader() {
                     Emanuel
                   </span>
                   <span className="-mt-1 pl-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/70">
-                    Web Design
+                    Website Design
                   </span>
                 </div>
                 <button
