@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import {
   OrganizationList,
   OrganizationProfile,
@@ -11,8 +12,9 @@ import {
 } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import { MediaManager } from "@/components/media-manager";
+import { Loader2 } from "lucide-react";
 
-export default function DashboardPage() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan");
 
@@ -117,5 +119,19 @@ export default function DashboardPage() {
         </SignedIn>
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-[#f9f9f7]">
+          <Loader2 className="h-8 w-8 animate-spin text-amber-700" />
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }
