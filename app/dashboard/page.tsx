@@ -9,8 +9,13 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
+import { MediaManager } from "@/components/media-manager";
 
 export default function DashboardPage() {
+  const searchParams = useSearchParams();
+  const plan = searchParams.get("plan");
+
   return (
     <div className="bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)] min-h-screen">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 pb-20 pt-28 sm:px-10 lg:px-16">
@@ -103,6 +108,10 @@ export default function DashboardPage() {
                   />
                 </div>
               </div>
+            </div>
+
+            <div className="rounded-3xl border border-border/70 bg-white/85 p-6 shadow-md shadow-amber-100/30 backdrop-blur">
+              <MediaManager planCode={plan} />
             </div>
           </div>
         </SignedIn>

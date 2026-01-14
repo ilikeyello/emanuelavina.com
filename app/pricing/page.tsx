@@ -69,7 +69,7 @@ export default function PricingPage() {
                 </ul>
                 <div className="pt-3">
                   <Link
-                    href="/payment?plan=digital-front-door"
+                    href="/dashboard?plan=digital-front-door"
                     className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   >
                     Purchase Digital Front Door
@@ -125,7 +125,7 @@ export default function PricingPage() {
                 </ul>
                 <div className="pt-3">
                   <Link
-                    href="/payment?plan=gospel-outreach"
+                    href="/dashboard?plan=gospel-outreach"
                     className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   >
                     Purchase Gospel Outreach
@@ -180,7 +180,7 @@ export default function PricingPage() {
                 </ul>
                 <div className="pt-3">
                   <Link
-                    href="/payment?plan=ministry-ecosystem"
+                    href="/dashboard?plan=ministry-ecosystem"
                     className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                   >
                     Purchase Ministry Ecosystem
