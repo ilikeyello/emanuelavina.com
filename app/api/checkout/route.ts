@@ -107,11 +107,11 @@ export async function POST(req: NextRequest) {
         },
       })
       customerId = customer.id
-      await supabase
+      await (supabase
         .from('churches')
         .update({
           stripe_customer_id: customerId,
-        })
+        }) as any)
         .eq('id', (church as any).id)
     }
 
