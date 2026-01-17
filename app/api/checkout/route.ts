@@ -2,22 +2,33 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not configured')
+let stripe: Stripe
+let supabase: ReturnType<typeof createClient>
+
+function getStripe() {
+  if (!stripe) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('STRIPE_SECRET_KEY is not configured')
+    }
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-12-15.clover',
+    })
+  }
+  return stripe
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-12-15.clover',
-})
-
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error('Supabase environment variables are not configured')
+function getSupabase() {
+  if (!supabase) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      throw new Error('Supabase environment variables are not configured')
+    }
+    supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    )
+  }
+  return supabase
 }
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
 
 const plans = {
   basic: {
@@ -60,6 +71,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid plan or price configuration' }, { status: 400 })
     }
 
+    // Get clients at runtime
+    const stripe = getStripe()
+    const supabase = getSupabase()
+
     // Get or create church record
     const { data: church } = await supabase
       .from('churches')
@@ -75,7 +90,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Ensure Stripe customer exists and is linked to org
-    let customerId = church.stripe_customer_id as string | null
+    let customerId = (church as any).stripe_customer_id as string | null
     if (!customerId) {
       const customer = await stripe.customers.create({
         metadata: {
@@ -88,7 +103,7 @@ export async function POST(req: NextRequest) {
         .update({
           stripe_customer_id: customerId,
         })
-        .eq('id', church.id)
+        .eq('id', (church as any).id)
     }
 
     // Build line items (add setup fee only for non-yearly)
