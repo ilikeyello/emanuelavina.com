@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
+// Define church type
+interface Church {
+  id: string
+  clerk_org_id: string
+  name: string
+  stripe_customer_id?: string
+  [key: string]: any
+}
+
 let stripe: Stripe
 let supabase: ReturnType<typeof createClient>
 
@@ -25,7 +34,7 @@ function getSupabase() {
     supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
-    )
+    ) as any
   }
   return supabase
 }
