@@ -265,7 +265,7 @@ export function ChurchContentManager({ planCode }: { planCode?: string | null })
             .eq("church_id", churchId)
         : await supabase
             .from("tithe_ly_config")
-            .insert([{ ...config, church_id }]);
+            .insert([{ ...config, churchId }]);
 
       if (error) throw error;
       fetchTitheLyConfig();
