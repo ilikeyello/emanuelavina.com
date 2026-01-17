@@ -2,32 +2,40 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('STRIPE_SECRET_KEY is not configured')
+}
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2025-12-15.clover',
 })
 
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error('Supabase environment variables are not configured')
+}
+
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
 const plans = {
   basic: {
     name: 'The Digital Front Door',
-    monthlyPriceId: process.env.STRIPE_PRICE_DIGITAL_FRONT_DOOR_MONTHLY || process.env.STRIPE_PRICE_BASIC!,
-    yearlyPriceId: process.env.STRIPE_PRICE_DIGITAL_FRONT_DOOR_YEARLY || process.env.STRIPE_PRICE_BASIC!,
+    monthlyPriceId: process.env.STRIPE_PRICE_DIGITAL_FRONT_DOOR_MONTHLY || process.env.STRIPE_PRICE_BASIC,
+    yearlyPriceId: process.env.STRIPE_PRICE_DIGITAL_FRONT_DOOR_YEARLY || process.env.STRIPE_PRICE_BASIC,
     setupPriceId: process.env.STRIPE_PRICE_SETUP_BASIC || null,
   },
   growth: {
     name: 'The Gospel Outreach',
-    monthlyPriceId: process.env.STRIPE_PRICE_GOSPEL_OUTREACH_MONTHLY || process.env.STRIPE_PRICE_GROWTH!,
-    yearlyPriceId: process.env.STRIPE_PRICE_GOSPEL_OUTREACH_YEARLY || process.env.STRIPE_PRICE_GROWTH!,
+    monthlyPriceId: process.env.STRIPE_PRICE_GOSPEL_OUTREACH_MONTHLY || process.env.STRIPE_PRICE_GROWTH,
+    yearlyPriceId: process.env.STRIPE_PRICE_GOSPEL_OUTREACH_YEARLY || process.env.STRIPE_PRICE_GROWTH,
     setupPriceId: process.env.STRIPE_PRICE_SETUP_GROWTH || null,
   },
   premium: {
     name: 'The Ministry Ecosystem',
-    monthlyPriceId: process.env.STRIPE_PRICE_MINISTRY_ECOSYSTEM_MONTHLY || process.env.STRIPE_PRICE_PREMIUM!,
-    yearlyPriceId: process.env.STRIPE_PRICE_MINISTRY_ECOSYSTEM_YEARLY || process.env.STRIPE_PRICE_PREMIUM!,
+    monthlyPriceId: process.env.STRIPE_PRICE_MINISTRY_ECOSYSTEM_MONTHLY || process.env.STRIPE_PRICE_PREMIUM,
+    yearlyPriceId: process.env.STRIPE_PRICE_MINISTRY_ECOSYSTEM_YEARLY || process.env.STRIPE_PRICE_PREMIUM,
     setupPriceId: process.env.STRIPE_PRICE_SETUP_PREMIUM || null,
   },
 }
