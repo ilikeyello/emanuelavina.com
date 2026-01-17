@@ -187,10 +187,10 @@ export function MediaManager({ planCode }: { planCode?: string | null }) {
   if (!organization) return null;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-foreground">Media Library</h3>
-        <div className="relative">
+    <div className="space-y-6 overflow-x-hidden w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h3 className="text-lg font-semibold text-foreground truncate">Media Library</h3>
+        <div className="relative sm:shrink-0">
           <input
             type="file"
             id="media-upload"
@@ -200,7 +200,7 @@ export function MediaManager({ planCode }: { planCode?: string | null }) {
           />
           <label
             htmlFor="media-upload"
-            className={`flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background transition hover:bg-foreground/90 ${
+            className={`flex cursor-pointer items-center justify-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background transition hover:bg-foreground/90 w-full sm:w-auto ${
               uploading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -224,41 +224,38 @@ export function MediaManager({ planCode }: { planCode?: string | null }) {
           <p className="text-sm">No media uploaded yet.</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {media.map((item) => (
-            <div
-              key={item.id}
-              className="group relative flex items-start gap-3 rounded-xl border border-border/50 bg-white p-3 shadow-sm transition hover:shadow-md"
-            >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-50">
-                {getIcon(item.file_type)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-foreground" title={item.title}>
-                  {item.title}
-                </p>
-                <div className="mt-1 flex items-center gap-2 text-xs text-foreground/50">
-                  <span>{(item.size_bytes / 1024 / 1024).toFixed(2)} MB</span>
-                  <span>•</span>
-                  <span>{new Date(item.created_at).toLocaleDateString()}</span>
+              <div className="group relative flex items-start gap-3 rounded-xl border border-border/50 bg-white p-3 shadow-sm transition hover:shadow-md">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-50">
+                  {getIcon(item.file_type)}
                 </div>
-                <a
-                  href={item.public_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 block text-xs text-amber-700 hover:underline"
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-foreground" title={item.title}>
+                    {item.title}
+                  </p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-foreground/50">
+                    <span>{(item.size_bytes / 1024 / 1024).toFixed(2)} MB</span>
+                    <span>•</span>
+                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                  </div>
+                  <a
+                    href={item.public_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 block text-xs text-amber-700 hover:underline break-all"
+                  >
+                    View File
+                  </a>
+                </div>
+                <button
+                  onClick={() => handleDelete(item)}
+                  className="absolute right-2 top-2 rounded-lg p-1.5 text-foreground/40 opacity-0 transition hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+                  title="Delete"
                 >
-                  View File
-                </a>
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
-              <button
-                onClick={() => handleDelete(item)}
-                className="absolute right-2 top-2 rounded-lg p-1.5 text-foreground/40 opacity-0 transition hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
-                title="Delete"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
           ))}
         </div>
       )}

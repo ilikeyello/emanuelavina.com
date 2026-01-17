@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    // Force the project root to avoid multi-lockfile warning
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {

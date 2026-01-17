@@ -46,6 +46,10 @@ create policy "Allow org admins to update their church" on public.churches
   for update
   using ( clerk_org_id = (auth.jwt() ->> 'org_id') );
 
+create policy "Allow org admins to insert their church" on public.churches
+  for insert
+  with check ( clerk_org_id = (auth.jwt() ->> 'org_id') );
+
 -- Policy: Media
 -- Allow access if the media belongs to a church the user has access to.
 create policy "Allow org members to view media" on public.church_media

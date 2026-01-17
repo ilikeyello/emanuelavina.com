@@ -132,3 +132,44 @@
     letter-spacing: -0.01em;
   }
 }
+
+@layer utilities {
+  /* Ensure Clerk components are responsive */
+  .cl-organizationProfile,
+  .cl-organizationProfile .cl-card,
+  .cl-organizationProfile .cl-rootBox {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+  
+  /* Fix mobile viewport issues */
+  @media (max-width: 640px) {
+    .cl-organizationProfile {
+      font-size: 14px;
+    }
+  }
+  
+  /* Global overflow protection */
+  .overflow-x-hidden {
+    overflow-x: hidden !important;
+  }
+  
+  /* Prevent text overflow */
+  .break-words {
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+  
+  /* Ensure all elements respect viewport */
+  * {
+    max-width: 100%;
+  }
+  
+  /* Fix for any potential horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+}

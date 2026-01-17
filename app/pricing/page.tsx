@@ -1,13 +1,44 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import { useAuth, useOrganization } from "@clerk/nextjs";
 
 export default function PricingPage() {
   const [openPackage, setOpenPackage] = useState<string | null>(null);
+  const { isSignedIn } = useAuth();
+  const { organization } = useOrganization();
 
   const handlePackageClick = (packageName: string) => {
     setOpenPackage(openPackage === packageName ? null : packageName);
+  };
+
+  const handlePurchase = async (plan: string, billingCycle: 'monthly' | 'yearly' = 'monthly') => {
+    if (!isSignedIn || !organization) {
+      // Redirect to sign in
+      window.location.href = '/sign-in?redirect_url=/pricing';
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          plan,
+          clerkOrgId: organization.id,
+          billingCycle,
+        }),
+      });
+
+      const { url } = await response.json();
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+    }
   };
 
   return (
@@ -68,12 +99,20 @@ export default function PricingPage() {
                   <li>Domain connection and SSL certificate</li>
                 </ul>
                 <div className="pt-3">
-                  <Link
-                    href="/dashboard?plan=digital-front-door"
-                    className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    Purchase Digital Front Door
-                  </Link>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handlePurchase('basic', 'monthly')}
+                      className="w-full inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >
+                      Purchase Digital Front Door - $50/mo
+                    </button>
+                    <button
+                      onClick={() => handlePurchase('basic', 'yearly')}
+                      className="w-full inline-flex items-center justify-center rounded-full border-2 border-foreground bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-foreground/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >
+                      Purchase Yearly - $500/year (Save 17%)
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -124,12 +163,20 @@ export default function PricingPage() {
                   <li>Weekly content updates and sermon uploads</li>
                 </ul>
                 <div className="pt-3">
-                  <Link
-                    href="/dashboard?plan=gospel-outreach"
-                    className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    Purchase Gospel Outreach
-                  </Link>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handlePurchase('growth', 'monthly')}
+                      className="w-full inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >
+                      Purchase Gospel Outreach - $99/mo
+                    </button>
+                    <button
+                      onClick={() => handlePurchase('growth', 'yearly')}
+                      className="w-full inline-flex items-center justify-center rounded-full border-2 border-foreground bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-foreground/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >
+                      Purchase Yearly - $990/year (Save 17%)
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -179,12 +226,20 @@ export default function PricingPage() {
                   <li>Priority support and monthly strategy calls</li>
                 </ul>
                 <div className="pt-3">
-                  <Link
-                    href="/dashboard?plan=ministry-ecosystem"
-                    className="inline-flex items-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                  >
-                    Purchase Ministry Ecosystem
-                  </Link>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => handlePurchase('premium', 'monthly')}
+                      className="w-full inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >
+                      Purchase Ministry Ecosystem - $99/mo
+                    </button>
+                    <button
+                      onClick={() => handlePurchase('premium', 'yearly')}
+                      className="w-full inline-flex items-center justify-center rounded-full border-2 border-foreground bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-foreground/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >
+                      Purchase Yearly - $990/year (Save 17%)
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
