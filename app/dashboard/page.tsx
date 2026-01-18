@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import {
   OrganizationProfile,
   SignedIn,
@@ -18,7 +18,6 @@ import { Tabs } from "@/components/ui/tabs";
 function DashboardContent() {
   const searchParams = useSearchParams();
   const { organization } = useOrganization();
-
 
   return (
     <div className="bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)] min-h-screen overflow-x-hidden">
@@ -131,6 +130,7 @@ function DashboardContent() {
                         </div>
                       </div>
                     ),
+                  },
                 ]}
               />
             </div>
