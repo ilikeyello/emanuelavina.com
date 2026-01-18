@@ -12,36 +12,13 @@ import {
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { ChurchContentManager } from "@/components/church-content-manager";
-import { BillingManager } from "@/components/billing-manager";
-import { Loader2, Church, Settings, CreditCard } from "lucide-react";
+import { Loader2, Church, Settings } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 
 function DashboardContent() {
   const searchParams = useSearchParams();
-  const [subscriptionPlan, setSubscriptionPlan] = useState<string | null>(null);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
   const { organization } = useOrganization();
 
-  useEffect(() => {
-    if (organization?.id) {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
-      
-      supabase
-        .from('churches')
-        .select('subscription_plan, subscription_status')
-        .eq('clerk_org_id', organization.id)
-        .single()
-        .then(({ data, error }) => {
-          if (data && !error) {
-            setSubscriptionPlan(data.subscription_plan);
-            setSubscriptionStatus(data.subscription_status);
-          }
-        });
-    }
-  }, [organization?.id]);
 
   return (
     <div className="bg-[radial-gradient(circle_at_top,_#f9f9f7,_#f3f1ec_45%,_#e6e1d8_80%)] min-h-screen overflow-x-hidden">
@@ -54,7 +31,7 @@ function DashboardContent() {
             Church Admin Dashboard
           </h1>
           <p className="text-base sm:text-lg leading-7 sm:leading-8 text-foreground/80">
-            Manage your church organization, billing, and team access in one place.
+            Manage your church organization and team access in one place.
           </p>
         </div>
 
@@ -107,9 +84,9 @@ function DashboardContent() {
                       <div className="px-4 sm:px-0">
                         <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-4">Church Content</h2>
                         <p className="text-sm text-foreground/70 mb-6">
-                          Manage your church content based on your subscription plan.
+                          Manage your church content and settings.
                         </p>
-                        <ChurchContentManager planCode={subscriptionPlan} />
+                        <ChurchContentManager />
                       </div>
                     ),
                   },
@@ -154,28 +131,6 @@ function DashboardContent() {
                         </div>
                       </div>
                     ),
-                  },
-                  {
-                    id: "billing",
-                    label: (
-                      <span className="flex items-center gap-2">
-                        <CreditCard className="h-4 w-4" />
-                        Billing
-                      </span>
-                    ),
-                    content: (
-                      <div className="px-4 sm:px-0">
-                        <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-4">Billing & Subscription</h2>
-                        <p className="text-sm text-foreground/70 mb-6">
-                          Manage your subscription plan and payment methods.
-                        </p>
-                        <BillingManager 
-                          subscriptionPlan={subscriptionPlan} 
-                          subscriptionStatus={subscriptionStatus}
-                        />
-                      </div>
-                    ),
-                  },
                 ]}
               />
             </div>

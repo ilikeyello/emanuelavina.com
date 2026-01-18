@@ -13,32 +13,8 @@ export default function PricingPage() {
   };
 
   const handlePurchase = async (plan: string, billingCycle: 'monthly' | 'yearly' = 'monthly') => {
-    if (!isSignedIn || !organization) {
-      // Redirect to sign in
-      window.location.href = '/sign-in?redirect_url=/pricing';
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          plan,
-          clerkOrgId: organization.id,
-          billingCycle,
-        }),
-      });
-
-      const { url } = await response.json();
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-    }
+    // For now, just redirect to dashboard
+    window.location.href = '/dashboard';
   };
 
   return (
@@ -104,13 +80,13 @@ export default function PricingPage() {
                       onClick={() => handlePurchase('basic', 'monthly')}
                       className="w-full inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                     >
-                      Purchase Digital Front Door - $50/mo
+                      Get Started - Digital Front Door
                     </button>
                     <button
                       onClick={() => handlePurchase('basic', 'yearly')}
                       className="w-full inline-flex items-center justify-center rounded-full border-2 border-foreground bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-foreground/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                     >
-                      Purchase Yearly - $500/year (Save 17%)
+                      Save 17% - Yearly Plan
                     </button>
                   </div>
                 </div>
@@ -168,13 +144,13 @@ export default function PricingPage() {
                       onClick={() => handlePurchase('growth', 'monthly')}
                       className="w-full inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                     >
-                      Purchase Gospel Outreach - $99/mo
+                      Get Started - Gospel Outreach
                     </button>
                     <button
                       onClick={() => handlePurchase('growth', 'yearly')}
                       className="w-full inline-flex items-center justify-center rounded-full border-2 border-foreground bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-foreground/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                     >
-                      Purchase Yearly - $990/year (Save 17%)
+                      Save 17% - Yearly Plan
                     </button>
                   </div>
                 </div>
@@ -231,13 +207,13 @@ export default function PricingPage() {
                       onClick={() => handlePurchase('premium', 'monthly')}
                       className="w-full inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition hover:bg-foreground/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                     >
-                      Purchase Ministry Ecosystem - $99/mo
+                      Get Started - Ministry Ecosystem
                     </button>
                     <button
                       onClick={() => handlePurchase('premium', 'yearly')}
                       className="w-full inline-flex items-center justify-center rounded-full border-2 border-foreground bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-foreground/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
                     >
-                      Purchase Yearly - $990/year (Save 17%)
+                      Save 17% - Yearly Plan
                     </button>
                   </div>
                 </div>

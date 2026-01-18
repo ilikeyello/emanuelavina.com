@@ -45,14 +45,14 @@ type TitheLyConfig = {
   enabled: boolean;
 };
 
-export function ChurchContentManager({ planCode }: { planCode?: string | null }) {
+export function ChurchContentManager() {
   const { user } = useUser();
   const { organization } = useOrganization();
   const [content, setContent] = useState<ChurchContent[]>([]);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [churchId, setChurchId] = useState<string | null>(null);
-  const [subscriptionPlan, setSubscriptionPlan] = useState<string>(planCode || 'basic');
+  const [subscriptionPlan, setSubscriptionPlan] = useState<string>('premium');
   const [titheLyConfig, setTitheLyConfig] = useState<TitheLyConfig | null>(null);
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<ChurchContent>>({});
