@@ -96,7 +96,7 @@ export function ChurchContentManager() {
       console.error("Error fetching church record:", err);
     }
     return null;
-  }, [organization?.id, organization?.name, planCode]);
+  }, [organization?.id, organization?.name]);
 
   const fetchContent = useCallback(async () => {
     if (!churchId) return;
