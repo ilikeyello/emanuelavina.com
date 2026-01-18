@@ -80,7 +80,7 @@ export function ChurchContentManager() {
           .insert([{
             clerk_org_id: organization.id,
             name: organization.name,
-            subscription_plan: planCode || 'basic',
+            subscription_plan: 'premium',
           }])
           .select("id")
           .single();
