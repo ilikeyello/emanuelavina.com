@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:low-memory": "NODE_OPTIONS='--max-old-space-size=2048' NEXT_TELEMETRY_DISABLED=1 npm run dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

@@ -17,6 +17,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Memory optimizations for development
+  experimental: {
+    optimizeCss: false,
+    optimizePackageImports: ['lucide-react'],
+  },
+  // Reduce memory usage in development
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
