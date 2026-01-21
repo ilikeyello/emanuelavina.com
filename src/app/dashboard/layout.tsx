@@ -3,8 +3,14 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { userId } = await auth();
-  if (!userId) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      redirect('/sign-in');
+    }
+  } catch (error) {
+    console.error('Authentication check failed in dashboard layout:', error);
+    // Optionally, you could redirect to an error page or show a fallback UI
     redirect('/sign-in');
   }
 
