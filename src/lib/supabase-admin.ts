@@ -1,11 +1,17 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-export const createSupabaseAdminClient = () => {
+let supabaseAdmin: SupabaseClient | null = null;
+
+export const getSupabaseAdmin = () => {
+  if (supabaseAdmin) {
+    return supabaseAdmin;
+  }
+
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('Missing Supabase environment variables for admin client');
   }
 
-  return createClient(
+  supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     {
@@ -15,4 +21,6 @@ export const createSupabaseAdminClient = () => {
       }
     }
   );
+
+  return supabaseAdmin;
 };
