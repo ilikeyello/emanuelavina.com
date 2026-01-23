@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Trash2, Heart } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 interface PrayerRequestsManagerProps {
   orgId: string;
@@ -19,6 +20,7 @@ interface PrayerRequest {
 }
 
 export default function PrayerRequestsManager({ orgId }: PrayerRequestsManagerProps) {
+  const { toast } = useToast();
   const [prayers, setPrayers] = useState<PrayerRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,9 +34,20 @@ export default function PrayerRequestsManager({ orgId }: PrayerRequestsManagerPr
       if (response.ok) {
         const data = await response.json();
         setPrayers(data);
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to load prayer requests',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error fetching prayer requests:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load prayer requests',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -46,10 +59,26 @@ export default function PrayerRequestsManager({ orgId }: PrayerRequestsManagerPr
     try {
       const response = await fetch(`/api/prayer-requests?id=${id}`, { method: 'DELETE' });
       if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Prayer request deleted successfully',
+        });
         fetchPrayers();
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        toast({
+          title: 'Error',
+          description: errorData.error || 'Failed to delete prayer request',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error deleting prayer request:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete prayer request',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -57,26 +86,33 @@ export default function PrayerRequestsManager({ orgId }: PrayerRequestsManagerPr
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Prayer Requests</h3>
-        <p className="text-sm text-gray-600">View and manage community prayer requests</p>
+      <div>
+        <h3 className="text-lg font-semibold">User Prayer Requests</h3>
+        <p className="text-sm text-gray-500">Prayer requests submitted by church members</p>
       </div>
 
       <div className="space-y-2">
         {prayers.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No prayer requests yet.</p>
+          <p className="text-gray-500 text-center py-8">
+            No prayer requests yet. Users can submit prayers from the church website.
+          </p>
         ) : (
           prayers.map((prayer) => (
             <div key={prayer.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
                 <h4 className="font-semibold">{prayer.title}</h4>
                 <p className="text-sm text-gray-600 mt-1">{prayer.description}</p>
-                <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                  <span>By: {prayer.is_anonymous ? 'Anonymous' : prayer.user_name}</span>
-                  <span className="flex items-center gap-1">
-                    <Heart className="h-4 w-4" />
+                <div className="text-xs text-gray-500 mt-2">
+                  <span>
+                    By: {prayer.is_anonymous ? 'Anonymous' : (prayer.user_name || 'Anonymous')}
+                  </span>
+                  <span className="mx-2">•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <Heart className="h-3 w-3" />
                     {prayer.prayer_count} prayers
                   </span>
+                  <span className="mx-2">•</span>
+                  <span>{new Date(prayer.created_at).toLocaleString()}</span>
                 </div>
               </div>
               <Button

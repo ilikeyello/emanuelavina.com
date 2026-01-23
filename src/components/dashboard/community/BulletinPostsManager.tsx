@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Trash2 } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 interface BulletinPostsManagerProps {
   orgId: string;
@@ -16,10 +17,12 @@ interface BulletinPost {
   title: string;
   content: string;
   author_name: string;
+  author_id: string | null;
   created_at: string;
 }
 
 export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProps) {
+  const { toast } = useToast();
   const [posts, setPosts] = useState<BulletinPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -39,9 +42,20 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
       if (response.ok) {
         const data = await response.json();
         setPosts(data);
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to load bulletin posts',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error fetching bulletin posts:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load bulletin posts',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -57,25 +71,57 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
       });
 
       if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Bulletin post created successfully',
+        });
         setFormData({ title: '', content: '', author_name: '' });
         setShowForm(false);
         fetchPosts();
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        toast({
+          title: 'Error',
+          description: errorData.error || 'Failed to create post',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error adding bulletin post:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to create post',
+        variant: 'destructive',
+      });
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this post?')) return;
+    if (!confirm('Are you sure you want to delete this bulletin post?')) return;
 
     try {
       const response = await fetch(`/api/bulletin-posts?id=${id}`, { method: 'DELETE' });
       if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Bulletin post deleted successfully',
+        });
         fetchPosts();
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        toast({
+          title: 'Error',
+          description: errorData.error || 'Failed to delete post',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error deleting bulletin post:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete post',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -84,7 +130,10 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Bulletin Posts</h3>
+        <div>
+          <h3 className="text-lg font-semibold">User Bulletin Posts</h3>
+          <p className="text-sm text-gray-500">Posts created by church members on the website</p>
+        </div>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Post
@@ -136,14 +185,20 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
 
       <div className="space-y-2">
         {posts.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No bulletin posts yet.</p>
+          <p className="text-gray-500 text-center py-8">
+            No bulletin posts yet. Users can create posts from the church website.
+          </p>
         ) : (
           posts.map((post) => (
             <div key={post.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
                 <h4 className="font-semibold">{post.title}</h4>
-                <p className="text-sm text-gray-600">By: {post.author_name}</p>
-                <p className="text-sm text-gray-700 mt-2">{post.content}</p>
+                <p className="text-sm text-gray-600 mt-1">{post.content}</p>
+                <div className="text-xs text-gray-500 mt-2">
+                  <span>By: {post.author_name}</span>
+                  <span className="mx-2">•</span>
+                  <span>{new Date(post.created_at).toLocaleString()}</span>
+                </div>
               </div>
               <Button
                 variant="outline"
