@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Trash2, Edit } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 interface SermonsManagerProps {
   orgId: string;
@@ -22,8 +23,10 @@ interface Sermon {
 }
 
 export default function SermonsManager({ orgId }: SermonsManagerProps) {
+  const { toast } = useToast();
   const [sermons, setSermons] = useState<Sermon[]>([]);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -43,9 +46,22 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
       if (response.ok) {
         const data = await response.json();
         setSermons(data);
+      } else {
+        const errorText = await response.text();
+        console.error('Error fetching sermons:', response.status, errorText);
+        toast({
+          title: 'Error',
+          description: 'Failed to load sermons',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error fetching sermons:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load sermons',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -53,6 +69,8 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    
     try {
       const response = await fetch('/api/sermons', {
         method: 'POST',
@@ -61,12 +79,31 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
       });
 
       if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Sermon added successfully',
+        });
         setFormData({ title: '', youtube_url: '', description: '', speaker: '', sermon_date: '' });
         setShowForm(false);
         fetchSermons();
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Error adding sermon:', response.status, errorData);
+        toast({
+          title: 'Error',
+          description: errorData.error || 'Failed to add sermon',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error adding sermon:', error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to add sermon',
+        variant: 'destructive',
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -76,10 +113,26 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
     try {
       const response = await fetch(`/api/sermons?id=${id}`, { method: 'DELETE' });
       if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Sermon deleted successfully',
+        });
         fetchSermons();
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        toast({
+          title: 'Error',
+          description: errorData.error || 'Failed to delete sermon',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error deleting sermon:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete sermon',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -151,8 +204,10 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
           </div>
 
           <div className="flex gap-2">
-            <Button type="submit">Save Sermon</Button>
-            <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+            <Button type="submit" disabled={submitting}>
+              {submitting ? 'Saving...' : 'Save Sermon'}
+            </Button>
+            <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={submitting}>
               Cancel
             </Button>
           </div>

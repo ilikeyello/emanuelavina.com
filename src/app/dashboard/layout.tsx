@@ -1,6 +1,7 @@
 import { OrganizationSwitcher, UserButton } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { Toaster } from '@/components/ui/toaster';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   try {
@@ -36,6 +37,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           {children}
         </div>
       </main>
+      <Toaster />
     </div>
   );
 }
