@@ -1,6 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+// Handle preflight requests
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 // Public endpoint for users to create bulletin posts
 export async function POST(request: Request) {
   try {
@@ -10,7 +21,7 @@ export async function POST(request: Request) {
     if (!organization_id || !title || !content || !author_name) {
       return NextResponse.json(
         { error: 'Missing required fields: organization_id, title, content, author_name' },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -29,17 +40,17 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Supabase insert error:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, { headers: corsHeaders });
   } catch (error) {
     console.error('API route error:', error);
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
