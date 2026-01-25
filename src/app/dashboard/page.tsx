@@ -1,8 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
-import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
   const { orgId, orgSlug, userId } = await auth();
+
+  if (orgId) {
+    redirect("/dashboard/client-portal");
+  }
 
   return (
     <div className="max-w-3xl mx-auto mt-8">
@@ -11,25 +15,7 @@ export default async function DashboardPage() {
           Welcome to Your Dashboard
         </h2>
         
-        {orgId ? (
-          <div className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-green-800">
-                ✓ You're currently managing: <strong>{orgSlug}</strong>
-              </p>
-            </div>
-            
-            <div className="space-y-3">
-              <p className="text-gray-700">Access your church management tools:</p>
-              <Link 
-                href="/dashboard/client-portal"
-                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text-center transition-colors"
-              >
-                Go to Client Portal →
-              </Link>
-            </div>
-          </div>
-        ) : (
+        {!orgId ? (
           <div className="space-y-4">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-blue-800">
@@ -57,7 +43,7 @@ export default async function DashboardPage() {
               </p>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

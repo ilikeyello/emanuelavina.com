@@ -6,7 +6,7 @@ export default function ContactPage() {
       <header className="w-full px-8 py-4 flex justify-between items-center border-b border-gray-200">
         <Link href="/" className="text-2xl font-semibold font-serif">Emanuel Web Design</Link>
         <nav>
-          <Link href="/dashboard" className="px-4 py-2 text-lg font-medium hover:text-gray-900 transition-colors">
+          <Link href="/dashboard/client-portal" className="px-4 py-2 text-lg font-medium hover:text-gray-900 transition-colors">
             Client Portal
           </Link>
         </nav>

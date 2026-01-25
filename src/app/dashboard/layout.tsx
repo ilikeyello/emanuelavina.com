@@ -24,8 +24,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
               <OrganizationSwitcher
                 hidePersonal={true}
-                afterSelectOrganizationUrl="/dashboard"
-                afterCreateOrganizationUrl="/dashboard"
+                afterSelectOrganizationUrl="/dashboard/client-portal"
+                afterCreateOrganizationUrl="/dashboard/client-portal"
               />
             </div>
             <UserButton afterSignOutUrl="/" />
