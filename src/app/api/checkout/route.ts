@@ -34,9 +34,9 @@ export async function GET(req: Request) {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
+      const text = await response.text();
       return NextResponse.json(
-        { error: "Unable to start checkout", details: error },
+        { error: "Unable to start checkout", status: response.status, body: text },
         { status: 500 }
       );
     }
