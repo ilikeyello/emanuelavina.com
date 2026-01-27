@@ -2,6 +2,12 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 const isPublicRoute = createRouteMatcher([
   '/',
+  '/about',
+  '/about/',
+  '/pricing',
+  '/pricing/',
+  '/contact',
+  '/contact/',
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/webhooks(.*)',
@@ -9,6 +15,11 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
+  // Uncomment the next lines to skip auth in local development if needed:
+  // if (process.env.NODE_ENV === "development") {
+  //   return;
+  // }
+
   if (!isPublicRoute(request)) {
     await auth.protect();
   }
