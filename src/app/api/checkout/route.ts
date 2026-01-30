@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const CLERK_BILLING_API = "https://api.clerk.com/v1/billing/checkout_sessions";
+const CLERK_BILLING_API = "https://api.clerk.dev/v1/billing/checkout_sessions";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -35,6 +35,7 @@ export async function GET(req: Request) {
 
     if (!response.ok) {
       const text = await response.text();
+      console.error("Clerk API Error:", text);
       return NextResponse.json(
         { error: "Unable to start checkout", status: response.status, body: text },
         { status: 500 }
@@ -48,6 +49,7 @@ export async function GET(req: Request) {
 
     return NextResponse.redirect(data.url, { status: 302 });
   } catch (error) {
+    console.error("Checkout error:", error);
     return NextResponse.json({ error: "Checkout failed" }, { status: 500 });
   }
 }
