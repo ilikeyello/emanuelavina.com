@@ -19,6 +19,17 @@ interface BulletinPost {
   author_name: string;
   author_id: string | null;
   created_at: string;
+  bulletin_comments?: BulletinComment[];
+}
+
+interface BulletinComment {
+  id: number;
+  bulletin_post_id: number;
+  organization_id: string;
+  author_name: string;
+  author_id: string | null;
+  content: string;
+  created_at: string;
 }
 
 export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProps) {
@@ -191,13 +202,31 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
         ) : (
           posts.map((post) => (
             <div key={post.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
+              <div className="flex-1 space-y-3">
                 <h4 className="font-semibold">{post.title}</h4>
                 <p className="text-sm text-gray-600 mt-1">{post.content}</p>
                 <div className="text-xs text-gray-500 mt-2">
                   <span>By: {post.author_name}</span>
                   <span className="mx-2">•</span>
                   <span>{new Date(post.created_at).toLocaleString()}</span>
+                </div>
+
+                <div className="rounded-md bg-gray-50 p-3">
+                  <p className="text-xs font-semibold text-gray-600">Comments</p>
+                  {(post.bulletin_comments ?? []).length === 0 ? (
+                    <p className="mt-2 text-sm text-gray-500">No comments yet.</p>
+                  ) : (
+                    <div className="mt-2 space-y-2">
+                      {(post.bulletin_comments ?? []).map((comment) => (
+                        <div key={comment.id} className="rounded border bg-white p-2">
+                          <p className="text-sm text-gray-700">{comment.content}</p>
+                          <p className="mt-1 text-xs text-gray-500">
+                            {comment.author_name} • {new Date(comment.created_at).toLocaleString()}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
               <Button

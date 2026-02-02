@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
   const { data } = await getSupabaseAdmin()
     .from('bulletin_posts')
-    .select('*')
+    .select('*, bulletin_comments(*)')
     .eq('organization_id', orgId)
     .order('created_at', { ascending: false });
 
