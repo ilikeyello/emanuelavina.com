@@ -7,10 +7,10 @@ export async function GET(request: Request) {
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { data, error } = await getSupabaseAdmin()
-    .from('announcements')
+    .from('events')
     .select('*')
     .eq('organization_id', orgId)
-    .order('created_at', { ascending: false });
+    .order('event_date', { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json(data || []);
@@ -22,18 +22,43 @@ export async function POST(request: Request) {
 
   const body = await request.json();
   const { data, error } = await getSupabaseAdmin()
-    .from('announcements')
+    .from('events')
     .insert([{
       organization_id: orgId,
-      title_en: body.title_en || body.title || '',
-      title_es: body.title_es || body.title || '',
-      content_en: body.content_en || body.content || '',
-      content_es: body.content_es || body.content || '',
-      priority: body.priority || 'normal',
-      image_url: body.image_url || null,
-      expires_at: body.expires_at || null,
+      title_en: body.title_en,
+      title_es: body.title_es || body.title_en,
+      description_en: body.description_en || null,
+      description_es: body.description_es || body.description_en || null,
+      event_date: body.event_date,
+      location: body.location || null,
+      max_attendees: body.max_attendees || null,
       created_by: 'admin',
     }])
+    .select()
+    .single();
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json(data);
+}
+
+export async function PUT(request: Request) {
+  const { orgId } = await auth();
+  if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  const body = await request.json();
+  const { data, error } = await getSupabaseAdmin()
+    .from('events')
+    .update({
+      title_en: body.title_en,
+      title_es: body.title_es || body.title_en,
+      description_en: body.description_en || null,
+      description_es: body.description_es || body.description_en || null,
+      event_date: body.event_date,
+      location: body.location || null,
+      max_attendees: body.max_attendees || null,
+    })
+    .eq('id', body.id)
+    .eq('organization_id', orgId)
     .select()
     .single();
 
@@ -49,7 +74,7 @@ export async function DELETE(request: Request) {
   const id = searchParams.get('id');
 
   const { error } = await getSupabaseAdmin()
-    .from('announcements')
+    .from('events')
     .delete()
     .eq('id', id)
     .eq('organization_id', orgId);

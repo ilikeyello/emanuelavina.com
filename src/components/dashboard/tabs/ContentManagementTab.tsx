@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Video, Radio, BookOpen, Music, Gamepad2 } from 'lucide-react';
+import { Video, Radio, BookOpen, Music, Gamepad2, CalendarDays } from 'lucide-react';
 import SermonsManager from '../content/SermonsManager';
 import LivestreamsManager from '../content/LivestreamsManager';
 import DevotionalsManager from '../content/DevotionalsManager';
 import MusicPlaylistsManager from '../content/MusicPlaylistsManager';
 import GamesManager from '../content/GamesManager';
+import EventsManager from '../content/EventsManager';
 
 interface ContentManagementTabProps {
   orgId: string;
@@ -25,7 +25,7 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="sermons" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="sermons" className="flex items-center gap-2">
               <Video className="h-4 w-4" />
               <span className="hidden sm:inline">Sermons</span>
@@ -33,6 +33,10 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
             <TabsTrigger value="livestreams" className="flex items-center gap-2">
               <Radio className="h-4 w-4" />
               <span className="hidden sm:inline">Livestream</span>
+            </TabsTrigger>
+            <TabsTrigger value="events" className="flex items-center gap-2">
+              <CalendarDays className="h-4 w-4" />
+              <span className="hidden sm:inline">Events</span>
             </TabsTrigger>
             <TabsTrigger value="devotionals" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
@@ -54,6 +58,10 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
 
           <TabsContent value="livestreams" className="mt-6">
             <LivestreamsManager orgId={orgId} />
+          </TabsContent>
+
+          <TabsContent value="events" className="mt-6">
+            <EventsManager orgId={orgId} />
           </TabsContent>
 
           <TabsContent value="devotionals" className="mt-6">

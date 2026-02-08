@@ -15,12 +15,15 @@ interface ChurchInfoTabProps {
 
 interface ChurchInfo {
   organization_id: string;
-  name: string;
+  name_en: string;
+  name_es: string;
   address: string;
   phone: string;
   email: string;
-  service_times: string;
-  description: string | null;
+  service_times_en: string;
+  service_times_es: string;
+  description_en: string | null;
+  description_es: string | null;
   facebook_page_url: string | null;
   website_url: string | null;
   latitude: number | null;
@@ -96,12 +99,22 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Church Name</Label>
+              <Label htmlFor="name_en">Church Name (English)</Label>
               <Input
-                id="name"
-                value={churchInfo?.name || organization?.name || ''}
-                onChange={(e) => updateField('name', e.target.value)}
+                id="name_en"
+                value={churchInfo?.name_en || organization?.name || ''}
+                onChange={(e) => updateField('name_en', e.target.value)}
                 placeholder="Enter church name"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="name_es">Church Name (Spanish)</Label>
+              <Input
+                id="name_es"
+                value={churchInfo?.name_es || ''}
+                onChange={(e) => updateField('name_es', e.target.value)}
+                placeholder="Nombre de la iglesia"
               />
             </div>
 
@@ -126,14 +139,26 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
                 placeholder="(555) 123-4567"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="service_times_en">Service Times (English)</Label>
+              <Input
+                id="service_times_en"
+                value={churchInfo?.service_times_en || ''}
+                onChange={(e) => updateField('service_times_en', e.target.value)}
+                placeholder="Sunday 10:00 AM, Wednesday 7:00 PM"
+              />
+            </div>
 
             <div className="space-y-2">
-              <Label htmlFor="service_times">Service Times</Label>
+              <Label htmlFor="service_times_es">Service Times (Spanish)</Label>
               <Input
-                id="service_times"
-                value={churchInfo?.service_times || ''}
-                onChange={(e) => updateField('service_times', e.target.value)}
-                placeholder="Sunday 10:00 AM, Wednesday 7:00 PM"
+                id="service_times_es"
+                value={churchInfo?.service_times_es || ''}
+                onChange={(e) => updateField('service_times_es', e.target.value)}
+                placeholder="Domingo 10:00 AM, Miércoles 7:00 PM"
               />
             </div>
           </div>
@@ -148,15 +173,28 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              value={churchInfo?.description || ''}
-              onChange={(e) => updateField('description', e.target.value)}
-              placeholder="Tell people about your church..."
-              rows={4}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="description_en">Description (English)</Label>
+              <Textarea
+                id="description_en"
+                value={churchInfo?.description_en || ''}
+                onChange={(e) => updateField('description_en', e.target.value)}
+                placeholder="Tell people about your church..."
+                rows={4}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description_es">Description (Spanish)</Label>
+              <Textarea
+                id="description_es"
+                value={churchInfo?.description_es || ''}
+                onChange={(e) => updateField('description_es', e.target.value)}
+                placeholder="Cuéntale a la gente sobre tu iglesia..."
+                rows={4}
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

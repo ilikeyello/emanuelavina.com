@@ -49,12 +49,15 @@ export async function PUT(request: Request) {
     const { data, error } = await getSupabaseAdmin()
       .from('church_info')
       .update({
-        name: body.name,
+        name_en: body.name_en || body.name || '',
+        name_es: body.name_es || body.name || '',
         address: body.address,
         phone: body.phone,
         email: body.email,
-        service_times: body.service_times,
-        description: body.description,
+        service_times_en: body.service_times_en || body.service_times || '',
+        service_times_es: body.service_times_es || body.service_times || '',
+        description_en: body.description_en || body.description || null,
+        description_es: body.description_es || body.description || null,
         facebook_page_url: body.facebook_page_url,
         website_url: body.website_url,
         latitude: body.latitude,
