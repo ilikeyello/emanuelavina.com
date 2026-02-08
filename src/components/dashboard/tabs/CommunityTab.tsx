@@ -2,10 +2,11 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Heart, MessageCircle, Megaphone } from 'lucide-react';
+import { Heart, MessageCircle, Megaphone, CalendarDays } from 'lucide-react';
 import PrayerRequestsManager from '../community/PrayerRequestsManager';
 import BulletinPostsManager from '../community/BulletinPostsManager';
 import AnnouncementsManager from '../community/AnnouncementsManager';
+import EventsManager from '../content/EventsManager';
 
 interface CommunityTabProps {
   orgId: string;
@@ -22,18 +23,22 @@ export default function CommunityTab({ orgId }: CommunityTabProps) {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="prayers" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="prayers" className="flex items-center gap-2">
               <Heart className="h-4 w-4" />
-              Prayer Requests
+              <span className="hidden sm:inline">Prayer Requests</span>
             </TabsTrigger>
             <TabsTrigger value="bulletin" className="flex items-center gap-2">
               <MessageCircle className="h-4 w-4" />
-              Bulletin Posts
+              <span className="hidden sm:inline">Bulletin Posts</span>
             </TabsTrigger>
             <TabsTrigger value="announcements" className="flex items-center gap-2">
               <Megaphone className="h-4 w-4" />
-              Announcements
+              <span className="hidden sm:inline">Announcements</span>
+            </TabsTrigger>
+            <TabsTrigger value="events" className="flex items-center gap-2">
+              <CalendarDays className="h-4 w-4" />
+              <span className="hidden sm:inline">Events</span>
             </TabsTrigger>
           </TabsList>
 
@@ -47,6 +52,10 @@ export default function CommunityTab({ orgId }: CommunityTabProps) {
 
           <TabsContent value="announcements" className="mt-6">
             <AnnouncementsManager orgId={orgId} />
+          </TabsContent>
+
+          <TabsContent value="events" className="mt-6">
+            <EventsManager orgId={orgId} />
           </TabsContent>
         </Tabs>
       </CardContent>

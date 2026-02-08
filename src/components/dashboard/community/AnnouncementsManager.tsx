@@ -14,10 +14,8 @@ interface AnnouncementsManagerProps {
 
 interface Announcement {
   id: number;
-  title_en: string;
-  title_es: string;
-  content_en: string;
-  content_es: string;
+  title: string;
+  content: string;
   priority: string;
   image_url: string | null;
   expires_at: string | null;
@@ -31,10 +29,8 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    title_en: '',
-    title_es: '',
-    content_en: '',
-    content_es: '',
+    title: '',
+    content: '',
     priority: 'normal',
     image_url: '',
     expires_at: '',
@@ -78,14 +74,11 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title_en: formData.title_en,
-          title_es: formData.title_es || formData.title_en,
-          content_en: formData.content_en,
-          content_es: formData.content_es || formData.content_en,
+          title: formData.title,
+          content: formData.content,
           priority: formData.priority,
           image_url: formData.image_url || null,
           expires_at: formData.expires_at || null,
-          organization_id: orgId,
         }),
       });
 
@@ -95,10 +88,8 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
           description: 'Announcement created successfully',
         });
         setFormData({
-          title_en: '',
-          title_es: '',
-          content_en: '',
-          content_es: '',
+          title: '',
+          content: '',
           priority: 'normal',
           image_url: '',
           expires_at: '',
@@ -177,48 +168,25 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="title_en">Title (English) *</Label>
-              <Input
-                id="title_en"
-                value={formData.title_en}
-                onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="title_es">Title (Spanish)</Label>
-              <Input
-                id="title_es"
-                value={formData.title_es}
-                onChange={(e) => setFormData({ ...formData, title_es: e.target.value })}
-                placeholder="Leave blank to use English title"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="title">Title *</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              required
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="content_en">Content (English) *</Label>
-              <Textarea
-                id="content_en"
-                value={formData.content_en}
-                onChange={(e) => setFormData({ ...formData, content_en: e.target.value })}
-                rows={4}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="content_es">Content (Spanish)</Label>
-              <Textarea
-                id="content_es"
-                value={formData.content_es}
-                onChange={(e) => setFormData({ ...formData, content_es: e.target.value })}
-                rows={4}
-                placeholder="Leave blank to use English content"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="content">Content *</Label>
+            <Textarea
+              id="content"
+              value={formData.content}
+              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+              rows={4}
+              required
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -275,15 +243,12 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
             <div key={announcement.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-semibold">{announcement.title_en || announcement.title_es}</h4>
+                  <h4 className="font-semibold">{announcement.title}</h4>
                   <span className={`text-xs px-2 py-1 rounded ${getPriorityColor(announcement.priority)}`}>
                     {announcement.priority}
                   </span>
                 </div>
-                {announcement.title_es && announcement.title_es !== announcement.title_en && (
-                  <p className="text-sm text-gray-500 italic">{announcement.title_es}</p>
-                )}
-                <p className="text-sm text-gray-700 mt-2">{announcement.content_en || announcement.content_es}</p>
+                <p className="text-sm text-gray-700 mt-2">{announcement.content}</p>
                 {announcement.expires_at && (
                   <p className="text-xs text-gray-500 mt-2">
                     Expires: {new Date(announcement.expires_at).toLocaleDateString()}

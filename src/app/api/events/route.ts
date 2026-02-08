@@ -25,10 +25,8 @@ export async function POST(request: Request) {
     .from('events')
     .insert([{
       organization_id: orgId,
-      title_en: body.title_en,
-      title_es: body.title_es || body.title_en,
-      description_en: body.description_en || null,
-      description_es: body.description_es || body.description_en || null,
+      title: body.title || body.title_en || '',
+      description: body.description || body.description_en || null,
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
@@ -49,10 +47,8 @@ export async function PUT(request: Request) {
   const { data, error } = await getSupabaseAdmin()
     .from('events')
     .update({
-      title_en: body.title_en,
-      title_es: body.title_es || body.title_en,
-      description_en: body.description_en || null,
-      description_es: body.description_es || body.description_en || null,
+      title: body.title || body.title_en || '',
+      description: body.description || body.description_en || null,
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,

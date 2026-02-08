@@ -14,10 +14,8 @@ interface EventsManagerProps {
 
 interface ChurchEvent {
   id: number;
-  title_en: string;
-  title_es: string;
-  description_en: string | null;
-  description_es: string | null;
+  title: string;
+  description: string | null;
   event_date: string;
   location: string | null;
   max_attendees: number | null;
@@ -31,10 +29,8 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    title_en: '',
-    title_es: '',
-    description_en: '',
-    description_es: '',
+    title: '',
+    description: '',
     event_date: '',
     location: '',
     max_attendees: '',
@@ -78,9 +74,11 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          title: formData.title,
+          description: formData.description || null,
+          event_date: formData.event_date,
+          location: formData.location || null,
           max_attendees: formData.max_attendees ? parseInt(formData.max_attendees) : null,
-          organization_id: orgId,
         }),
       });
 
@@ -90,10 +88,8 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
           description: 'Event created successfully',
         });
         setFormData({
-          title_en: '',
-          title_es: '',
-          description_en: '',
-          description_es: '',
+          title: '',
+          description: '',
           event_date: '',
           location: '',
           max_attendees: '',
@@ -163,47 +159,25 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="title_en">Title (English) *</Label>
-              <Input
-                id="title_en"
-                value={formData.title_en}
-                onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
-                placeholder="Sunday Service"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="title_es">Title (Spanish)</Label>
-              <Input
-                id="title_es"
-                value={formData.title_es}
-                onChange={(e) => setFormData({ ...formData, title_es: e.target.value })}
-                placeholder="Servicio Dominical"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="title">Title *</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              placeholder="Sunday Service"
+              required
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="description_en">Description (English)</Label>
-              <Textarea
-                id="description_en"
-                value={formData.description_en}
-                onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
-                rows={3}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description_es">Description (Spanish)</Label>
-              <Textarea
-                id="description_es"
-                value={formData.description_es}
-                onChange={(e) => setFormData({ ...formData, description_es: e.target.value })}
-                rows={3}
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              rows={3}
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -256,12 +230,9 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
           events.map((event) => (
             <div key={event.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
-                <h4 className="font-semibold">{event.title_en}</h4>
-                {event.title_es && event.title_es !== event.title_en && (
-                  <p className="text-sm text-gray-500 italic">{event.title_es}</p>
-                )}
-                {event.description_en && (
-                  <p className="text-sm text-gray-600 mt-1">{event.description_en}</p>
+                <h4 className="font-semibold">{event.title}</h4>
+                {event.description && (
+                  <p className="text-sm text-gray-600 mt-1">{event.description}</p>
                 )}
                 <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
