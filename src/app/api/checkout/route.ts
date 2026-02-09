@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const CLERK_BILLING_API = "https://api.clerk.dev/v1/billing/checkout_sessions";
+// Clerk billing API endpoint
+const CLERK_BILLING_API = "https://api.clerk.com/v1/billing/checkout_sessions";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -12,12 +13,20 @@ export async function GET(req: Request) {
 
   const secretKey = process.env.CLERK_SECRET_KEY;
   if (!secretKey) {
+    console.error("CLERK_SECRET_KEY is not set");
     return NextResponse.json({ error: "Missing CLERK_SECRET_KEY" }, { status: 500 });
   }
 
   const origin = url.origin;
   const successUrl = `${origin}/dashboard/client-portal`;
   const cancelUrl = `${origin}/pricing`;
+
+  console.log("Starting checkout with:", {
+    planId,
+    secretKey: secretKey.substring(0, 10) + "...",
+    successUrl,
+    cancelUrl,
+  });
 
   try {
     const response = await fetch(CLERK_BILLING_API, {
@@ -30,26 +39,50 @@ export async function GET(req: Request) {
         plan_id: planId,
         success_url: successUrl,
         cancel_url: cancelUrl,
+        // Additional fields that might be required
+        return_url: successUrl,
       }),
     });
 
+    console.log("Clerk API response status:", response.status);
+
     if (!response.ok) {
       const text = await response.text();
-      console.error("Clerk API Error:", text);
+      console.error("Clerk API Error:", {
+        status: response.status,
+        statusText: response.statusText,
+        body: text,
+      });
       return NextResponse.json(
-        { error: "Unable to start checkout", status: response.status, body: text },
+        { 
+          error: "Unable to start checkout", 
+          status: response.status, 
+          body: text,
+          details: {
+            planId,
+            apiEndpoint: CLERK_BILLING_API,
+          }
+        },
         { status: 500 }
       );
     }
 
     const data = (await response.json()) as { url?: string };
+    console.log("Clerk API response:", data);
+    
     if (!data.url) {
-      return NextResponse.json({ error: "No checkout URL returned" }, { status: 500 });
+      return NextResponse.json({ 
+        error: "No checkout URL returned from Clerk",
+        response: data
+      }, { status: 500 });
     }
 
     return NextResponse.redirect(data.url, { status: 302 });
   } catch (error) {
     console.error("Checkout error:", error);
-    return NextResponse.json({ error: "Checkout failed" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Checkout failed", 
+      details: error instanceof Error ? error.message : "Unknown error"
+    }, { status: 500 });
   }
 }
