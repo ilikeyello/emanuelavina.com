@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
 
-// Clerk billing API endpoint
-const CLERK_BILLING_API = "https://api.clerk.com/v1/billing/checkout_sessions";
-
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const planId = url.searchParams.get("planId");
@@ -17,19 +14,28 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing CLERK_SECRET_KEY" }, { status: 500 });
   }
 
+  // Extract the instance ID from the secret key to build the correct API URL
+  const instanceId = secretKey.split('_')[1];
+  if (!instanceId) {
+    return NextResponse.json({ error: "Invalid CLERK_SECRET_KEY format" }, { status: 500 });
+  }
+
   const origin = url.origin;
   const successUrl = `${origin}/dashboard/client-portal`;
   const cancelUrl = `${origin}/pricing`;
 
   console.log("Starting checkout with:", {
     planId,
-    secretKey: secretKey.substring(0, 10) + "...",
+    instanceId,
     successUrl,
     cancelUrl,
   });
 
   try {
-    const response = await fetch(CLERK_BILLING_API, {
+    // Use instance-specific API endpoint
+    const apiUrl = `https://api.clerk.com/v1/instances/${instanceId}/billing/checkout_sessions`;
+    
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,62 +43,71 @@ export async function GET(req: Request) {
       },
       body: JSON.stringify({
         plan_id: planId,
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        // Additional fields that might be required
         return_url: successUrl,
+        cancel_url: cancelUrl,
       }),
     });
 
     console.log("Clerk API response status:", response.status);
 
     if (!response.ok) {
-      const text = await response.text();
+      const errorData = await response.json().catch(() => ({}));
       console.error("Clerk API Error:", {
         status: response.status,
         statusText: response.statusText,
-        body: text,
+        error: errorData,
       });
       
-      // Special handling for 404 - likely billing not enabled
-      if (response.status === 404) {
+      // Handle specific error codes
+      if (errorData.code === 'billing_not_enabled') {
         return NextResponse.json(
           { 
-            error: "Clerk Billing is not enabled", 
-            status: response.status,
-            message: "Please enable Clerk Billing in your Clerk dashboard at https://dashboard.clerk.com. Go to Billing > Enable Billing and set up your payment gateway.",
+            error: "Billing not enabled for this instance type", 
+            message: errorData.longMessage || "Billing is not enabled",
+            code: errorData.code,
             details: {
               planId,
-              apiEndpoint: CLERK_BILLING_API,
+              instanceId,
               instructions: [
-                "1. Go to your Clerk Dashboard",
-                "2. Navigate to Billing section",
-                "3. Click 'Enable Billing'",
-                "4. Set up your payment gateway (Stripe)",
-                "5. Create subscription plans",
-                "6. Update plan IDs in your pricing page"
+                "1. Go to Clerk Dashboard > Billing",
+                "2. Enable billing for Users (not just Organizations)",
+                "3. Configure your payment gateway",
+                "4. Verify your plans are active"
               ]
             }
           },
-          { status: 500 }
+          { status: 403 }
+        );
+      }
+      
+      if (errorData.code === 'billing_plan_is_hidden') {
+        return NextResponse.json(
+          { 
+            error: "Plan is not publicly available", 
+            message: "The plan ID you're using is hidden and not available for checkout",
+            code: errorData.code,
+            details: { planId }
+          },
+          { status: 400 }
         );
       }
       
       return NextResponse.json(
         { 
           error: "Unable to start checkout", 
-          status: response.status, 
-          body: text,
+          status: response.status,
+          body: errorData,
           details: {
             planId,
-            apiEndpoint: CLERK_BILLING_API,
+            instanceId,
+            apiUrl,
           }
         },
         { status: 500 }
       );
     }
 
-    const data = (await response.json()) as { url?: string };
+    const data = await response.json();
     console.log("Clerk API response:", data);
     
     if (!data.url) {
@@ -103,6 +118,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.redirect(data.url, { status: 302 });
+    
   } catch (error) {
     console.error("Checkout error:", error);
     return NextResponse.json({ 
