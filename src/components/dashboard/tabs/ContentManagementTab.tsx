@@ -2,10 +2,9 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Video, Radio, BookOpen, Music, Gamepad2, CalendarDays } from 'lucide-react';
+import { Video, Radio, Music, Gamepad2, CalendarDays } from 'lucide-react';
 import SermonsManager from '../content/SermonsManager';
 import LivestreamsManager from '../content/LivestreamsManager';
-import DevotionalsManager from '../content/DevotionalsManager';
 import MusicPlaylistsManager from '../content/MusicPlaylistsManager';
 import GamesManager from '../content/GamesManager';
 import EventsManager from '../content/EventsManager';
@@ -24,11 +23,11 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="sermons" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="sermons" className="flex items-center gap-2">
+        <Tabs defaultValue="devotionals" className="w-full">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="devotionals" className="flex items-center gap-2">
               <Video className="h-4 w-4" />
-              <span className="hidden sm:inline">Sermons</span>
+              <span className="hidden sm:inline">Devotionals</span>
             </TabsTrigger>
             <TabsTrigger value="livestreams" className="flex items-center gap-2">
               <Radio className="h-4 w-4" />
@@ -37,10 +36,6 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
             <TabsTrigger value="events" className="flex items-center gap-2">
               <CalendarDays className="h-4 w-4" />
               <span className="hidden sm:inline">Events</span>
-            </TabsTrigger>
-            <TabsTrigger value="devotionals" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">Devotionals</span>
             </TabsTrigger>
             <TabsTrigger value="music" className="flex items-center gap-2">
               <Music className="h-4 w-4" />
@@ -52,7 +47,7 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="sermons" className="mt-6">
+          <TabsContent value="devotionals" className="mt-6">
             <SermonsManager orgId={orgId} />
           </TabsContent>
 
@@ -62,10 +57,6 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
 
           <TabsContent value="events" className="mt-6">
             <EventsManager orgId={orgId} />
-          </TabsContent>
-
-          <TabsContent value="devotionals" className="mt-6">
-            <DevotionalsManager orgId={orgId} />
           </TabsContent>
 
           <TabsContent value="music" className="mt-6">

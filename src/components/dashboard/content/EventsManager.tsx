@@ -36,6 +36,12 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
     max_attendees: '',
   });
 
+  // Helper function to format date correctly
+  const formatEventDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  };
+
   useEffect(() => {
     fetchEvents();
   }, [orgId]);
@@ -76,7 +82,7 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
         body: JSON.stringify({
           title: formData.title,
           description: formData.description || null,
-          event_date: formData.event_date,
+          event_date: new Date(formData.event_date).toISOString(),
           location: formData.location || null,
           max_attendees: formData.max_attendees ? parseInt(formData.max_attendees) : null,
         }),
@@ -237,7 +243,7 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
                 <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
-                    {new Date(event.event_date).toLocaleString()}
+                    {formatEventDate(event.event_date)}
                   </span>
                   {event.location && (
                     <span className="flex items-center gap-1">

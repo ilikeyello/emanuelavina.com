@@ -12,6 +12,9 @@ interface SermonsManagerProps {
   orgId: string;
 }
 
+// Note: This component manages devotionals for the church site
+// The sermons table is used to store devotional content that appears in the church site's devotional YouTube player
+
 interface Sermon {
   id: number;
   title: string;
@@ -51,7 +54,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
         console.error('Error fetching sermons:', response.status, errorText);
         toast({
           title: 'Error',
-          description: 'Failed to load sermons',
+          description: 'Failed to load devotionals',
           variant: 'destructive',
         });
       }
@@ -81,7 +84,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
       if (response.ok) {
         toast({
           title: 'Success',
-          description: 'Sermon added successfully',
+          description: 'Devotional added successfully',
         });
         setFormData({ title: '', youtube_url: '', description: '', speaker: '', sermon_date: '' });
         setShowForm(false);
@@ -91,15 +94,15 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
         console.error('Error adding sermon:', response.status, errorData);
         toast({
           title: 'Error',
-          description: errorData.error || 'Failed to add sermon',
+          description: errorData.error || 'Failed to add devotional',
           variant: 'destructive',
         });
       }
     } catch (error) {
-      console.error('Error adding sermon:', error);
+      console.error('Error adding devotional:', error);
       toast({
         title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to add sermon',
+        description: error instanceof Error ? error.message : 'Failed to add devotional',
         variant: 'destructive',
       });
     } finally {
@@ -108,43 +111,43 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this sermon?')) return;
+    if (!confirm('Are you sure you want to delete this devotional?')) return;
 
     try {
       const response = await fetch(`/api/sermons?id=${id}`, { method: 'DELETE' });
       if (response.ok) {
         toast({
           title: 'Success',
-          description: 'Sermon deleted successfully',
+          description: 'Devotional deleted successfully',
         });
         fetchSermons();
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         toast({
           title: 'Error',
-          description: errorData.error || 'Failed to delete sermon',
+          description: errorData.error || 'Failed to delete devotional',
           variant: 'destructive',
         });
       }
     } catch (error) {
-      console.error('Error deleting sermon:', error);
+      console.error('Error deleting devotional:', error);
       toast({
         title: 'Error',
-        description: 'Failed to delete sermon',
+        description: 'Failed to delete devotional',
         variant: 'destructive',
       });
     }
   };
 
-  if (loading) return <div>Loading sermons...</div>;
+  if (loading) return <div>Loading devotionals...</div>;
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Sermons</h3>
+        <h3 className="text-lg font-semibold">Devotionals</h3>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Sermon
+          Add Devotional
         </Button>
       </div>
 
@@ -205,7 +208,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
 
           <div className="flex gap-2">
             <Button type="submit" disabled={submitting}>
-              {submitting ? 'Saving...' : 'Save Sermon'}
+              {submitting ? 'Saving...' : 'Save Devotional'}
             </Button>
             <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={submitting}>
               Cancel
@@ -216,7 +219,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
 
       <div className="space-y-2">
         {sermons.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No sermons yet. Add your first sermon!</p>
+          <p className="text-gray-500 text-center py-8">No devotionals yet. Add your first devotional!</p>
         ) : (
           sermons.map((sermon) => (
             <div key={sermon.id} className="border rounded-lg p-4 flex justify-between items-start">
