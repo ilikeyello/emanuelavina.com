@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -13,8 +14,10 @@ const links = [
 ];
 
 export default function MarketingNav() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const isDashboardPage = pathname?.startsWith('/dashboard');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,25 +38,43 @@ export default function MarketingNav() {
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <Link href="/" className="flex flex-col leading-none">
-          <span className="text-[26px] font-bold font-serif tracking-[0.02em] text-[color:var(--foreground)]">
-            Emanuel
-          </span>
-          <span className="text-[13px] font-semibold font-sans tracking-[0.08em] text-[color:var(--muted-foreground)] uppercase">
-            Web Design
-          </span>
+        <Link href="/" className="flex items-center leading-none">
+          <div className="flex flex-col">
+            <span className="text-[26px] font-bold font-serif tracking-[0.02em] text-[color:var(--foreground)]">
+              Emanuel
+            </span>
+            <span className="text-[13px] font-semibold font-sans tracking-[0.08em] text-[color:var(--muted-foreground)] uppercase">
+              Web Design
+            </span>
+          </div>
+          {isDashboardPage && (
+            <>
+              <div className="mx-4 h-8 w-px bg-[color:var(--border)]"></div>
+              <span className="text-xl font-semibold text-[color:var(--foreground)]">
+                Admin Dashboard
+              </span>
+            </>
+          )}
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-[color:var(--muted-foreground)]">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium hover:text-[color:var(--foreground)] transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive = pathname === link.href || 
+                           (link.href === '/dashboard/client-portal' && pathname?.startsWith('/dashboard/client-portal'));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors ${
+                  isActive 
+                    ? 'text-[color:var(--accent)]' 
+                    : 'hover:text-[color:var(--foreground)]'
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <button
@@ -68,16 +89,24 @@ export default function MarketingNav() {
 
       {open && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-[color:var(--background)] px-4 py-3 space-y-2">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block w-full text-[color:var(--foreground)] text-sm font-medium py-2"
-              onClick={() => setOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive = pathname === link.href || 
+                           (link.href === '/dashboard/client-portal' && pathname?.startsWith('/dashboard/client-portal'));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`block w-full text-sm font-medium py-2 ${
+                  isActive 
+                    ? 'text-[color:var(--accent)]' 
+                    : 'text-[color:var(--foreground)]'
+                }`}
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
       )}
     </header>

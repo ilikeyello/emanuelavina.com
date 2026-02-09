@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import Link from 'next/link';
+import { UserButton } from '@clerk/nextjs';
 import ClientPortalTabs from '@/components/dashboard/ClientPortalTabs';
 
 export default async function ClientPortalPage() {
@@ -28,9 +29,12 @@ export default async function ClientPortalPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Client Portal</h1>
-        <p className="mt-2 text-gray-600">Manage your church site and content</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Client Portal</h1>
+          <p className="mt-2 text-gray-600">Manage your church site and content</p>
+        </div>
+        <UserButton afterSignOutUrl="/" />
       </div>
       <ClientPortalTabs orgId={orgId} />
     </div>
