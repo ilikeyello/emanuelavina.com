@@ -68,7 +68,7 @@ export default function MarketingNav() {
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive 
-                    ? 'text-blue-600' 
+                    ? (isHomePage && !isScrolled ? 'text-white' : 'text-[#6f8192]')
                     : 'hover:text-[color:var(--foreground)]'
                 }`}
               >
@@ -99,7 +99,7 @@ export default function MarketingNav() {
                 href={link.href}
                 className={`block w-full text-sm font-medium py-2 ${
                   isActive 
-                    ? 'text-blue-600' 
+                    ? 'text-[#6f8192]' 
                     : 'text-[color:var(--foreground)]'
                 }`}
                 onClick={() => setOpen(false)}
