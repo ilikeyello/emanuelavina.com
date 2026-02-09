@@ -53,6 +53,31 @@ export async function GET(req: Request) {
         statusText: response.statusText,
         body: text,
       });
+      
+      // Special handling for 404 - likely billing not enabled
+      if (response.status === 404) {
+        return NextResponse.json(
+          { 
+            error: "Clerk Billing is not enabled", 
+            status: response.status,
+            message: "Please enable Clerk Billing in your Clerk dashboard at https://dashboard.clerk.com. Go to Billing > Enable Billing and set up your payment gateway.",
+            details: {
+              planId,
+              apiEndpoint: CLERK_BILLING_API,
+              instructions: [
+                "1. Go to your Clerk Dashboard",
+                "2. Navigate to Billing section",
+                "3. Click 'Enable Billing'",
+                "4. Set up your payment gateway (Stripe)",
+                "5. Create subscription plans",
+                "6. Update plan IDs in your pricing page"
+              ]
+            }
+          },
+          { status: 500 }
+        );
+      }
+      
       return NextResponse.json(
         { 
           error: "Unable to start checkout", 
