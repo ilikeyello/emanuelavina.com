@@ -68,7 +68,7 @@ export default function MarketingNav() {
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive 
-                    ? (isHomePage && !isScrolled ? 'text-white' : 'text-[color:var(--accent)]')
+                    ? 'text-[color:var(--accent)]' 
                     : 'hover:text-[color:var(--foreground)]'
                 }`}
               >
@@ -93,14 +93,13 @@ export default function MarketingNav() {
           {links.map((link) => {
             const isActive = pathname === link.href || 
                            (link.href === '/dashboard/client-portal' && pathname?.startsWith('/dashboard/client-portal'));
-            const isHomePage = pathname === '/';
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 className={`block w-full text-sm font-medium py-2 ${
                   isActive 
-                    ? (isHomePage && !isScrolled ? 'text-white' : 'text-[color:var(--accent)]')
+                    ? 'text-[color:var(--accent)]' 
                     : 'text-[color:var(--foreground)]'
                 }`}
                 onClick={() => setOpen(false)}
