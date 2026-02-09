@@ -33,7 +33,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const CHURCH_SITE_BASE_URL = 'https://prod-cne-sh82.encr.app';
+  const ADMIN_API_BASE_URL = '/api/games';
 
   useEffect(() => {
     fetchGames();
@@ -44,22 +44,51 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
       setLoading(true);
       setError(null);
 
+      console.log('Fetching games via admin API:', ADMIN_API_BASE_URL);
+
       // Fetch trivia levels
-      const triviaResponse = await fetch(`${CHURCH_SITE_BASE_URL}/trivia/simple`);
-      if (triviaResponse.ok) {
-        const triviaData = await triviaResponse.json();
-        setTriviaLevels(triviaData.levels || []);
+      try {
+        const triviaResponse = await fetch(`${ADMIN_API_BASE_URL}?type=trivia`);
+        console.log('Trivia response status:', triviaResponse.status);
+        
+        if (triviaResponse.ok) {
+          const triviaData = await triviaResponse.json();
+          console.log('Trivia data:', triviaData);
+          setTriviaLevels(triviaData.levels || []);
+        } else {
+          console.error('Trivia fetch failed:', triviaResponse.statusText);
+          const errorData = await triviaResponse.json().catch(() => ({}));
+          console.error('Trivia error details:', errorData);
+        }
+      } catch (triviaErr) {
+        console.error('Trivia fetch error:', triviaErr);
       }
 
       // Fetch word search levels
-      const wordSearchResponse = await fetch(`${CHURCH_SITE_BASE_URL}/games/wordsearch/levels`);
-      if (wordSearchResponse.ok) {
-        const wordSearchData = await wordSearchResponse.json();
-        setWordSearchLevels(wordSearchData.levels || []);
+      try {
+        const wordSearchResponse = await fetch(`${ADMIN_API_BASE_URL}?type=wordsearch-levels`);
+        console.log('Word search response status:', wordSearchResponse.status);
+        
+        if (wordSearchResponse.ok) {
+          const wordSearchData = await wordSearchResponse.json();
+          console.log('Word search data:', wordSearchData);
+          setWordSearchLevels(wordSearchData.levels || []);
+        } else {
+          console.error('Word search fetch failed:', wordSearchResponse.statusText);
+          const errorData = await wordSearchResponse.json().catch(() => ({}));
+          console.error('Word search error details:', errorData);
+        }
+      } catch (wordSearchErr) {
+        console.error('Word search fetch error:', wordSearchErr);
+      }
+
+      // Check if we got any data
+      if (triviaLevels.length === 0 && wordSearchLevels.length === 0) {
+        setError('Unable to fetch game data. Please check if the church site is running and accessible.');
       }
     } catch (err) {
       console.error('Failed to fetch games:', err);
-      setError('Failed to load games from church site');
+      setError(`Failed to load games: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -219,7 +248,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
         </CardHeader>
         <CardContent className="space-y-2">
           <a 
-            href={`${CHURCH_SITE_BASE_URL}/games/trivia`} 
+            href="https://prod-cne-sh82.encr.app/games/trivia" 
             target="_blank" 
             rel="noopener noreferrer"
             className="block p-3 border rounded-lg hover:bg-gray-50 transition-colors"
@@ -230,7 +259,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
             </div>
           </a>
           <a 
-            href={`${CHURCH_SITE_BASE_URL}/games/wordsearch`} 
+            href="https://prod-cne-sh82.encr.app/games/wordsearch" 
             target="_blank" 
             rel="noopener noreferrer"
             className="block p-3 border rounded-lg hover:bg-gray-50 transition-colors"
