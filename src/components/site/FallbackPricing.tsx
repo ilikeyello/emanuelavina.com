@@ -4,46 +4,30 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    name: "Ministry Suite", 
-    price: "$599",
-    period: "one-time",
-    description: "Comprehensive solution for growing ministries",
+    name: "Custom Solution",
+    price: "Custom",
+    period: "pricing",
+    description: "Tailored specifically for your church's unique needs and vision",
     features: [
       "Custom church website design",
       "Mobile-responsive layout",
-      "Advanced sermon system",
-      "Event calendar & registration",
+      "Advanced sermon & media management",
+      "Event calendar & registration system",
       "Online giving integration",
-      "Member portal access",
-      "2 years of hosting",
-      "Priority support",
-      "Basic SEO setup"
+      "Member portal & community features",
+      "Custom integrations (your existing tools)",
+      "Ongoing support & maintenance",
+      "SEO & marketing optimization",
+      "Training for your team"
     ],
-    cta: "Most Popular",
+    cta: "Get Custom Quote",
     popular: true
-  },
-  {
-    name: "Stewardship",
-    price: "$999",
-    period: "one-time", 
-    description: "Complete digital solution for established churches",
-    features: [
-      "Everything in Ministry Suite",
-      "Custom integrations",
-      "Advanced analytics",
-      "Multi-campus support",
-      "3 years of hosting",
-      "Dedicated support",
-      "Training & onboarding",
-      "Advanced SEO & marketing"
-    ],
-    cta: "Get Started"
   }
 ];
 
 export function FallbackPricing() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       {plans.map((plan) => (
         <div
           key={plan.name}

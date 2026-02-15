@@ -17,14 +17,14 @@ export default function PricingPage() {
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Pricing</p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">Clear packages for every congregation.</h1>
+            <h1 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">Custom solutions for your unique ministry.</h1>
             <p className="text-lg text-[color:var(--muted-foreground)]">
-              Reliable builds with ongoing care, accessible design, and a client portal to keep communication peaceful.
+              Every church is different. We build tailored solutions that fit your specific vision, needs, and budget.
             </p>
           </div>
 
           {/* Clerk's PricingTable component */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
                 <strong>Debug Info:</strong> If you don't see pricing packages below, please check:
