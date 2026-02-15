@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { UserButton } from '@clerk/nextjs';
 import ClientPortalTabs from '@/components/dashboard/ClientPortalTabs';
 
+// Force dynamic rendering for authentication
+export const dynamic = 'force-dynamic';
+
 export default async function ClientPortalPage() {
   const { orgId } = await auth();
 

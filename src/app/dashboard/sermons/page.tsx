@@ -1,6 +1,9 @@
 import { getSupabase } from '@/lib/supabase/user';
 import { CreateSermonForm } from './create-sermon-form';
 
+// Force dynamic rendering for authentication
+export const dynamic = 'force-dynamic';
+
 export default async function SermonsPage() {
   let supabase;
   try {

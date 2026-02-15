@@ -3,6 +3,9 @@ import { redirect } from 'next/navigation';
 import { Toaster } from '@/components/ui/toaster';
 import MarketingNav from '@/components/site/MarketingNav';
 
+// Force dynamic rendering for dashboard routes
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   try {
     const { userId } = await auth();

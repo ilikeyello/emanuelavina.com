@@ -1,6 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
+// Force dynamic rendering for authentication
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const { orgId, orgSlug, userId } = await auth();
 
