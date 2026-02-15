@@ -24,7 +24,7 @@ export default function PricingPage() {
           </div>
 
           {/* Clerk's PricingTable component */}
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
                 <strong>Debug Info:</strong> If you don't see pricing packages below, please check:

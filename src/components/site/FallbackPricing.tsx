@@ -4,33 +4,20 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    name: "Foundation",
-    price: "$299",
-    period: "one-time",
-    description: "Perfect for small churches getting started online",
-    features: [
-      "Custom church website design",
-      "Mobile-responsive layout",
-      "Sermon management system",
-      "Basic SEO setup",
-      "1 year of hosting",
-      "Email support"
-    ],
-    cta: "Get Started"
-  },
-  {
     name: "Ministry Suite", 
     price: "$599",
     period: "one-time",
     description: "Comprehensive solution for growing ministries",
     features: [
-      "Everything in Foundation",
+      "Custom church website design",
+      "Mobile-responsive layout",
       "Advanced sermon system",
       "Event calendar & registration",
       "Online giving integration",
       "Member portal access",
       "2 years of hosting",
-      "Priority support"
+      "Priority support",
+      "Basic SEO setup"
     ],
     cta: "Most Popular",
     popular: true
@@ -47,7 +34,8 @@ const plans = [
       "Multi-campus support",
       "3 years of hosting",
       "Dedicated support",
-      "Training & onboarding"
+      "Training & onboarding",
+      "Advanced SEO & marketing"
     ],
     cta: "Get Started"
   }
@@ -55,7 +43,7 @@ const plans = [
 
 export function FallbackPricing() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       {plans.map((plan) => (
         <div
           key={plan.name}
