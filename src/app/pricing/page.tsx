@@ -1,6 +1,7 @@
 import { PricingTable } from '@clerk/nextjs'
 import MarketingNav from "@/components/site/MarketingNav";
 import Footer from "@/components/site/Footer";
+import { FallbackPricing } from "@/components/site/FallbackPricing";
 
 export const metadata = {
   title: "Pricing | Emanuel Web Design",
@@ -24,7 +25,26 @@ export default function PricingPage() {
 
           {/* Clerk's PricingTable component */}
           <div className="max-w-5xl mx-auto">
-            <PricingTable for="user" />
+            <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-sm text-yellow-800">
+                <strong>Debug Info:</strong> If you don't see pricing packages below, please check:
+              </p>
+              <ul className="text-sm text-yellow-700 mt-2 list-disc list-inside">
+                <li>Billing is enabled in Clerk Dashboard</li>
+                <li>Plans are active and not hidden</li>
+                <li>You're logged into Clerk</li>
+                <li>Environment variables are correct</li>
+              </ul>
+            </div>
+            <PricingTable for="organization" />
+            
+            {/* Fallback pricing if Clerk doesn't load */}
+            <div className="mt-12">
+              <div className="text-center mb-8">
+                <p className="text-sm text-muted-foreground">Or view our standard packages</p>
+              </div>
+              <FallbackPricing />
+            </div>
           </div>
 
           <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
