@@ -4,43 +4,42 @@ import Footer from "@/components/site/Footer";
 
 export const metadata = {
   title: "About | Emanuel Web Design",
-  description: "Learn about Emanuel Avina's approach to building peaceful, accessible church websites.",
+  description: "Learn about my approach to building peaceful, accessible church websites for local ministries.",
 };
 
 const aboutSections = [
   {
     main: {
-      title: "Emanuel Avina",
+      title: "My Story",
       content: [
-        "I grew up in my dad’s church in Yuma, Colorado. Sundays meant stacking chairs, setting up sound, and watching how small acts of service made ministry possible. That rooted me locally and shaped how I build: practical, calm, and dependable.",
-        "Today I design for churches across NE Colorado with that same mindset. I speak the language of pastors and volunteers—clear next steps, gentle visuals, and technology that disappears behind the message.",
+        "I grew up in my dad’s church right here in Yuma, Colorado. Sundays meant stacking chairs, running sound, and watching how small acts of service made ministry possible. That experience is at the heart of how I build today: practical, calm, and always dependable.",
+        "I speak the language of pastors and volunteers because I've been there. My goal is to give you clear next steps and technology that disappears, so you can focus on the message.",
       ],
     },
     aside: {
-      title: "Local roots",
+      title: "Local Roots",
       points: [
-        "Raised in Yuma; serving churches across NE Colorado",
-        "Understands rural rhythms and volunteer-led teams",
-        "Designs that feel welcoming, not corporate",
+        "Raised in Yuma, serving churches across NE Colorado",
+        "I understand rural rhythms and volunteer-led teams",
+        "My designs feel welcoming, not corporate",
       ],
     },
     reverse: false,
   },
   {
     main: {
-      title: "What we offer",
+      title: "What I Offer",
       points: [
-        "Managed builds: Next.js + Tailwind + Sanity + Supabase with accessibility baked in",
-        "Client Portal for updates, billing, and uploads—no tickets lost in email",
-        "Content support: sermons, events, devotionals, livestreams, and giving flows",
-        "Hosting, security, backups, and monitoring handled for you",
+        "Modern websites built with Next.js, Tailwind, and Sanity for easy content management.",
+        "A personal Client Portal for updates, billing, and uploads—no more lost emails.",
+        "Full support for sermons, events, devotionals, livestreams, and giving.",
+        "I handle all the technical stuff: hosting, security, backups, and monitoring.",
       ],
     },
     aside: {
-      title: "Why not DIY or distant agencies?",
+      title: "Why Not DIY?",
       content: [
-        "DIY builders cost time you don’t have and often skip accessibility. Distant teams don’t know your community or answer the phone when weather cancels Sunday.",
-        "A local partner means faster support, sensible defaults, and language that fits your congregation—not a generic template.",
+        "DIY builders cost time you don’t have and often miss crucial accessibility standards. I provide a local partnership, which means faster support, sensible defaults, and a design that fits your congregation—not a generic template.",
       ],
     },
     reverse: true,
@@ -49,9 +48,18 @@ const aboutSections = [
 
 const showcaseProjects = [
   {
-    name: "Centro de Nueva Esperanza (Yuma, CO)",
-    description: "My dad’s church—Modern Sanctuary redesign with bilingual next steps, sermon archive, and clear giving paths.",
+    name: "Centro de Nueva Esperanza",
+    location: "Yuma, CO",
+    description: "A complete redesign for my home church, featuring a bilingual interface, a new sermon archive, and clear, accessible giving paths to support their ministry.",
     url: "https://cnechurch.vercel.app/",
+    img: "/img/cne-showcase.png",
+  },
+  {
+    name: "Sterling Community Church",
+    location: "Sterling, CO",
+    description: "A new build focused on community engagement, with a prominent events calendar, integrated music playlists, and a streamlined system for prayer requests.",
+    url: "#",
+    img: "/img/sterling-showcase.png",
   },
 ];
 
@@ -64,10 +72,10 @@ export default function AboutPage() {
           <div className="space-y-4 text-center max-w-3xl mx-auto">
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">About</p>
             <h1 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">
-              Emanuel Web Design is a calm, reliable partner for your church website.
+              I'm Emanuel, a web designer and church consultant from rural Colorado.
             </h1>
             <p className="text-lg text-[color:var(--muted-foreground)]">
-              Accessible builds and managed tech so your message reaches everyone.
+              I build peaceful, reliable websites so your ministry can thrive online.
             </p>
           </div>
 
@@ -98,7 +106,7 @@ export default function AboutPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Showcase</p>
-                <h2 className="text-2xl font-serif font-semibold text-[color:var(--foreground)]">Recent ministry builds</h2>
+                <h2 className="text-2xl font-serif font-semibold text-[color:var(--foreground)]">Ministry Showcase</h2>
               </div>
               <Link href="/pricing" className="hidden sm:inline-block text-sm font-semibold text-[color:var(--foreground)] hover:text-[color:var(--primary)] transition">View packages →</Link>
             </div>
@@ -107,14 +115,20 @@ export default function AboutPage() {
                 <Link
                   key={project.name}
                   href={project.url}
-                  className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-5 shadow-sm block hover:border-[color:var(--primary)] hover:shadow-[0_12px_26px_rgba(0,0,0,0.16)] transition"
+                  className="group rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]/80 shadow-sm block hover:border-[color:var(--primary)] hover:shadow-[0_12px_26px_rgba(0,0,0,0.16)] transition overflow-hidden"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <p className="text-sm font-semibold text-[color:var(--foreground)]">{project.name}</p>
-                  <p className="mt-2 text-xs text-[color:var(--muted-foreground)]">
-                    {project.description}
-                  </p>
+                  <div className="aspect-video overflow-hidden">
+                    <img src={project.img} alt={project.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-sm font-semibold text-[color:var(--foreground)]">{project.name}</p>
+                    <p className="text-xs text-[color:var(--muted-foreground)] font-medium tracking-wider uppercase">{project.location}</p>
+                    <p className="mt-2 text-sm text-[color:var(--muted-foreground)]">
+                      {project.description}
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -124,7 +138,7 @@ export default function AboutPage() {
             <div className="space-y-2 max-w-xl">
               <h2 className="text-2xl sm:text-3xl font-serif font-semibold">Ready to modernize your church’s digital front door?</h2>
               <p className="text-[color:var(--muted-foreground)] leading-relaxed">
-                Tell me about your congregation, and I’ll manage the site, dashboard, and support—so you stay focused on the message.
+                Tell me about your congregation, and I’ll handle the technical details—the site, the dashboard, and the support—so you can stay focused on your ministry.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

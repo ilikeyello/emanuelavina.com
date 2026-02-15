@@ -19,25 +19,25 @@ const heroImage =
 export const metadata = {
   title: "Emanuel Web Design | Peaceful church websites",
   description:
-    "Emanuel Web Design crafts modern, serene, and accessible church websites with managed content, pricing, and a dedicated client portal.",
+    "I build modern, serene, and accessible church websites with managed content, simple pricing, and a dedicated client portal.",
 };
 
 const approachFeatures = [
   {
-    title: "Managed ecosystem",
-    body: "Every build ships with a dashboard for sermons, events, and updates—no tech wrangling required.",
+    title: "A Managed Ecosystem",
+    body: "Every website comes with a simple dashboard for sermons, events, and updates—no tech wrangling required.",
   },
   {
-    title: "Pastor-friendly",
-    body: "Done-for-you publishing, clear next steps, and accessible layouts so you never wrestle settings late at night.",
+    title: "Pastor-Friendly Design",
+    body: "I build with clear next steps and accessible layouts so you never have to wrestle with settings late at night.",
   },
   {
-    title: "Local to NE Colorado",
-    body: "Yuma, Sterling, Akron—we know the rural church rhythm and deliver support that actually answers.",
+    title: "NE Colorado Native",
+    body: "From Yuma to Sterling and Akron—I know the rural church rhythm and deliver support that actually answers.",
   },
   {
-    title: "24/7 support",
-    body: "Reach a local partner, not a call center. We keep your site live, secure, and up to date.",
+    title: "Personal Support",
+    body: "You'll reach me directly, not a call center. I keep your site live, secure, and up to date so you don't have to.",
   },
 ];
 
@@ -102,7 +102,7 @@ export default function Home() {
                 Open Your Doors to the World
               </h1>
               <p className="text-lg sm:text-xl text-[color:var(--muted-foreground)] leading-relaxed max-w-3xl mx-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]">
-                A full-service web design agency for local churches. From sermon archives to online giving, we build and manage the tech so you don’t have to.
+                I build and manage websites for local churches, handling everything from sermon archives to online giving so you can focus on your ministry.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Link
@@ -127,7 +127,7 @@ export default function Home() {
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Approach</p>
             <h2 className="text-3xl font-serif font-semibold">Your time is important.</h2>
             <p className="text-[color:var(--muted-foreground)] leading-relaxed">
-              You shouldn’t burn evenings on tech. We design, host, and manage the site so your attention stays on the message.
+              You shouldn’t burn evenings on tech. I design, host, and manage the site so your attention stays on the message.
             </p>
           </div>
           <div className="lg:col-span-2 grid gap-4 sm:grid-cols-2">
@@ -149,7 +149,7 @@ export default function Home() {
               <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Why it matters</p>
               <h2 className="text-3xl font-serif font-semibold">Your website is the new front door.</h2>
               <p className="text-[color:var(--muted-foreground)] leading-relaxed">
-                First impressions, giving, and weekly touchpoints start online. We design for seekers, members, and the homebound so ministry reaches beyond Sunday.
+                First impressions, giving, and weekly touchpoints start online. I design for seekers, members, and the homebound so ministry can reach beyond Sunday.
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export default function Home() {
               <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Capabilities</p>
               <h2 className="text-3xl font-serif font-semibold">Built-in tools for everyday ministry.</h2>
               <p className="text-[color:var(--muted-foreground)] leading-relaxed">
-                Every site ships ready for your rhythm: giving, sermons, music, livestreams, prayer, news, and community boards—managed and secured.
+                Every site comes ready for your church’s rhythm: giving, sermons, music, livestreams, prayer, news, and community boards—all managed and secured.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -190,7 +190,7 @@ export default function Home() {
             <div className="space-y-2 max-w-xl">
               <h2 className="text-2xl sm:text-3xl font-serif font-semibold">Ready to modernize your church’s digital front door?</h2>
               <p className="text-[color:var(--muted-foreground)] leading-relaxed">
-                Tell me about your congregation, and I’ll manage the site, dashboard, and support—so you stay focused on ministry.
+                Tell me about your congregation, and I’ll handle the technical details—the site, the dashboard, and the support—so you can stay focused on your ministry.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

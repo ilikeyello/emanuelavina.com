@@ -230,33 +230,6 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Organization Members
-          </CardTitle>
-          <CardDescription>
-            Manage organization members in Clerk Dashboard
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-600 mb-4">
-            To add or remove administrators, visit your{' '}
-            <a
-              href="https://dashboard.clerk.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              Clerk Dashboard
-            </a>
-          </p>
-          <div className="text-sm text-gray-500">
-            Current organization: <strong>{organization?.name}</strong>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -38,7 +38,7 @@ export default function ClientPortalTabs({ orgId }: ClientPortalTabsProps) {
       </TabsContent>
 
       <TabsContent value="billing" className="mt-6">
-        <BillingTab orgId={orgId} />
+        <BillingTab />
       </TabsContent>
 
       <TabsContent value="content" className="mt-6">

@@ -1,6 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
 import Link from 'next/link';
-import { UserButton } from '@clerk/nextjs';
 import ClientPortalTabs from '@/components/dashboard/ClientPortalTabs';
 
 // Force dynamic rendering for authentication
