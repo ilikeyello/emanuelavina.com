@@ -1,6 +1,17 @@
 import Link from "next/link";
 import MarketingNav from "@/components/site/MarketingNav";
 import Footer from "@/components/site/Footer";
+import {
+  CreditCard,
+  Youtube,
+  Music,
+  HeartHandshake,
+  Megaphone,
+  ShieldCheck,
+  Server,
+  CalendarDays,
+  Clapperboard,
+} from "lucide-react";
 
 const heroImage =
   "https://images.unsplash.com/photo-1515162305285-0293e4767cc2?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
@@ -10,6 +21,60 @@ export const metadata = {
   description:
     "Emanuel Web Design crafts modern, serene, and accessible church websites with managed content, pricing, and a dedicated client portal.",
 };
+
+const approachFeatures = [
+  {
+    title: "Managed ecosystem",
+    body: "Every build ships with a dashboard for sermons, events, and updates—no tech wrangling required.",
+  },
+  {
+    title: "Pastor-friendly",
+    body: "Done-for-you publishing, clear next steps, and accessible layouts so you never wrestle settings late at night.",
+  },
+  {
+    title: "Local to NE Colorado",
+    body: "Yuma, Sterling, Akron—we know the rural church rhythm and deliver support that actually answers.",
+  },
+  {
+    title: "24/7 support",
+    body: "Reach a local partner, not a call center. We keep your site live, secure, and up to date.",
+  },
+];
+
+const stats = [
+  {
+    stat: "65%",
+    label: "Visit the site before visiting in person",
+    note: "Search-friendly pages and clear service info build trust for first-timers.",
+  },
+  {
+    stat: "+27%",
+    label: "Higher giving when online is simple",
+    note: "Prominent next steps and secure flows keep generosity moving all week.",
+  },
+  {
+    stat: "4×",
+    label: "More attendance when livestreams are easy to find",
+    note: "Clear livestream and archive hubs serve homebound and travelers.",
+  },
+  {
+    stat: "3–5 min",
+    label: "Average devotional watch/read time",
+    note: "Short video and written devotionals keep members connected between Sundays.",
+  },
+];
+
+const capabilities = [
+    { text: "Online giving", icon: <CreditCard className="w-6 h-6" /> },
+    { text: "Sermon archives", icon: <Clapperboard className="w-6 h-6" /> },
+    { text: "Livestream embeds", icon: <Youtube className="w-6 h-6" /> },
+    { text: "Music playlists", icon: <Music className="w-6 h-6" /> },
+    { text: "Prayer requests", icon: <HeartHandshake className="w-6 h-6" /> },
+    { text: "Announcements", icon: <Megaphone className="w-6 h-6" /> },
+    { text: "Security & backups", icon: <ShieldCheck className="w-6 h-6" /> },
+    { text: "Managed hosting", icon: <Server className="w-6 h-6" /> },
+    { text: "Event calendars", icon: <CalendarDays className="w-6 h-6" /> },
+];
 
 export default function Home() {
   return (
@@ -66,24 +131,7 @@ export default function Home() {
             </p>
           </div>
           <div className="lg:col-span-2 grid gap-4 sm:grid-cols-2">
-            {[
-              {
-                title: "Managed ecosystem",
-                body: "Every build ships with a dashboard for sermons, events, and updates—no tech wrangling required.",
-              },
-              {
-                title: "Pastor-friendly",
-                body: "Done-for-you publishing, clear next steps, and accessible layouts so you never wrestle settings late at night.",
-              },
-              {
-                title: "Local to NE Colorado",
-                body: "Yuma, Sterling, Akron—we know the rural church rhythm and deliver support that actually answers.",
-              },
-              {
-                title: "24/7 support",
-                body: "Reach a local partner, not a call center. We keep your site live, secure, and up to date.",
-              },
-            ].map((item) => (
+            {approachFeatures.map((item) => (
               <div
                 key={item.title}
                 className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-5 shadow-sm"
@@ -106,26 +154,7 @@ export default function Home() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[{
-                stat: "65%",
-                label: "Visit the site before visiting in person",
-                note: "Search-friendly pages and clear service info build trust for first-timers.",
-              },
-              {
-                stat: "+27%",
-                label: "Higher giving when online is simple",
-                note: "Prominent next steps and secure flows keep generosity moving all week.",
-              },
-              {
-                stat: "4×",
-                label: "More attendance when livestreams are easy to find",
-                note: "Clear livestream and archive hubs serve homebound and travelers.",
-              },
-              {
-                stat: "3–5 min",
-                label: "Average devotional watch/read time",
-                note: "Short video and written devotionals keep members connected between Sundays.",
-              }].map((item) => (
+              {stats.map((item) => (
                 <div key={item.label} className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-5 shadow-sm space-y-2">
                   <p className="text-3xl font-serif font-semibold text-[color:var(--foreground)]">{item.stat}</p>
                   <p className="text-sm font-semibold text-[color:var(--foreground)]">{item.label}</p>
@@ -145,22 +174,14 @@ export default function Home() {
                 Every site ships ready for your rhythm: giving, sermons, music, livestreams, prayer, news, and community boards—managed and secured.
               </p>
             </div>
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-[color:var(--foreground)] list-disc list-inside text-center place-items-center">
-              {["Online giving with clear next steps",
-                "Sermon uploads & archives",
-                "YouTube livestream embeds",
-                "Music uploads & playlists",
-                "Prayer requests with follow-up",
-                "Bulletin boards & announcements",
-                "Security, backups, and monitoring",
-                "Managed hosting & updates",
-                "News & event highlights",
-              ].map((item) => (
-                <li key={item} className="text-sm leading-6 text-[color:var(--foreground)]">
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {capabilities.map((item) => (
+                    <div key={item.text} className="flex items-center gap-4 p-4 rounded-lg">
+                        <div className="text-[color:var(--primary)]">{item.icon}</div>
+                        <span className="font-semibold">{item.text}</span>
+                    </div>
+                ))}
+            </div>
           </div>
         </section>
 
@@ -194,4 +215,3 @@ export default function Home() {
     </div>
   );
 }
-

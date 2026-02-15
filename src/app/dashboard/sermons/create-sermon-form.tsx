@@ -1,38 +1,49 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { createSermon } from './actions';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className="px-4 py-2 bg-blue-600 text-white rounded-md disabled:bg-gray-400">
+    <Button type="submit" disabled={pending} className="w-full">
       {pending ? 'Creating...' : 'Create Sermon'}
-    </button>
+    </Button>
   );
 }
 
-export function CreateSermonForm() {
+export function CreateSermonForm({ onSuccess }: { onSuccess?: () => void }) {
   const initialState = { error: null };
   const [state, formAction] = useFormState(createSermon, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.error === null && formRef.current?.checkValidity()) {
+      onSuccess?.();
+      formRef.current?.reset();
+    }
+  }, [state, onSuccess]);
 
   return (
-    <form action={formAction} className="p-4 border rounded-lg bg-gray-50 space-y-4">
-      <h3 className="text-xl font-semibold">Add New Sermon</h3>
-      <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-        <input type="text" id="title" name="title" required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+    <form ref={formRef} action={formAction} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="title">Title</Label>
+        <Input id="title" name="title" required />
       </div>
-      <div>
-        <label htmlFor="preacher" className="block text-sm font-medium text-gray-700">Preacher</label>
-        <input type="text" id="preacher" name="preacher" required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+      <div className="space-y-2">
+        <Label htmlFor="preacher">Preacher</Label>
+        <Input id="preacher" name="preacher" required />
       </div>
-      <div>
-        <label htmlFor="sermon_date" className="block text-sm font-medium text-gray-700">Date</label>
-        <input type="date" id="sermon_date" name="sermon_date" required className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+      <div className="space-y-2">
+        <Label htmlFor="sermon_date">Date</Label>
+        <Input id="sermon_date" name="sermon_date" type="date" required />
       </div>
       <SubmitButton />
-      {state.error && <p className="text-red-500 text-sm">{state.error}</p>}
+      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
     </form>
   );
 }

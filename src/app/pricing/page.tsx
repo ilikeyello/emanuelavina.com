@@ -1,4 +1,5 @@
-import { PricingTable } from '@clerk/nextjs'
+import { PricingTable } from '@clerk/nextjs';
+import Link from 'next/link';
 import MarketingNav from "@/components/site/MarketingNav";
 import Footer from "@/components/site/Footer";
 
@@ -27,18 +28,24 @@ export default function PricingPage() {
             <PricingTable for="organization" />
           </div>
 
-          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="space-y-2">
+          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
               <h2 className="text-2xl font-serif font-semibold">Need a custom scope?</h2>
               <p className="text-[color:var(--muted-foreground)]">We can tailor flows for multi-campuses, multilingual content, or unique integrations.</p>
             </div>
-            <div className="flex gap-3">
-              <a href="/contact" className="px-5 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] font-semibold hover:opacity-90 transition">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link
+                href="/contact"
+                className="inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
+              >
                 Talk with Emanuel
-              </a>
-              <a href="/dashboard/client-portal" className="px-5 py-3 rounded-full border border-[color:var(--border)] text-[color:var(--foreground)] font-semibold hover:border-[color:var(--foreground)] transition">
+              </Link>
+              <Link
+                href="/dashboard/client-portal"
+                className="inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full border border-[color:var(--foreground)]/80 text-base font-semibold text-[color:var(--foreground)] bg-[color:var(--background)]/65 backdrop-blur-md shadow-[0_10px_22px_rgba(0,0,0,0.2)] transition hover:border-[color:var(--primary)] hover:text-[color:var(--primary)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.24)]"
+              >
                 Client portal
-              </a>
+              </Link>
             </div>
           </div>
         </section>
