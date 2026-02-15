@@ -17,14 +17,15 @@ interface QuestionnaireData {
 }
 
 export async function sendQuestionnaire(data: QuestionnaireData): Promise<{ error: string | null }> {
-  const { userId, orgId } = auth();
+  const { userId, orgId } = await auth();
 
   if (!userId || !orgId) {
     return { error: 'You must be signed in to submit this form.' };
   }
 
   try {
-    const org = await clerkClient.organizations.getOrganization({ organizationId: orgId });
+    const client = await clerkClient();
+    const org = await client.organizations.getOrganization({ organizationId: orgId });
 
     const htmlBody = `
       <div style="font-family: sans-serif; line-height: 1.6;">
