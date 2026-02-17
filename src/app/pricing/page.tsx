@@ -1,7 +1,7 @@
 // Force dynamic rendering to ensure the pricing table always has the latest auth state.
 export const dynamic = 'force-dynamic';
 
-import { PricingTable } from '@clerk/nextjs';
+import { ClerkLoaded, PricingTable } from '@clerk/nextjs';
 import Link from 'next/link';
 import MarketingNav from "@/components/site/MarketingNav";
 import Footer from "@/components/site/Footer";
@@ -28,6 +28,7 @@ export default function PricingPage() {
 
           {/* Clerk's PricingTable component */}
           <div className="max-w-6xl mx-auto">
+            <ClerkLoaded>
             <PricingTable
               for="organization"
               appearance={{
@@ -38,6 +39,7 @@ export default function PricingPage() {
                 },
               }}
             />
+          </ClerkLoaded>
           </div>
 
           <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
