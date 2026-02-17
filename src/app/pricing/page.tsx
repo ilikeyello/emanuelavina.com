@@ -1,3 +1,6 @@
+// Force dynamic rendering to ensure the pricing table always has the latest auth state.
+export const dynamic = 'force-dynamic';
+
 import { PricingTable } from '@clerk/nextjs';
 import Link from 'next/link';
 import MarketingNav from "@/components/site/MarketingNav";
