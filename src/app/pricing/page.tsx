@@ -75,7 +75,7 @@ export default function PricingPage() {
                   </SignedIn>
                   <SignedOut>
                     <Link
-                      href="/sign-up?redirect=/pricing&plan=basic"
+                      href="/custom-sign-up?redirect=/pricing&plan=basic"
                       className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
                     >
                       Get Started
@@ -139,7 +139,7 @@ export default function PricingPage() {
                   </SignedIn>
                   <SignedOut>
                     <Link
-                      href="/sign-up?redirect=/pricing&plan=pro"
+                      href="/custom-sign-up?redirect=/pricing&plan=pro"
                       className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
                     >
                       Get Started
@@ -198,7 +198,7 @@ export default function PricingPage() {
                   </SignedIn>
                   <SignedOut>
                     <Link
-                      href="/sign-up?redirect=/pricing&plan=enterprise"
+                      href="/custom-sign-up?redirect=/pricing&plan=enterprise"
                       className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
                     >
                       Get Started
@@ -215,6 +215,12 @@ export default function PricingPage() {
               <p className="text-[color:var(--muted-foreground)]">We can tailor flows for multi-campuses, multilingual content, or unique integrations.</p>
             </div>
             <div className="flex flex-wrap gap-3 justify-center">
+              <Link
+                href="/sign-in"
+                className="text-[color:var(--primary)] hover:underline"
+              >
+                Sign in
+              </Link>
               <Link
                 href="/contact"
                 className="inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
