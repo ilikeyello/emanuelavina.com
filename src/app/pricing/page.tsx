@@ -1,7 +1,7 @@
 // Force dynamic rendering to ensure the pricing table always has the latest auth state.
 export const dynamic = 'force-dynamic';
 
-import { ClerkLoaded, PricingTable } from '@clerk/nextjs';
+import { ClerkLoaded, PricingTable, SignedIn, SignedOut } from '@clerk/nextjs';
 import Link from 'next/link';
 import MarketingNav from "@/components/site/MarketingNav";
 import Footer from "@/components/site/Footer";
@@ -29,17 +29,32 @@ export default function PricingPage() {
           {/* Clerk's PricingTable component */}
           <div className="max-w-6xl mx-auto">
             <ClerkLoaded>
-            <PricingTable
-              for="organization"
-              appearance={{
-                elements: {
-                  card: 'flex flex-col',
-                  planFeatures: 'flex-grow',
-                  actionButton: 'mt-auto',
-                },
-              }}
-            />
-          </ClerkLoaded>
+              <SignedIn>
+                <PricingTable
+                  for="organization"
+                  appearance={{
+                    elements: {
+                      card: 'flex flex-col',
+                      planFeatures: 'flex-grow',
+                      actionButton: 'mt-auto',
+                    },
+                  }}
+                />
+              </SignedIn>
+              <SignedOut>
+                <div className="text-center space-y-6">
+                  <p className="text-lg text-[color:var(--muted-foreground)]">
+                    Please sign up or sign in to view our pricing plans and start your journey.
+                  </p>
+                  <Link
+                    href="/sign-up"
+                    className="inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
+                  >
+                    Create an Account
+                  </Link>
+                </div>
+              </SignedOut>
+            </ClerkLoaded>
           </div>
 
           <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
