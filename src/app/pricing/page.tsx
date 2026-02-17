@@ -1,7 +1,7 @@
 // Force dynamic rendering to ensure the pricing table always has the latest auth state.
 export const dynamic = 'force-dynamic';
 
-import { ClerkLoaded, PricingTable } from '@clerk/nextjs';
+import { ClerkLoaded, SignedIn, SignedOut } from '@clerk/nextjs';
 import Link from 'next/link';
 import MarketingNav from "@/components/site/MarketingNav";
 import Footer from "@/components/site/Footer";
@@ -26,19 +26,186 @@ export default function PricingPage() {
             </p>
           </div>
 
-          {/* Clerk's PricingTable component */}
+          {/* Custom Pricing Table */}
           <div className="max-w-6xl mx-auto">
             <ClerkLoaded>
-              <PricingTable
-                for="organization"
-                appearance={{
-                  elements: {
-                    card: 'flex flex-col',
-                    planFeatures: 'flex-grow',
-                    actionButton: 'mt-auto',
-                  },
-                }}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Basic Plan */}
+                <div className="flex flex-col rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-8">
+                  <div className="flex-1 space-y-4">
+                    <h3 className="text-2xl font-semibold">Basic</h3>
+                    <p className="text-4xl font-bold">$299<span className="text-lg font-normal text-[color:var(--muted-foreground)]">/month</span></p>
+                    <ul className="space-y-3 text-sm">
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Beautiful church website
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Mobile-responsive design
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Sermon management system
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Event calendar
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Basic analytics
+                      </li>
+                    </ul>
+                  </div>
+                  <SignedIn>
+                    <button className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]">
+                      Subscribe Now
+                    </button>
+                  </SignedIn>
+                  <SignedOut>
+                    <Link
+                      href="/sign-up?redirect=/pricing&plan=basic"
+                      className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
+                    >
+                      Get Started
+                    </Link>
+                  </SignedOut>
+                </div>
+
+                {/* Pro Plan */}
+                <div className="flex flex-col rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-8 relative">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-[color:var(--primary)] text-[color:var(--primary-foreground)] px-4 py-1 rounded-full text-sm font-semibold">
+                      Most Popular
+                    </span>
+                  </div>
+                  <div className="flex-1 space-y-4 mt-4">
+                    <h3 className="text-2xl font-semibold">Pro</h3>
+                    <p className="text-4xl font-bold">$599<span className="text-lg font-normal text-[color:var(--muted-foreground)]">/month</span></p>
+                    <ul className="space-y-3 text-sm">
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Everything in Basic
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Advanced analytics dashboard
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Online giving integration
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Live streaming support
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Member management system
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Priority support
+                      </li>
+                    </ul>
+                  </div>
+                  <SignedIn>
+                    <button className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]">
+                      Subscribe Now
+                    </button>
+                  </SignedIn>
+                  <SignedOut>
+                    <Link
+                      href="/sign-up?redirect=/pricing&plan=pro"
+                      className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
+                    >
+                      Get Started
+                    </Link>
+                  </SignedOut>
+                </div>
+
+                {/* Enterprise Plan */}
+                <div className="flex flex-col rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-8">
+                  <div className="flex-1 space-y-4">
+                    <h3 className="text-2xl font-semibold">Enterprise</h3>
+                    <p className="text-4xl font-bold">$999<span className="text-lg font-normal text-[color:var(--muted-foreground)]">/month</span></p>
+                    <ul className="space-y-3 text-sm">
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Everything in Pro
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Multi-campus support
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Custom app development
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        API access
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Dedicated account manager
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        24/7 phone support
+                      </li>
+                    </ul>
+                  </div>
+                  <SignedIn>
+                    <button className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]">
+                      Subscribe Now
+                    </button>
+                  </SignedIn>
+                  <SignedOut>
+                    <Link
+                      href="/sign-up?redirect=/pricing&plan=enterprise"
+                      className="mt-8 w-full inline-flex min-w-[180px] items-center justify-center text-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
+                    >
+                      Get Started
+                    </Link>
+                  </SignedOut>
+                </div>
+              </div>
             </ClerkLoaded>
           </div>
 
