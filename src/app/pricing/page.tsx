@@ -28,7 +28,16 @@ export default function PricingPage() {
 
           {/* Clerk's PricingTable component */}
           <div className="max-w-6xl mx-auto">
-            <PricingTable for="organization" />
+            <PricingTable
+              for="organization"
+              appearance={{
+                elements: {
+                  card: 'flex flex-col',
+                  planFeatures: 'flex-grow',
+                  actionButton: 'mt-auto',
+                },
+              }}
+            />
           </div>
 
           <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/85 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
