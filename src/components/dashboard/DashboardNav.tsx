@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { OrganizationSwitcher, UserButton } from '@clerk/nextjs';
+import { UserButton } from '@clerk/nextjs';
 import { Church } from 'lucide-react';
 
 export default function DashboardNav() {
@@ -12,15 +12,6 @@ export default function DashboardNav() {
               <Church className="w-6 h-6" />
               <span className="font-serif font-semibold text-lg">Emanuel</span>
             </Link>
-            <OrganizationSwitcher
-              afterCreateOrganizationUrl="/dashboard/client-portal"
-              afterSelectOrganizationUrl="/dashboard/client-portal"
-              appearance={{
-                elements: {
-                  organizationSwitcherTrigger: "p-2 rounded-lg hover:bg-[color:var(--hover)] transition",
-                }
-              }}
-            />
           </div>
           <div className="flex items-center gap-4">
             <Link href="/dashboard/client-portal" className="text-sm font-semibold text-[color:var(--muted-foreground)] hover:text-[color:var(--primary)] transition">
