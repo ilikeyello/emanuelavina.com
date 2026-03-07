@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2, Calendar, MapPin, Globe } from 'lucide-react';
+import { Plus, Trash2, Calendar, MapPin } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import RichTextEditor from '@/components/ui/RichTextEditor';
 
@@ -14,10 +14,8 @@ interface EventsManagerProps {
 
 interface ChurchEvent {
   id: number;
-  titleEn: string;
-  titleEs: string;
-  descriptionEn: string | null;
-  descriptionEs: string | null;
+  title: string;
+  description: string | null;
   event_date: string;
   location: string | null;
   max_attendees: number | null;
@@ -30,12 +28,9 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [editingLanguage, setEditingLanguage] = useState<'en' | 'es'>('en');
   const [formData, setFormData] = useState({
-    titleEn: '',
-    titleEs: '',
-    descriptionEn: '',
-    descriptionEs: '',
+    title: '',
+    description: '',
     event_date: '',
     location: '',
     max_attendees: '',
@@ -85,10 +80,8 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          titleEn: formData.titleEn,
-          titleEs: formData.titleEs,
-          descriptionEn: formData.descriptionEn || null,
-          descriptionEs: formData.descriptionEs || null,
+          title: formData.title,
+          description: formData.description || null,
           event_date: new Date(formData.event_date).toISOString(),
           location: formData.location || null,
           max_attendees: formData.max_attendees ? parseInt(formData.max_attendees) : null,
@@ -101,10 +94,8 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
           description: 'Event created successfully',
         });
         setFormData({
-          titleEn: '',
-          titleEs: '',
-          descriptionEn: '',
-          descriptionEs: '',
+          title: '',
+          description: '',
           event_date: '',
           location: '',
           max_attendees: '',
@@ -174,82 +165,30 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          {/* Language Toggle */}
-          <div className="flex justify-between items-center border-b pb-2">
-            <h4 className="font-medium">Create Event</h4>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant={editingLanguage === 'en' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setEditingLanguage('en')}
-              >
-                <Globe className="h-4 w-4 mr-1" />
-                English
-              </Button>
-              <Button
-                type="button"
-                variant={editingLanguage === 'es' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setEditingLanguage('es')}
-              >
-                <Globe className="h-4 w-4 mr-1" />
-                Español
-              </Button>
+          <h4 className="font-medium border-b pb-2">Create Event</h4>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title *</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="Sunday Service"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Description</Label>
+              <RichTextEditor
+                content={formData.description}
+                onChange={(content) => setFormData({ ...formData, description: content })}
+                placeholder="Describe your event..."
+              />
             </div>
           </div>
 
-          {/* English Fields */}
-          {editingLanguage === 'en' && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="titleEn">English Title *</Label>
-                <Input
-                  id="titleEn"
-                  value={formData.titleEn}
-                  onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
-                  placeholder="Sunday Service"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>English Description</Label>
-                <RichTextEditor
-                  content={formData.descriptionEn}
-                  onChange={(content) => setFormData({ ...formData, descriptionEn: content })}
-                  placeholder="Describe your event in English..."
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Spanish Fields */}
-          {editingLanguage === 'es' && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="titleEs">Spanish Title *</Label>
-                <Input
-                  id="titleEs"
-                  value={formData.titleEs}
-                  onChange={(e) => setFormData({ ...formData, titleEs: e.target.value })}
-                  placeholder="Servicio Dominical"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Spanish Description</Label>
-                <RichTextEditor
-                  content={formData.descriptionEs}
-                  onChange={(content) => setFormData({ ...formData, descriptionEs: content })}
-                  placeholder="Describe tu evento en español..."
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Common Fields */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="event_date">Date & Time *</Label>
@@ -300,26 +239,11 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
           events.map((event) => (
             <div key={event.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h4 className="font-semibold">{event.titleEn}</h4>
-                  <span className="text-xs text-gray-500">|</span>
-                  <h4 className="font-semibold text-gray-600">{event.titleEs}</h4>
-                </div>
+                <h4 className="font-semibold mb-2">{event.title}</h4>
                 
-                {(event.descriptionEn || event.descriptionEs) && (
-                  <div className="text-sm text-gray-600 space-y-2 mb-3">
-                    {event.descriptionEn && (
-                      <div>
-                        <span className="font-medium">English:</span>
-                        <div dangerouslySetInnerHTML={{ __html: event.descriptionEn }} className="mt-1 prose prose-sm max-w-none" />
-                      </div>
-                    )}
-                    {event.descriptionEs && (
-                      <div>
-                        <span className="font-medium">Spanish:</span>
-                        <div dangerouslySetInnerHTML={{ __html: event.descriptionEs }} className="mt-1 prose prose-sm max-w-none" />
-                      </div>
-                    )}
+                {event.description && (
+                  <div className="text-sm text-gray-600 mb-3">
+                    <div dangerouslySetInnerHTML={{ __html: event.description }} className="prose prose-sm max-w-none" />
                   </div>
                 )}
                 

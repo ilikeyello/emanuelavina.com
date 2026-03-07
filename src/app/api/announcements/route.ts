@@ -25,10 +25,10 @@ export async function POST(request: Request) {
     .from('announcements')
     .insert([{
       organization_id: orgId,
-      title_en: body.titleEn || '',
-      title_es: body.titleEs || '',
-      content_en: body.contentEn || '',
-      content_es: body.contentEs || '',
+      title_en: body.title || '',
+      title_es: body.title || '',
+      content_en: body.content || '',
+      content_es: body.content || '',
       priority: body.priority || 'normal',
       image_url: body.image_url || null,
       expires_at: body.expires_at || null,

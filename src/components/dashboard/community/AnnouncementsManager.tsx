@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Trash2, Globe } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import RichTextEditor from '@/components/ui/RichTextEditor';
 
@@ -15,10 +15,8 @@ interface AnnouncementsManagerProps {
 
 interface Announcement {
   id: number;
-  titleEn: string;
-  titleEs: string;
-  contentEn: string;
-  contentEs: string;
+  title: string;
+  content: string;
   priority: string;
   image_url: string | null;
   expires_at: string | null;
@@ -31,12 +29,9 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [editingLanguage, setEditingLanguage] = useState<'en' | 'es'>('en');
   const [formData, setFormData] = useState({
-    titleEn: '',
-    titleEs: '',
-    contentEn: '',
-    contentEs: '',
+    title: '',
+    content: '',
     priority: 'normal',
     image_url: '',
     expires_at: '',
@@ -80,10 +75,8 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          titleEn: formData.titleEn,
-          titleEs: formData.titleEs,
-          contentEn: formData.contentEn,
-          contentEs: formData.contentEs,
+          title: formData.title,
+          content: formData.content,
           priority: formData.priority,
           image_url: formData.image_url || null,
           expires_at: formData.expires_at || null,
@@ -96,10 +89,8 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
           description: 'Announcement created successfully',
         });
         setFormData({
-          titleEn: '',
-          titleEs: '',
-          contentEn: '',
-          contentEs: '',
+          title: '',
+          content: '',
           priority: 'normal',
           image_url: '',
           expires_at: '',
@@ -178,82 +169,30 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          {/* Language Toggle */}
-          <div className="flex justify-between items-center border-b pb-2">
-            <h4 className="font-medium">Create Announcement</h4>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant={editingLanguage === 'en' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setEditingLanguage('en')}
-              >
-                <Globe className="h-4 w-4 mr-1" />
-                English
-              </Button>
-              <Button
-                type="button"
-                variant={editingLanguage === 'es' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setEditingLanguage('es')}
-              >
-                <Globe className="h-4 w-4 mr-1" />
-                Español
-              </Button>
+          <h4 className="font-medium border-b pb-2">Create Announcement</h4>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title *</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="Enter announcement title"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Content *</Label>
+              <RichTextEditor
+                content={formData.content}
+                onChange={(content) => setFormData({ ...formData, content: content })}
+                placeholder="Write your announcement..."
+              />
             </div>
           </div>
 
-          {/* English Fields */}
-          {editingLanguage === 'en' && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="titleEn">English Title *</Label>
-                <Input
-                  id="titleEn"
-                  value={formData.titleEn}
-                  onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
-                  placeholder="Enter title in English"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>English Content *</Label>
-                <RichTextEditor
-                  content={formData.contentEn}
-                  onChange={(content) => setFormData({ ...formData, contentEn: content })}
-                  placeholder="Write your announcement in English..."
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Spanish Fields */}
-          {editingLanguage === 'es' && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="titleEs">Spanish Title *</Label>
-                <Input
-                  id="titleEs"
-                  value={formData.titleEs}
-                  onChange={(e) => setFormData({ ...formData, titleEs: e.target.value })}
-                  placeholder="Ingrese el título en español"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Spanish Content *</Label>
-                <RichTextEditor
-                  content={formData.contentEs}
-                  onChange={(content) => setFormData({ ...formData, contentEs: content })}
-                  placeholder="Escribe tu anuncio en español..."
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Common Fields */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
@@ -285,7 +224,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
               Cancel
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? 'Creating...' : 'Create Announcement'}
+              {submitting ? 'Saving...' : 'Save Announcement'}
             </Button>
           </div>
         </form>
@@ -299,22 +238,13 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
             <div key={announcement.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <h4 className="font-medium">{announcement.titleEn}</h4>
-                  <span className="text-xs text-gray-500">|</span>
-                  <h4 className="font-medium text-gray-600">{announcement.titleEs}</h4>
+                  <h4 className="font-medium">{announcement.title}</h4>
                   <span className={`px-2 py-1 text-xs rounded-full ${getPriorityColor(announcement.priority)}`}>
                     {announcement.priority}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600 space-y-2">
-                  <div>
-                    <span className="font-medium">English:</span>
-                    <div dangerouslySetInnerHTML={{ __html: announcement.contentEn }} className="mt-1 prose prose-sm max-w-none" />
-                  </div>
-                  <div>
-                    <span className="font-medium">Spanish:</span>
-                    <div dangerouslySetInnerHTML={{ __html: announcement.contentEs }} className="mt-1 prose prose-sm max-w-none" />
-                  </div>
+                <div className="text-sm text-gray-600">
+                  <div dangerouslySetInnerHTML={{ __html: announcement.content }} className="prose prose-sm max-w-none" />
                 </div>
                 <p className="text-xs text-gray-400 mt-2">
                   Created: {new Date(announcement.created_at).toLocaleString()}

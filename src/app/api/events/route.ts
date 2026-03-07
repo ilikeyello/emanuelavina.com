@@ -25,10 +25,10 @@ export async function POST(request: Request) {
     .from('events')
     .insert([{
       organization_id: orgId,
-      title_en: body.titleEn || '',
-      title_es: body.titleEs || '',
-      description_en: body.descriptionEn || null,
-      description_es: body.descriptionEs || null,
+      title_en: body.title || '',
+      title_es: body.title || '',
+      description_en: body.description || null,
+      description_es: body.description || null,
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
