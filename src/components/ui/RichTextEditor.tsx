@@ -3,7 +3,7 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Link from '@tiptap/extension-link';
 import { useState } from 'react';
@@ -118,7 +118,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     }
   };
 
-  const setHeading = (level: number) => {
+  const setHeading = (level: 1 | 2 | 3) => {
     if (!editor) return;
     editor.chain().focus().toggleHeading({ level }).run();
   };
