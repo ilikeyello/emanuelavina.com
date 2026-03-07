@@ -6,12 +6,13 @@ import Image from '@tiptap/extension-image';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Link from '@tiptap/extension-link';
+import Underline from '@tiptap/extension-underline';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Bold, 
   Italic, 
-  Underline,
+  Underline as UnderlineIcon,
   List, 
   ListOrdered,
   Link as LinkIcon,
@@ -50,6 +51,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
       }),
       TextStyle,
       Color,
+      Underline,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -91,13 +93,24 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         
         const compressedFile = await imageCompression(file, options);
         
-        // Convert to base64 for now (in production, you'd upload to Supabase Storage)
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = reader.result as string;
-          editor.chain().focus().setImage({ src: result }).run();
-        };
-        reader.readAsDataURL(compressedFile);
+        // Upload to Supabase Storage
+        const formData = new FormData();
+        formData.append('file', compressedFile);
+        
+        const response = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to upload image');
+        }
+        
+        const { url } = await response.json();
+        
+        // Insert image into editor
+        editor.chain().focus().setImage({ src: url }).run();
       } catch (error) {
         console.error('Error uploading image:', error);
         alert('Failed to upload image. Please try again.');
@@ -155,7 +168,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
             size="sm"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
           >
-            <Underline className="h-4 w-4" />
+            <UnderlineIcon className="h-4 w-4" />
           </Button>
         </div>
 
