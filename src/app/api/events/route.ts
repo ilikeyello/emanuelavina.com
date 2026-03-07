@@ -13,7 +13,13 @@ export async function GET(request: Request) {
     .order('event_date', { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data || []);
+  return NextResponse.json(
+    (data || []).map((event) => ({
+      ...event,
+      title: event.title ?? event.title_en ?? event.title_es ?? '',
+      description: event.description ?? event.description_en ?? event.description_es ?? '',
+    }))
+  );
 }
 
 export async function POST(request: Request) {
@@ -25,8 +31,10 @@ export async function POST(request: Request) {
     .from('events')
     .insert([{
       organization_id: orgId,
+      title: body.title || '',
       title_en: body.title || '',
       title_es: body.title || '',
+      description: body.description || null,
       description_en: body.description || null,
       description_es: body.description || null,
       event_date: body.event_date,

@@ -13,7 +13,13 @@ export async function GET(request: Request) {
     .order('created_at', { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data || []);
+  return NextResponse.json(
+    (data || []).map((announcement) => ({
+      ...announcement,
+      title: announcement.title ?? announcement.title_en ?? announcement.title_es ?? '',
+      content: announcement.content ?? announcement.content_en ?? announcement.content_es ?? '',
+    }))
+  );
 }
 
 export async function POST(request: Request) {
@@ -25,8 +31,10 @@ export async function POST(request: Request) {
     .from('announcements')
     .insert([{
       organization_id: orgId,
+      title: body.title || '',
       title_en: body.title || '',
       title_es: body.title || '',
+      content: body.content || '',
       content_en: body.content || '',
       content_es: body.content || '',
       priority: body.priority || 'normal',
