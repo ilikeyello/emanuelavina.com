@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Plus, Trash2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus, Trash2, Globe } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 
 interface AnnouncementsManagerProps {
   orgId: string;
@@ -14,8 +15,10 @@ interface AnnouncementsManagerProps {
 
 interface Announcement {
   id: number;
-  title: string;
-  content: string;
+  titleEn: string;
+  titleEs: string;
+  contentEn: string;
+  contentEs: string;
   priority: string;
   image_url: string | null;
   expires_at: string | null;
@@ -28,9 +31,12 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [editingLanguage, setEditingLanguage] = useState<'en' | 'es'>('en');
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
+    titleEn: '',
+    titleEs: '',
+    contentEn: '',
+    contentEs: '',
     priority: 'normal',
     image_url: '',
     expires_at: '',
@@ -74,8 +80,10 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: formData.title,
-          content: formData.content,
+          titleEn: formData.titleEn,
+          titleEs: formData.titleEs,
+          contentEn: formData.contentEn,
+          contentEs: formData.contentEs,
           priority: formData.priority,
           image_url: formData.image_url || null,
           expires_at: formData.expires_at || null,
@@ -88,8 +96,10 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
           description: 'Announcement created successfully',
         });
         setFormData({
-          title: '',
-          content: '',
+          titleEn: '',
+          titleEs: '',
+          contentEn: '',
+          contentEs: '',
           priority: 'normal',
           image_url: '',
           expires_at: '',
@@ -168,50 +178,96 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Title *</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              required
-            />
+          {/* Language Toggle */}
+          <div className="flex justify-between items-center border-b pb-2">
+            <h4 className="font-medium">Create Announcement</h4>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant={editingLanguage === 'en' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setEditingLanguage('en')}
+              >
+                <Globe className="h-4 w-4 mr-1" />
+                English
+              </Button>
+              <Button
+                type="button"
+                variant={editingLanguage === 'es' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setEditingLanguage('es')}
+              >
+                <Globe className="h-4 w-4 mr-1" />
+                Español
+              </Button>
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="content">Content *</Label>
-            <Textarea
-              id="content"
-              value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-              rows={4}
-              required
-            />
-          </div>
+          {/* English Fields */}
+          {editingLanguage === 'en' && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="titleEn">English Title *</Label>
+                <Input
+                  id="titleEn"
+                  value={formData.titleEn}
+                  onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
+                  placeholder="Enter title in English"
+                  required
+                />
+              </div>
 
+              <div className="space-y-2">
+                <Label>English Content *</Label>
+                <RichTextEditor
+                  content={formData.contentEn}
+                  onChange={(content) => setFormData({ ...formData, contentEn: content })}
+                  placeholder="Write your announcement in English..."
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Spanish Fields */}
+          {editingLanguage === 'es' && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="titleEs">Spanish Title *</Label>
+                <Input
+                  id="titleEs"
+                  value={formData.titleEs}
+                  onChange={(e) => setFormData({ ...formData, titleEs: e.target.value })}
+                  placeholder="Ingrese el título en español"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Spanish Content *</Label>
+                <RichTextEditor
+                  content={formData.contentEs}
+                  onChange={(content) => setFormData({ ...formData, contentEs: content })}
+                  placeholder="Escribe tu anuncio en español..."
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Common Fields */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
-              <select
-                id="priority"
-                value={formData.priority}
-                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                className="flex h-10 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
-              >
-                <option value="low">Low</option>
-                <option value="normal">Normal</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="image_url">Image URL</Label>
-              <Input
-                id="image_url"
-                type="url"
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-              />
+              <Select value={formData.priority} onValueChange={(value) => setFormData({ ...formData, priority: value })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="normal">Normal</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="urgent">Urgent</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="expires_at">Expires At</Label>
@@ -224,12 +280,12 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Button type="submit" disabled={submitting}>
-              {submitting ? 'Saving...' : 'Save Announcement'}
-            </Button>
-            <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={submitting}>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
               Cancel
+            </Button>
+            <Button type="submit" disabled={submitting}>
+              {submitting ? 'Creating...' : 'Create Announcement'}
             </Button>
           </div>
         </form>
@@ -242,18 +298,28 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
           announcements.map((announcement) => (
             <div key={announcement.id} className="border rounded-lg p-4 flex justify-between items-start">
               <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h4 className="font-semibold">{announcement.title}</h4>
-                  <span className={`text-xs px-2 py-1 rounded ${getPriorityColor(announcement.priority)}`}>
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="font-medium">{announcement.titleEn}</h4>
+                  <span className="text-xs text-gray-500">|</span>
+                  <h4 className="font-medium text-gray-600">{announcement.titleEs}</h4>
+                  <span className={`px-2 py-1 text-xs rounded-full ${getPriorityColor(announcement.priority)}`}>
                     {announcement.priority}
                   </span>
                 </div>
-                <p className="text-sm text-gray-700 mt-2">{announcement.content}</p>
-                {announcement.expires_at && (
-                  <p className="text-xs text-gray-500 mt-2">
-                    Expires: {new Date(announcement.expires_at).toLocaleDateString()}
-                  </p>
-                )}
+                <div className="text-sm text-gray-600 space-y-2">
+                  <div>
+                    <span className="font-medium">English:</span>
+                    <div dangerouslySetInnerHTML={{ __html: announcement.contentEn }} className="mt-1 prose prose-sm max-w-none" />
+                  </div>
+                  <div>
+                    <span className="font-medium">Spanish:</span>
+                    <div dangerouslySetInnerHTML={{ __html: announcement.contentEs }} className="mt-1 prose prose-sm max-w-none" />
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  Created: {new Date(announcement.created_at).toLocaleString()}
+                  {announcement.expires_at && ` | Expires: ${new Date(announcement.expires_at).toLocaleString()}`}
+                </p>
               </div>
               <Button
                 variant="outline"
