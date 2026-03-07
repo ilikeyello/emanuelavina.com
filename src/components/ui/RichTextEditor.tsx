@@ -136,6 +136,16 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     editor.chain().focus().toggleHeading({ level }).run();
   };
 
+  const toggleBulletList = () => {
+    if (!editor) return;
+    editor.chain().focus().toggleBulletList().run();
+  };
+
+  const toggleOrderedList = () => {
+    if (!editor) return;
+    editor.chain().focus().toggleOrderedList().run();
+  };
+
   if (!editor) {
     return <div className="p-4 border rounded-md">Loading editor...</div>;
   }
@@ -206,7 +216,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
             type="button"
             variant={editor.isActive('bulletList') ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            onClick={toggleBulletList}
           >
             <List className="h-4 w-4" />
           </Button>
@@ -214,7 +224,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
             type="button"
             variant={editor.isActive('orderedList') ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            onClick={toggleOrderedList}
           >
             <ListOrdered className="h-4 w-4" />
           </Button>
