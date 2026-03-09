@@ -23,11 +23,6 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Emanuel Web Design | Church Websites",
   description: "Emanuel Web Design crafts peaceful, accessible church websites with managed content, pricing, and a secure client portal.",
-  icons: {
-    icon: "/logo/favicon.png",
-    shortcut: "/logo/favicon.png",
-    apple: "/logo/favicon.png",
-  },
 };
 
 export default function RootLayout({

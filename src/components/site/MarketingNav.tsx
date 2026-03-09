@@ -42,15 +42,15 @@ export default function MarketingNav() {
           : "border-b border-transparent bg-transparent backdrop-blur-none"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 sm:h-24">
         <Link href="/" className="flex items-center leading-none">
           <Image
             src={logoSrc}
             alt={logoAlt}
-            width={showHeroHeader ? 280 : 180}
-            height={showHeroHeader ? 84 : 54}
+            width={420}
+            height={180}
             priority
-            className={`w-auto transition-all duration-300 ${showHeroHeader ? 'h-14 sm:h-16' : 'h-10 sm:h-12'}`}
+            className="h-14 sm:h-16 md:h-20 w-auto transition-all duration-300"
           />
           {isDashboardPage && (
             <>
