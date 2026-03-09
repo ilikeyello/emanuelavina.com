@@ -21,8 +21,8 @@ export default function MarketingNav() {
   const isDashboardPage = pathname?.startsWith('/dashboard');
   const isHomePage = pathname === '/';
   const showHeroHeader = isHomePage && !isScrolled && !open && !isDashboardPage;
-  const logoSrc = showHeroHeader ? '/logo/heroheader.png' : '/logo/header.png';
-  const logoAlt = showHeroHeader ? 'Emanuel Web Design hero header logo' : 'Emanuel Web Design header logo';
+  const globeSrc = showHeroHeader ? '/logo/globehover.png' : '/logo/globe.png';
+  const nameSrc = showHeroHeader ? '/logo/namehover.png' : '/logo/name.png';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,14 +44,24 @@ export default function MarketingNav() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-18 sm:h-20">
         <Link href="/" className="flex items-center leading-none">
-          <Image
-            src={logoSrc}
-            alt={logoAlt}
-            width={380}
-            height={164}
-            priority
-            className="h-12 sm:h-14 md:h-16 w-auto transition-all duration-300"
-          />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Image
+              src={globeSrc}
+              alt="Emanuel Web Design globe icon"
+              width={56}
+              height={56}
+              priority
+              className="h-10 sm:h-11 md:h-12 w-auto transition-all duration-300"
+            />
+            <Image
+              src={nameSrc}
+              alt="Emanuel Web Design name"
+              width={300}
+              height={84}
+              priority
+              className="h-8 sm:h-9 md:h-10 w-auto transition-all duration-300"
+            />
+          </div>
           {isDashboardPage && (
             <>
               <div className="mx-4 h-8 w-px bg-[color:var(--border)]"></div>
