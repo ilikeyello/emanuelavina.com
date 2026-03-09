@@ -64,7 +64,7 @@ export default function MarketingNav() {
               width={480}
               height={134}
               priority
-              className="h-[2.9rem] sm:h-[3.15rem] md:h-[3.45rem] w-auto transition-all duration-300"
+              className="h-[2.45rem] sm:h-[2.7rem] md:h-[2.95rem] w-auto transition-all duration-300"
             />
           </div>
           {isDashboardPage && (
