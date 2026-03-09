@@ -23,6 +23,7 @@ export default function MarketingNav() {
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const globeSrc = isLogoHovered ? '/logo/globehover.png' : '/logo/globe.png';
   const nameSrc = isLogoHovered ? '/logo/namehover.png' : '/logo/name.png';
+  const overlayHeroHeader = isHomePage && !isScrolled && !open && !isDashboardPage;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +37,11 @@ export default function MarketingNav() {
 
   return (
     <header
-      className={`w-full sticky top-0 z-50 transition-colors duration-300 ${
+      className={`w-full top-0 z-50 transition-colors duration-300 ${
+        overlayHeroHeader
+          ? "absolute left-0"
+          : "sticky"
+      } ${
         isScrolled || open
           ? "border-b border-[color:var(--border)] bg-[color:var(--background)]/95 backdrop-blur-md shadow-sm"
           : "border-b border-transparent bg-transparent backdrop-blur-none"
@@ -61,10 +66,10 @@ export default function MarketingNav() {
             <Image
               src={nameSrc}
               alt="Emanuel Web Design name"
-              width={400}
-              height={112}
+              width={480}
+              height={134}
               priority
-              className="h-10 sm:h-11 md:h-12 w-auto transition-all duration-300"
+              className="h-11 sm:h-12 md:h-14 w-auto transition-all duration-300"
             />
           </div>
           {isDashboardPage && (
