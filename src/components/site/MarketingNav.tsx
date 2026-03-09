@@ -20,9 +20,9 @@ export default function MarketingNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const isDashboardPage = pathname?.startsWith('/dashboard');
   const isHomePage = pathname === '/';
-  const showHeroHeader = isHomePage && !isScrolled && !open && !isDashboardPage;
-  const globeSrc = showHeroHeader ? '/logo/globehover.png' : '/logo/globe.png';
-  const nameSrc = showHeroHeader ? '/logo/namehover.png' : '/logo/name.png';
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const globeSrc = isLogoHovered ? '/logo/globehover.png' : '/logo/globe.png';
+  const nameSrc = isLogoHovered ? '/logo/namehover.png' : '/logo/name.png';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,9 +42,14 @@ export default function MarketingNav() {
           : "border-b border-transparent bg-transparent backdrop-blur-none"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-18 sm:h-20">
-        <Link href="/" className="flex items-center leading-none">
-          <div className="flex items-center gap-2 sm:gap-3">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between pt-2 h-18 sm:h-20">
+        <Link
+          href="/"
+          className="flex items-center leading-none"
+          onMouseEnter={() => setIsLogoHovered(true)}
+          onMouseLeave={() => setIsLogoHovered(false)}
+        >
+          <div className="flex items-center gap-1 sm:gap-2 translate-y-[2px]">
             <Image
               src={globeSrc}
               alt="Emanuel Web Design globe icon"
@@ -56,10 +61,10 @@ export default function MarketingNav() {
             <Image
               src={nameSrc}
               alt="Emanuel Web Design name"
-              width={300}
-              height={84}
+              width={360}
+              height={100}
               priority
-              className="h-8 sm:h-9 md:h-10 w-auto transition-all duration-300"
+              className="h-9 sm:h-10 md:h-11 w-auto transition-all duration-300"
             />
           </div>
           {isDashboardPage && (
