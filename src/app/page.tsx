@@ -82,7 +82,7 @@ export default function Home() {
       <MarketingNav />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden -mt-16 sm:-mt-18 pt-16 sm:pt-18">
           <div className="absolute inset-0 z-0">
             <div
               className="absolute inset-0 bg-[length:cover] blur-[2px] opacity-95"
