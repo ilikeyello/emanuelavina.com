@@ -23,6 +23,7 @@ export default function MarketingNav() {
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const globeSrc = isLogoHovered ? '/logo/globehover.png' : '/logo/globe.png';
   const nameSrc = isLogoHovered ? '/logo/namehover.png' : '/logo/name.png';
+  const useCompactLogo = isScrolled || open;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +57,7 @@ export default function MarketingNav() {
               width={56}
               height={56}
               priority
-              className="h-10 sm:h-11 md:h-12 w-auto transition-all duration-300"
+              className={`w-auto transition-all duration-300 ${useCompactLogo ? 'h-9 sm:h-10 md:h-11' : 'h-10 sm:h-11 md:h-12'}`}
             />
             <Image
               src={nameSrc}
@@ -64,7 +65,7 @@ export default function MarketingNav() {
               width={480}
               height={134}
               priority
-              className="h-[2.45rem] sm:h-[2.7rem] md:h-[2.95rem] w-auto transition-all duration-300"
+              className={`w-auto transition-all duration-300 ${useCompactLogo ? 'h-[2.15rem] sm:h-[2.35rem] md:h-[2.6rem]' : 'h-[2.45rem] sm:h-[2.7rem] md:h-[2.95rem]'}`}
             />
           </div>
           {isDashboardPage && (
