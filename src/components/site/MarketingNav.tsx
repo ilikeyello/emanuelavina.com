@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,6 +19,10 @@ export default function MarketingNav() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isDashboardPage = pathname?.startsWith('/dashboard');
+  const isHomePage = pathname === '/';
+  const showHeroHeader = isHomePage && !isScrolled && !open && !isDashboardPage;
+  const logoSrc = showHeroHeader ? '/logo/heroheader.png' : '/logo/header.png';
+  const logoAlt = showHeroHeader ? 'Emanuel Web Design hero header logo' : 'Emanuel Web Design header logo';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,14 +44,14 @@ export default function MarketingNav() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center leading-none">
-          <div className="flex flex-col">
-            <span className="text-[26px] font-bold font-serif tracking-[0.02em] text-[color:var(--foreground)]">
-              Emanuel
-            </span>
-            <span className="text-[13px] font-semibold font-sans tracking-[0.08em] text-[color:var(--muted-foreground)] uppercase">
-              Web Design
-            </span>
-          </div>
+          <Image
+            src={logoSrc}
+            alt={logoAlt}
+            width={showHeroHeader ? 280 : 180}
+            height={showHeroHeader ? 84 : 54}
+            priority
+            className={`w-auto transition-all duration-300 ${showHeroHeader ? 'h-14 sm:h-16' : 'h-10 sm:h-12'}`}
+          />
           {isDashboardPage && (
             <>
               <div className="mx-4 h-8 w-px bg-[color:var(--border)]"></div>
@@ -61,7 +66,6 @@ export default function MarketingNav() {
           {links.map((link) => {
             const isActive = pathname === link.href || 
                            (link.href === '/dashboard/client-portal' && pathname?.startsWith('/dashboard/client-portal'));
-            const isHomePage = pathname === '/';
             return (
               <Link
                 key={link.href}
