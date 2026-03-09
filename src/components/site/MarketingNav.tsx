@@ -57,7 +57,7 @@ export default function MarketingNav() {
               width={56}
               height={56}
               priority
-              className={`w-auto transition-all duration-300 ${useCompactLogo ? 'h-9 sm:h-10 md:h-11' : 'h-10 sm:h-11 md:h-12'}`}
+              className={`w-auto transition-all duration-300 ${useCompactLogo ? 'h-8 sm:h-9 md:h-10' : 'h-10 sm:h-11 md:h-12'}`}
             />
             <Image
               src={nameSrc}
@@ -65,7 +65,7 @@ export default function MarketingNav() {
               width={480}
               height={134}
               priority
-              className={`w-auto transition-all duration-300 ${useCompactLogo ? 'h-[2.15rem] sm:h-[2.35rem] md:h-[2.6rem]' : 'h-[2.45rem] sm:h-[2.7rem] md:h-[2.95rem]'}`}
+              className={`w-auto transition-all duration-300 ${useCompactLogo ? 'h-[1.95rem] sm:h-[2.15rem] md:h-[2.35rem]' : 'h-[2.45rem] sm:h-[2.7rem] md:h-[2.95rem]'}`}
             />
           </div>
           {isDashboardPage && (
