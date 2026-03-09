@@ -42,14 +42,14 @@ export default function MarketingNav() {
           : "border-b border-transparent bg-transparent backdrop-blur-none"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between pt-2 h-18 sm:h-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-18">
         <Link
           href="/"
           className="flex items-center leading-none"
           onMouseEnter={() => setIsLogoHovered(true)}
           onMouseLeave={() => setIsLogoHovered(false)}
         >
-          <div className="flex items-center gap-1 sm:gap-2 translate-y-[2px]">
+          <div className="flex items-center gap-1 sm:gap-2 translate-y-[6px]">
             <Image
               src={globeSrc}
               alt="Emanuel Web Design globe icon"
@@ -61,10 +61,10 @@ export default function MarketingNav() {
             <Image
               src={nameSrc}
               alt="Emanuel Web Design name"
-              width={360}
-              height={100}
+              width={400}
+              height={112}
               priority
-              className="h-9 sm:h-10 md:h-11 w-auto transition-all duration-300"
+              className="h-10 sm:h-11 md:h-12 w-auto transition-all duration-300"
             />
           </div>
           {isDashboardPage && (
