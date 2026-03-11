@@ -50,7 +50,7 @@ export default function MarketingNav() {
           onMouseEnter={() => setIsLogoHovered(true)}
           onMouseLeave={() => setIsLogoHovered(false)}
         >
-          <div className="flex items-center gap-1 sm:gap-2 translate-y-[6px]">
+          <div className="flex items-center gap-1 sm:gap-2 translate-y-[3px]">
             <Image
               src={globeSrc}
               alt="Emanuel Web Design globe icon"
