@@ -95,7 +95,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         
         // Upload to Supabase Storage
         const formData = new FormData();
-        formData.append('file', compressedFile);
+        formData.append('file', compressedFile, file.name || 'image.jpg');
         
         const response = await fetch('/api/upload-image', {
           method: 'POST',
@@ -127,7 +127,8 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     
     const url = window.prompt('Enter URL:');
     if (url) {
-      editor.chain().focus().setLink({ href: url }).run();
+      const formattedUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+      editor.chain().focus().setLink({ href: formattedUrl }).run();
     }
   };
 
