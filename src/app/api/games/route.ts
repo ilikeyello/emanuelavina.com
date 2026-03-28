@@ -1,48 +1,127 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
-const CHURCH_SITE_BASE_URL = 'https://prod-cne-sh82.encr.app';
-
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const gameType = searchParams.get('type');
-  const levelId = searchParams.get('levelId');
-
+export async function GET(request: Request) {
   try {
-    let apiUrl = '';
+    const { orgId } = await auth();
+    if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    if (gameType === 'trivia') {
-      apiUrl = `${CHURCH_SITE_BASE_URL}/trivia/simple`;
-    } else if (gameType === 'wordsearch-levels') {
-      apiUrl = `${CHURCH_SITE_BASE_URL}/games/wordsearch/levels`;
-    } else if (gameType === 'wordsearch-puzzle' && levelId) {
-      const lang = searchParams.get('lang') || 'en';
-      apiUrl = `${CHURCH_SITE_BASE_URL}/games/wordsearch/puzzle/${encodeURIComponent(levelId)}?lang=${lang}`;
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type');
+    const supabase = getSupabaseAdmin();
+
+    if (type === 'trivia') {
+      const { data, error } = await supabase
+        .from('trivia_levels')
+        .select('*, trivia_questions(count)')
+        .eq('church_id', orgId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      const formatted = data.map(d => ({
+         ...d,
+         question_count: d.trivia_questions?.[0]?.count || 0,
+         difficulty: 'medium' // Standardized default
+      }));
+      return NextResponse.json({ levels: formatted });
     }
 
-    if (!apiUrl) {
-      return NextResponse.json({ error: 'Invalid game type' }, { status: 400 });
+    if (type === 'trivia-questions') {
+      const levelId = searchParams.get('levelId');
+      const { data, error } = await supabase
+        .from('trivia_questions')
+        .select('*')
+        .eq('level_id', levelId)
+        .eq('church_id', orgId)
+        .order('created_at', { ascending: true });
+        
+      if (error) throw error;
+      return NextResponse.json({ questions: data });
     }
 
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Emanuel-Web-Design-Admin/1.0',
-      },
-    });
+    if (type === 'wordsearch-levels') {
+      const { data, error } = await supabase
+        .from('word_search_levels')
+        .select('*, word_search_words(id, word_en, word_es)')
+        .eq('church_id', orgId)
+        .order('created_at', { ascending: false });
 
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.statusText}`);
+      if (error) throw error;
+      
+      const formatted = data.map(d => ({
+         ...d,
+         words: d.word_search_words || []
+      }));
+      return NextResponse.json({ levels: formatted });
     }
 
-    const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json({ error: 'Invalid game type requested: ' + type }, { status: 400 });
 
   } catch (error) {
-    console.error('Games API proxy error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch game data from church site' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(error) }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const { orgId } = await auth();
+    if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const body = await request.json();
+    const supabase = getSupabaseAdmin();
+    const { type, payload } = body;
+
+    if (type === 'trivia_levels') {
+      const { data, error } = await supabase.from('trivia_levels').insert([{ ...payload, church_id: orgId }]).select().single();
+      if (error) throw error;
+      return NextResponse.json(data);
+    }
+
+    if (type === 'trivia_questions') {
+      const { data, error } = await supabase.from('trivia_questions').insert([{ ...payload, church_id: orgId }]).select().single();
+      if (error) throw error;
+      return NextResponse.json(data);
+    }
+
+    if (type === 'word_search_levels') {
+      const { data, error } = await supabase.from('word_search_levels').insert([{ ...payload, church_id: orgId }]).select().single();
+      if (error) throw error;
+      return NextResponse.json(data);
+    }
+
+    if (type === 'word_search_words') {
+      const { data, error } = await supabase.from('word_search_words').insert([{ ...payload, church_id: orgId }]).select().single();
+      if (error) throw error;
+      return NextResponse.json(data);
+    }
+
+    return NextResponse.json({ error: 'Invalid mutation type' }, { status: 400 });
+  } catch (error) {
+    return NextResponse.json({ error: String(error) }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { orgId } = await auth();
+    if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    const type = searchParams.get('type');
+    const supabase = getSupabaseAdmin();
+
+    const { error } = await supabase
+      .from(type as string)
+      .delete()
+      .eq('id', id)
+      .eq('church_id', orgId);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
