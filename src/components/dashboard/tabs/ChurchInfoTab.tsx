@@ -210,7 +210,7 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
               rows={4}
             />
             <p className="text-xs text-muted-foreground">
-              Paste the "Embed Code" or "Button" HTML provided by Tithe.ly. This will embed the giving form directly on your site.
+              Paste the "Embed Code" or "Button" HTML provided by Tithe.ly. The system will automatically convert button codes into a full, in-app giving form for a seamless experience.
             </p>
           </div>
 
