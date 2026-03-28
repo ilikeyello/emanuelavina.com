@@ -54,6 +54,8 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
       Underline,
       Link.configure({
         openOnClick: false,
+        autolink: true,
+        defaultProtocol: 'https',
         HTMLAttributes: {
           class: 'text-blue-500 underline hover:text-blue-600',
         },
