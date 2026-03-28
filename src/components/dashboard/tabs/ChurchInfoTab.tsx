@@ -24,6 +24,7 @@ interface ChurchInfo {
   facebook_page_url: string | null;
   youtube_url: string | null;
   tithely_url: string | null;
+  tithely_embed: string | null;
   latitude: number | null;
   longitude: number | null;
 }
@@ -188,7 +189,7 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="tithely">Tithe.ly URL</Label>
+              <Label htmlFor="tithely">Tithe.ly URL (Fallback)</Label>
               <Input
                 id="tithely"
                 type="url"
@@ -197,6 +198,20 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
                 placeholder="https://tithe.ly/give_new/www/#/tithely/give"
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="tithely_embed">Tithe.ly Embed Code (Recommended)</Label>
+            <Textarea
+              id="tithely_embed"
+              value={churchInfo?.tithely_embed || ''}
+              onChange={(e) => updateField('tithely_embed', e.target.value)}
+              placeholder='<button class="tithelyan" data-type="modal" ...>Give Now</button><script ...></script>'
+              rows={4}
+            />
+            <p className="text-xs text-muted-foreground">
+              Paste the "Embed Code" or "Button" HTML provided by Tithe.ly. This will embed the giving form directly on your site.
+            </p>
           </div>
 
           <div className="flex justify-end pt-4">

@@ -56,6 +56,7 @@ export async function PUT(request: Request) {
         service_times: body.service_times || '',
         description: body.description || null,
         tithely_url: body.tithely_url || null,
+        tithely_embed: body.tithely_embed || null,
         youtube_url: body.youtube_url || null,
         facebook_page_url: body.facebook_page_url,
         website_url: body.website_url,
