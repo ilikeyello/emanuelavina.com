@@ -15,17 +15,14 @@ interface ChurchInfoTabProps {
 
 interface ChurchInfo {
   organization_id: string;
-  name_en: string;
-  name_es: string;
+  name: string;
   address: string;
   phone: string;
   email: string;
-  service_times_en: string;
-  service_times_es: string;
-  description_en: string | null;
-  description_es: string | null;
+  service_times: string;
+  description: string | null;
   facebook_page_url: string | null;
-  website_url: string | null;
+  youtube_url: string | null;
   tithely_url: string | null;
   latitude: number | null;
   longitude: number | null;
@@ -100,11 +97,11 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name_en">Church Name</Label>
+              <Label htmlFor="name">Church Name</Label>
               <Input
-                id="name_en"
-                value={churchInfo?.name_en || organization?.name || ''}
-                onChange={(e) => updateField('name_en', e.target.value)}
+                id="name"
+                value={churchInfo?.name || organization?.name || ''}
+                onChange={(e) => updateField('name', e.target.value)}
                 placeholder="Enter church name"
               />
             </div>
@@ -134,11 +131,11 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="service_times_en">Service Times</Label>
+              <Label htmlFor="service_times">Service Times</Label>
               <Input
-                id="service_times_en"
-                value={churchInfo?.service_times_en || ''}
-                onChange={(e) => updateField('service_times_en', e.target.value)}
+                id="service_times"
+                value={churchInfo?.service_times || ''}
+                onChange={(e) => updateField('service_times', e.target.value)}
                 placeholder="Sunday 10:00 AM, Wednesday 7:00 PM"
               />
             </div>
@@ -156,11 +153,11 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="description_en">Description</Label>
+              <Label htmlFor="description">Description</Label>
               <Textarea
-                id="description_en"
-                value={churchInfo?.description_en || ''}
-                onChange={(e) => updateField('description_en', e.target.value)}
+                id="description"
+                value={churchInfo?.description || ''}
+                onChange={(e) => updateField('description', e.target.value)}
                 placeholder="Tell people about your church..."
                 rows={4}
               />
@@ -180,13 +177,13 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="website">Website URL</Label>
+              <Label htmlFor="youtube">YouTube Channel URL</Label>
               <Input
-                id="website"
+                id="youtube"
                 type="url"
-                value={churchInfo?.website_url || ''}
-                onChange={(e) => updateField('website_url', e.target.value)}
-                placeholder="https://yourchurch.com"
+                value={churchInfo?.youtube_url || ''}
+                onChange={(e) => updateField('youtube_url', e.target.value)}
+                placeholder="https://youtube.com/@yourchurch"
               />
             </div>
 
