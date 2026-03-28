@@ -50,14 +50,15 @@ export async function PUT(request: Request) {
       .from('church_info')
       .update({
         name_en: body.name_en || body.name || '',
-        name_es: body.name_es || body.name || '',
+        name_es: body.name_en || body.name || '',
         address: body.address,
         phone: body.phone,
         email: body.email,
         service_times_en: body.service_times_en || body.service_times || '',
-        service_times_es: body.service_times_es || body.service_times || '',
+        service_times_es: body.service_times_en || body.service_times || '',
         description_en: body.description_en || body.description || null,
-        description_es: body.description_es || body.description || null,
+        description_es: body.description_en || body.description || null,
+        tithely_url: body.tithely_url || null,
         facebook_page_url: body.facebook_page_url,
         website_url: body.website_url,
         latitude: body.latitude,

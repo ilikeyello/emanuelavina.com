@@ -26,6 +26,7 @@ interface ChurchInfo {
   description_es: string | null;
   facebook_page_url: string | null;
   website_url: string | null;
+  tithely_url: string | null;
   latitude: number | null;
   longitude: number | null;
 }
@@ -99,22 +100,12 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name_en">Church Name (English)</Label>
+              <Label htmlFor="name_en">Church Name</Label>
               <Input
                 id="name_en"
                 value={churchInfo?.name_en || organization?.name || ''}
                 onChange={(e) => updateField('name_en', e.target.value)}
                 placeholder="Enter church name"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="name_es">Church Name (Spanish)</Label>
-              <Input
-                id="name_es"
-                value={churchInfo?.name_es || ''}
-                onChange={(e) => updateField('name_es', e.target.value)}
-                placeholder="Nombre de la iglesia"
               />
             </div>
 
@@ -143,22 +134,12 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="service_times_en">Service Times (English)</Label>
+              <Label htmlFor="service_times_en">Service Times</Label>
               <Input
                 id="service_times_en"
                 value={churchInfo?.service_times_en || ''}
                 onChange={(e) => updateField('service_times_en', e.target.value)}
                 placeholder="Sunday 10:00 AM, Wednesday 7:00 PM"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="service_times_es">Service Times (Spanish)</Label>
-              <Input
-                id="service_times_es"
-                value={churchInfo?.service_times_es || ''}
-                onChange={(e) => updateField('service_times_es', e.target.value)}
-                placeholder="Domingo 10:00 AM, Miércoles 7:00 PM"
               />
             </div>
           </div>
@@ -175,7 +156,7 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="description_en">Description (English)</Label>
+              <Label htmlFor="description_en">Description</Label>
               <Textarea
                 id="description_en"
                 value={churchInfo?.description_en || ''}
@@ -184,20 +165,9 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
                 rows={4}
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description_es">Description (Spanish)</Label>
-              <Textarea
-                id="description_es"
-                value={churchInfo?.description_es || ''}
-                onChange={(e) => updateField('description_es', e.target.value)}
-                placeholder="Cuéntale a la gente sobre tu iglesia..."
-                rows={4}
-              />
-            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="facebook">Facebook Page URL</Label>
               <Input
@@ -217,6 +187,17 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
                 value={churchInfo?.website_url || ''}
                 onChange={(e) => updateField('website_url', e.target.value)}
                 placeholder="https://yourchurch.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="tithely">Tithe.ly URL</Label>
+              <Input
+                id="tithely"
+                type="url"
+                value={churchInfo?.tithely_url || ''}
+                onChange={(e) => updateField('tithely_url', e.target.value)}
+                placeholder="https://tithe.ly/give_new/www/#/tithely/give"
               />
             </div>
           </div>
