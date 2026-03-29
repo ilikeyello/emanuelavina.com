@@ -167,7 +167,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           type: 'trivia_questions', 
-          payload: { ...questionForm, level_id: selectedTriviaLevel.id } 
+          payload: { ...questionForm, correct_answer: 0, level_id: selectedTriviaLevel.id } 
         })
       });
       if (!res.ok) throw new Error('Save failed');
@@ -366,11 +366,17 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                   <Label>Options (English) - First one is correct by default index 0</Label>
                   <div className="grid grid-cols-2 gap-2">
                     {questionForm.options_en.map((opt, i) => (
-                      <Input key={i} placeholder={`Option ${i+1}`} value={opt} onChange={e => {
-                        const next = [...questionForm.options_en];
-                        next[i] = e.target.value;
-                        setQuestionForm({...questionForm, options_en: next});
-                      }} required />
+                      <div key={i} className="flex flex-col gap-1">
+                        <div className="flex items-center justify-between">
+                          <Label className="text-[10px] uppercase text-gray-500">Option {i+1}</Label>
+                          {i === 0 && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-[10px] h-4 uppercase">Correct Answer</Badge>}
+                        </div>
+                        <Input placeholder={`Option ${i+1}`} value={opt} onChange={e => {
+                          const next = [...questionForm.options_en];
+                          next[i] = e.target.value;
+                          setQuestionForm({...questionForm, options_en: next});
+                        }} required />
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -379,20 +385,19 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                   <Label>Options (Spanish)</Label>
                   <div className="grid grid-cols-2 gap-2">
                     {questionForm.options_es.map((opt, i) => (
-                      <Input key={i} placeholder={`Opción ${i+1}`} value={opt} onChange={e => {
-                        const next = [...questionForm.options_es];
-                        next[i] = e.target.value;
-                        setQuestionForm({...questionForm, options_es: next});
-                      }} required />
+                      <div key={i} className="flex flex-col gap-1">
+                        <Label className="text-[10px] uppercase text-gray-500">Opción {i+1}</Label>
+                        <Input placeholder={`Opción ${i+1}`} value={opt} onChange={e => {
+                          const next = [...questionForm.options_es];
+                          next[i] = e.target.value;
+                          setQuestionForm({...questionForm, options_es: next});
+                        }} required />
+                      </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Correct Answer Index (0-3)</Label>
-                    <Input type="number" min="0" max="3" value={questionForm.correct_answer} onChange={e => setQuestionForm({...questionForm, correct_answer: parseInt(e.target.value)})} />
-                  </div>
+                <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-2">
                     <Label>Bible Reference</Label>
                     <Input placeholder="e.g. Genesis 1:1" value={questionForm.reference} onChange={e => setQuestionForm({...questionForm, reference: e.target.value})} />
