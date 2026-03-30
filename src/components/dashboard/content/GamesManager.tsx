@@ -167,7 +167,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           type: 'trivia_questions', 
-          payload: { ...questionForm, correct_answer: 0, level_id: selectedTriviaLevel.id } 
+          payload: { ...questionForm, level_id: selectedTriviaLevel.id } 
         })
       });
       if (!res.ok) throw new Error('Save failed');
@@ -363,13 +363,22 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label>Options (English) - First one is correct by default index 0</Label>
+                  <Label>Options (English) - Select the correct answer</Label>
                   <div className="grid grid-cols-2 gap-2">
                     {questionForm.options_en.map((opt, i) => (
                       <div key={i} className="flex flex-col gap-1">
                         <div className="flex items-center justify-between">
                           <Label className="text-[10px] uppercase text-gray-500">Option {i+1}</Label>
-                          {i === 0 && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-[10px] h-4 uppercase">Correct Answer</Badge>}
+                          <div className="flex items-center gap-1">
+                            <input 
+                              type="radio" 
+                              name="correct_answer" 
+                              checked={questionForm.correct_answer === i}
+                              onChange={() => setQuestionForm({...questionForm, correct_answer: i})}
+                              className="cursor-pointer"
+                            />
+                            {questionForm.correct_answer === i && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-[10px] h-4 uppercase">Correct</Badge>}
+                          </div>
                         </div>
                         <Input placeholder={`Option ${i+1}`} value={opt} onChange={e => {
                           const next = [...questionForm.options_en];
