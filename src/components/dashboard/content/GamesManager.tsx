@@ -162,12 +162,19 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
     e.preventDefault();
     if (!selectedTriviaLevel) return;
     try {
+      const payload = {
+        ...questionForm,
+        options_en: JSON.stringify(questionForm.options_en),
+        options_es: JSON.stringify(questionForm.options_es),
+        level_id: selectedTriviaLevel.id
+      };
+      
       const res = await fetch('/api/games', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           type: 'trivia_questions', 
-          payload: { ...questionForm, level_id: selectedTriviaLevel.id } 
+          payload 
         })
       });
       if (!res.ok) throw new Error('Save failed');
