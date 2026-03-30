@@ -2,11 +2,12 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Video, Radio, Music, Gamepad2 } from 'lucide-react';
+import { Video, Radio, Music, Gamepad2, Bell } from 'lucide-react';
 import SermonsManager from '../content/SermonsManager';
 import LivestreamsManager from '../content/LivestreamsManager';
 import MusicPlaylistsManager from '../content/MusicPlaylistsManager';
 import GamesManager from '../content/GamesManager';
+import NotificationsManager from '../content/NotificationsManager';
 
 interface ContentManagementTabProps {
   orgId: string;
@@ -23,7 +24,7 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="devotionals" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="devotionals" className="flex items-center gap-2">
               <Video className="h-4 w-4" />
               <span className="hidden sm:inline">Devotionals</span>
@@ -39,6 +40,10 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
             <TabsTrigger value="games" className="flex items-center gap-2">
               <Gamepad2 className="h-4 w-4" />
               <span className="hidden sm:inline">Games</span>
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2">
+              <Bell className="h-4 w-4" />
+              <span className="hidden sm:inline">Notifications</span>
             </TabsTrigger>
           </TabsList>
 
@@ -56,6 +61,10 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
 
           <TabsContent value="games" className="mt-6">
             <GamesManager orgId={orgId} />
+          </TabsContent>
+
+          <TabsContent value="notifications" className="mt-6">
+            <NotificationsManager orgId={orgId} />
           </TabsContent>
         </Tabs>
       </CardContent>
