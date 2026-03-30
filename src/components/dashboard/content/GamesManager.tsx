@@ -166,6 +166,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
         ...questionForm,
         options_en: JSON.stringify(questionForm.options_en),
         options_es: JSON.stringify(questionForm.options_es),
+        correct_answer: Number(questionForm.correct_answer),
         level_id: selectedTriviaLevel.id
       };
       
