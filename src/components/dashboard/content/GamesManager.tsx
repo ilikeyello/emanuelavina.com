@@ -74,7 +74,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
     question_es: '',
     options_en: ['', '', '', ''],
     options_es: ['', '', '', ''],
-    correct_answer: 0,
+    correct_answer: 1,
     category: '',
     reference: ''
   });
@@ -308,7 +308,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                   setQuestionForm({
                     question_en: '', question_es: '',
                     options_en: ['', '', '', ''], options_es: ['', '', '', ''],
-                    correct_answer: 0, category: '', reference: ''
+                    correct_answer: 1, category: '', reference: ''
                   });
                   setOpenQuestionModal(true);
                 }}>+ Add Question</Button>
@@ -381,11 +381,11 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                             <input 
                               type="radio" 
                               name="correct_answer" 
-                              checked={questionForm.correct_answer === i}
-                              onChange={() => setQuestionForm({...questionForm, correct_answer: i})}
+                              checked={questionForm.correct_answer === i + 1}
+                              onChange={() => setQuestionForm({...questionForm, correct_answer: i + 1})}
                               className="cursor-pointer"
                             />
-                            {questionForm.correct_answer === i && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-[10px] h-4 uppercase">Correct</Badge>}
+                            {questionForm.correct_answer === i + 1 && <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-green-200 text-[10px] h-4 uppercase">Correct</Badge>}
                           </div>
                         </div>
                         <Input placeholder={`Option ${i+1}`} value={opt} onChange={e => {
