@@ -100,8 +100,12 @@ export default function NotificationsManager() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Send Push Notification</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Bell className="h-5 w-5" />
+            Send Push Notification
+          </CardTitle>
         </CardHeader>
+        <p className="text-xs text-red-500 p-4">Debug - Org ID: {process.env.NEXT_PUBLIC_CHURCH_ORG_ID || 'NOT LOADED'}</p>
         <CardContent>
           <form onSubmit={handleSendNotification} className="space-y-4">
             <div className="space-y-2">
