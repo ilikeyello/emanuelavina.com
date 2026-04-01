@@ -64,7 +64,7 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
           </TabsContent>
 
           <TabsContent value="notifications" className="mt-6">
-            <NotificationsManager orgId={orgId} />
+            <NotificationsManager />
           </TabsContent>
         </Tabs>
       </CardContent>

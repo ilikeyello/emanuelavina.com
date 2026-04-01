@@ -9,11 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Bell, Send } from 'lucide-react';
 
-interface NotificationsManagerProps {
-  orgId: string;
-}
-
-export default function NotificationsManager({ orgId }: NotificationsManagerProps) {
+export default function NotificationsManager() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -55,7 +51,7 @@ export default function NotificationsManager({ orgId }: NotificationsManagerProp
           title: formData.title,
           body: formData.body,
           url: formData.url,
-          orgId: orgId,
+          orgId: process.env.NEXT_PUBLIC_CHURCH_ORG_ID,
           icon: '/icon-192x192.png'
         })
       });
