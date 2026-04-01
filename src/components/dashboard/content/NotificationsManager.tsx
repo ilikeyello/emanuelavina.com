@@ -45,7 +45,7 @@ export default function NotificationsManager({ orgId }: NotificationsManagerProp
         throw new Error('Supabase configuration missing');
       }
 
-      const response = await fetch(`${supabaseUrl}/functions/v1/send-push-notification`, {
+      const response = await fetch(`${supabaseUrl}/functions/v1/smooth-function`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
