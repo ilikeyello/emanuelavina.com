@@ -41,6 +41,8 @@ export default function NotificationsManager() {
         throw new Error('Supabase configuration missing');
       }
 
+            console.log('Sending notification for orgId:', process.env.NEXT_PUBLIC_CHURCH_ORG_ID);
+
       const response = await fetch(`${supabaseUrl}/functions/v1/smooth-function`, {
         method: 'POST',
         headers: {
