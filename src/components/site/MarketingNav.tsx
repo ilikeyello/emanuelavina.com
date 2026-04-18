@@ -38,12 +38,14 @@ export default function MarketingNav() {
 
   return (
     <header
-      className={`w-full sticky top-0 z-50 transition-colors duration-300 pt-[env(safe-area-inset-top)] ${
-        isScrolled || open
+      className={`w-full sticky top-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)] ${
+        isScrolled || open || isDashboardPage
           ? "border-b border-[color:var(--border)] bg-[color:var(--background)]/95 backdrop-blur-md shadow-sm"
           : "border-b border-transparent bg-transparent backdrop-blur-none"
       }`}
     >
+      {/* Essential background to cover system area regardless of scroll state */}
+      <div className="absolute top-0 left-0 right-0 h-[env(safe-area-inset-top)] bg-[color:var(--background)] -z-10" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-20">
         <div className="flex items-center gap-4">
           <Link
