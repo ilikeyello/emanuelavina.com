@@ -179,10 +179,10 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
           <p className="text-gray-500 text-center py-8">No livestreams configured.</p>
         ) : (
           livestreams.map((stream) => (
-            <div key={stream.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h4 className="font-semibold">{stream.title || 'Livestream'}</h4>
+            <div key={stream.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
+                <div className="flex items-center flex-wrap gap-2">
+                  <h4 className="font-semibold truncate">{stream.title || 'Livestream'}</h4>
                   {stream.is_live && (
                     <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">LIVE</span>
                   )}
@@ -191,16 +191,17 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
                   href={stream.stream_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline"
+                  className="text-sm text-blue-600 hover:underline break-all block mt-1"
                 >
                   {stream.stream_url}
                 </a>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => toggleLive(stream.id, stream.is_live)}
+                  className="flex-1 sm:flex-none"
                 >
                   {stream.is_live ? 'Set Offline' : 'Set Live'}
                 </Button>
@@ -208,7 +209,7 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => handleDelete(stream.id)}
-                  className="text-red-600 hover:text-red-700"
+                  className="text-red-600 hover:text-red-700 flex-none"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
