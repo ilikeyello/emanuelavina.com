@@ -92,7 +92,9 @@ export async function POST(request: Request) {
     }
 
     if (type === 'word_search_words') {
-      const { data, error } = await supabase.from('word_search_words').insert([{ ...payload, church_id: orgId }]).select().single();
+      const payloadArray = Array.isArray(payload) ? payload : [payload];
+      const itemsToInsert = payloadArray.map(item => ({ ...item, church_id: orgId }));
+      const { data, error } = await supabase.from('word_search_words').insert(itemsToInsert).select();
       if (error) throw error;
       return NextResponse.json(data);
     }

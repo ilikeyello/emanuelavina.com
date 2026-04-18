@@ -64,7 +64,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
 
   const [selectedWsLevel, setSelectedWsLevel] = useState<WordSearchLevel | null>(null);
   const [openWordModal, setOpenWordModal] = useState(false);
-  const [newWord, setNewWord] = useState({ word_en: '', word_es: '' });
+  const [newWords, setNewWords] = useState({ words_en: '', words_es: '' });
   
   // Forms
   const [triviaForm, setTriviaForm] = useState({ name_en: '', name_es: '', description_en: '', description_es: '' });
@@ -191,22 +191,35 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
   const handleAddWord = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedWsLevel) return;
+
+    const parseWords = (text: string) => text.split(/[\n,]+/).map(w => w.trim().toUpperCase()).filter(w => w.length > 0);
+    const parsedEn = parseWords(newWords.words_en);
+    const parsedEs = parseWords(newWords.words_es);
+
+    if (parsedEn.length === 0) return;
+
+    const payload = parsedEn.map((enWord, index) => ({
+      level_id: selectedWsLevel.id,
+      word_en: enWord,
+      word_es: parsedEs[index] || ''
+    }));
+
     try {
       const res = await fetch('/api/games', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           type: 'word_search_words', 
-          payload: { ...newWord, level_id: selectedWsLevel.id } 
+          payload
         })
       });
       if (!res.ok) throw new Error('Save failed');
-      toast({ title: 'Success', description: 'Word added.' });
-      setNewWord({ word_en: '', word_es: '' });
+      toast({ title: 'Success', description: `${payload.length} words added.` });
+      setNewWords({ words_en: '', words_es: '' });
       setOpenWordModal(false);
       fetchGames(); // Words are nested, so refresh levels
     } catch (error) {
-      toast({ title: 'Error', description: 'Failed to add word', variant: 'destructive' });
+      toast({ title: 'Error', description: 'Failed to add words', variant: 'destructive' });
     }
   };
 
@@ -526,18 +539,18 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
 
           {/* Word Add Modal */}
           <Dialog open={openWordModal} onOpenChange={setOpenWordModal}>
-            <DialogContent className="max-w-xs">
-              <DialogHeader><DialogTitle>Add Word</DialogTitle></DialogHeader>
+            <DialogContent className="max-w-md">
+              <DialogHeader><DialogTitle>Add Multiple Words</DialogTitle></DialogHeader>
               <form onSubmit={handleAddWord} className="space-y-4">
                 <div className="space-y-2">
-                  <Label>Word (EN)</Label>
-                  <Input required value={newWord.word_en} onChange={e => setNewWord({...newWord, word_en: e.target.value.toUpperCase()})} />
+                  <Label>Words (EN - comma separated)</Label>
+                  <Textarea required placeholder="APPLE, BANANA, ORANGE" value={newWords.words_en} onChange={e => setNewWords({...newWords, words_en: e.target.value})} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Word (ES - Optional)</Label>
-                  <Input value={newWord.word_es} onChange={e => setNewWord({...newWord, word_es: e.target.value.toUpperCase()})} />
+                  <Label>Words (ES - optional, matching EN order)</Label>
+                  <Textarea placeholder="MANZANA, PLATANO, NARANJA" value={newWords.words_es} onChange={e => setNewWords({...newWords, words_es: e.target.value})} />
                 </div>
-                <Button type="submit" className="w-full">Add Word</Button>
+                <Button type="submit" className="w-full">Add Words</Button>
               </form>
             </DialogContent>
           </Dialog>
