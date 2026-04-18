@@ -21,7 +21,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen bg-[color:var(--background)]">
       <MarketingNav />
-      <main className="py-10">
+      {/* Spacer to push content below the fixed standalone navbar on iOS */}
+      <div 
+        className="w-full shrink-0 h-16 sm:h-20" 
+        style={{ marginTop: 'env(safe-area-inset-top, 0px)' }} 
+      />
+      <main className="pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {children}
         </div>
