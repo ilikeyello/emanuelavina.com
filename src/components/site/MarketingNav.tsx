@@ -37,16 +37,14 @@ export default function MarketingNav() {
   }, []);
 
   return (
-    <>
-      <header
-        className={`w-full sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled || open || isDashboardPage
-            ? "border-b border-[color:var(--border)] bg-[color:var(--background)] shadow-sm"
-            : "border-b border-transparent bg-transparent"
-        }`}
-        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-20">
+    <header
+      className={`w-full sticky top-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)] ${
+        isScrolled || open || isDashboardPage
+          ? "border-b border-[color:var(--border)] bg-[color:var(--background)] shadow-sm"
+          : "border-b border-transparent bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center gap-4">
           <Link
             href="/"
@@ -170,6 +168,5 @@ export default function MarketingNav() {
         </div>
       )}
     </header>
-    </>
   );
 }
