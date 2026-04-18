@@ -39,7 +39,7 @@ export default function MarketingNav() {
   return (
     <header
       className={`w-full sticky top-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)] ${
-        isScrolled || open || isDashboardPage
+        isScrolled || open
           ? "border-b border-[color:var(--border)] bg-[color:var(--background)] shadow-sm"
           : "border-b border-transparent bg-transparent"
       }`}
