@@ -101,24 +101,27 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
           </p>
         ) : (
           posts.map((post) => (
-            <div key={post.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
-                <h4 className="font-semibold">{post.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{post.content}</p>
-                <div className="text-xs text-gray-500 mt-2">
-                  <span>By: {post.author_name}</span>
-                  <span className="mx-2">•</span>
-                  <span>{new Date(post.created_at).toLocaleString()}</span>
+            <div key={post.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
+                <h4 className="font-semibold truncate">{post.title}</h4>
+                <p className="text-sm text-gray-600 mt-1 break-words">{post.content}</p>
+                <div className="text-xs text-gray-500 mt-2 flex flex-wrap gap-x-2">
+                   <span>By: {post.author_name}</span>
+                   <span className="opacity-50">•</span>
+                   <span>{new Date(post.created_at).toLocaleString()}</span>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(post.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(post.id)}
+                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}

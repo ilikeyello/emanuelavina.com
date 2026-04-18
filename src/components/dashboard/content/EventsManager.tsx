@@ -237,40 +237,43 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
           <p className="text-gray-500 text-center py-8">No events yet. Add your first event!</p>
         ) : (
           events.map((event) => (
-            <div key={event.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
-                <h4 className="font-semibold mb-2">{event.title}</h4>
+            <div key={event.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
+                <h4 className="font-semibold mb-2 truncate">{event.title}</h4>
                 
                 {event.description && (
-                  <div className="text-sm text-gray-600 mb-3">
+                  <div className="text-sm text-gray-600 mb-3 break-words overflow-hidden">
                     <div dangerouslySetInnerHTML={{ __html: event.description }} className="prose prose-sm max-w-none" />
                   </div>
                 )}
                 
-                <div className="flex items-center gap-4 text-sm text-gray-500">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500">
                   <div className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4" />
-                    {formatEventDate(event.event_date)}
+                    <Calendar className="h-4 w-4 shrink-0" />
+                    <span>{formatEventDate(event.event_date)}</span>
                   </div>
                   {event.location && (
                     <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      {event.location}
+                      <MapPin className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{event.location}</span>
                     </div>
                   )}
                   {event.max_attendees && (
-                    <span>Max: {event.max_attendees}</span>
+                    <span className="shrink-0">Max: {event.max_attendees}</span>
                   )}
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(event.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(event.id)}
+                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}

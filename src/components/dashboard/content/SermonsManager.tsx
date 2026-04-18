@@ -222,28 +222,31 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
           <p className="text-gray-500 text-center py-8">No devotionals yet. Add your first devotional!</p>
         ) : (
           sermons.map((sermon) => (
-            <div key={sermon.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
-                <h4 className="font-semibold">{sermon.title}</h4>
+            <div key={sermon.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
+                <h4 className="font-semibold truncate">{sermon.title}</h4>
                 {sermon.speaker && <p className="text-sm text-gray-600">Speaker: {sermon.speaker}</p>}
-                {sermon.description && <p className="text-sm text-gray-600 mt-1">{sermon.description}</p>}
+                {sermon.description && <p className="text-sm text-gray-600 mt-1 break-words">{sermon.description}</p>}
                 <a
                   href={sermon.youtube_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline mt-1 inline-block"
+                  className="text-sm text-blue-600 hover:underline mt-1 inline-block break-all"
                 >
-                  Watch on YouTube
+                  {sermon.youtube_url.length > 50 ? 'Watch on YouTube' : sermon.youtube_url}
                 </a>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(sermon.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(sermon.id)}
+                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}

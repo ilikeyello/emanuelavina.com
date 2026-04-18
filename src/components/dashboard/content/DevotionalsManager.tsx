@@ -168,23 +168,28 @@ export default function DevotionalsManager({ orgId }: DevotionalsManagerProps) {
           <p className="text-gray-500 text-center py-8">No devotionals yet.</p>
         ) : (
           devotionals.map((devotional) => (
-            <div key={devotional.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
-                <h4 className="font-semibold">{devotional.title}</h4>
+            <div key={devotional.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
+                <h4 className="font-semibold truncate">{devotional.title}</h4>
                 {devotional.scripture_reference && (
                   <p className="text-sm text-gray-600">Scripture: {devotional.scripture_reference}</p>
                 )}
                 {devotional.author && <p className="text-sm text-gray-600">By: {devotional.author}</p>}
-                <p className="text-sm text-gray-500 mt-2 line-clamp-2">{devotional.content}</p>
+                <p className="text-sm text-gray-500 mt-2 line-clamp-2 break-words text-ellipsis overflow-hidden">
+                  {devotional.content}
+                </p>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(devotional.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(devotional.id)}
+                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}

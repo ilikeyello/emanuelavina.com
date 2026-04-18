@@ -102,28 +102,31 @@ export default function PrayerRequestsManager({ orgId }: PrayerRequestsManagerPr
           </p>
         ) : (
           prayers.map((prayer) => (
-            <div key={prayer.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
-                <h4 className="font-semibold">{prayer.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{prayer.description}</p>
-                <div className="text-xs text-gray-500 mt-2">
+            <div key={prayer.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
+                <h4 className="font-semibold truncate">{prayer.title}</h4>
+                <p className="text-sm text-gray-600 mt-1 break-words">{prayer.description}</p>
+                <div className="text-xs text-gray-500 mt-2 flex flex-wrap gap-x-2 gap-y-1">
                   <span>
                     By: {prayer.is_anonymous ? 'Anonymous' : (prayer.user_name || 'Anonymous')}
                   </span>
-                  <span className="mx-2">•</span>
+                  <span className="opacity-50">•</span>
                   <span>Prayers: {prayer.prayer_count}</span>
-                  <span className="mx-2">•</span>
+                  <span className="opacity-50">•</span>
                   <span>{new Date(prayer.created_at).toLocaleString()}</span>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(prayer.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(prayer.id)}
+                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}

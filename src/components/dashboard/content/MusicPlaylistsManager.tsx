@@ -236,35 +236,38 @@ export default function MusicPlaylistsManager({ orgId }: MusicPlaylistsManagerPr
           </p>
         ) : (
           playlists.map((playlist) => (
-            <div key={playlist.id} className="border rounded-lg p-4 flex justify-between items-start">
-              <div className="flex-1">
+            <div key={playlist.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div className="flex-1 min-w-0 w-full">
                 <div className="flex items-center gap-2">
-                  <Music className="h-4 w-4 text-gray-500" />
-                  <h4 className="font-semibold">{playlist.title}</h4>
+                  <Music className="h-4 w-4 text-gray-500 shrink-0" />
+                  <h4 className="font-semibold truncate">{playlist.title}</h4>
                 </div>
                 {playlist.description && (
-                  <p className="text-sm text-gray-600 mt-1">{playlist.description}</p>
+                  <p className="text-sm text-gray-600 mt-1 break-words">{playlist.description}</p>
                 )}
                 {playlist.youtube_playlist_url && (
                   <a
                     href={playlist.youtube_playlist_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-blue-600 hover:underline mt-1 inline-flex items-center gap-1"
+                    className="text-sm text-blue-600 hover:underline mt-1 inline-flex items-center gap-1 break-all"
                   >
-                    <ExternalLink className="h-3 w-3" />
-                    {playlist.youtube_playlist_url}
+                    <ExternalLink className="h-3 w-3 shrink-0" />
+                    <span className="break-all">{playlist.youtube_playlist_url}</span>
                   </a>
                 )}
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleDelete(playlist.id)}
-                className="text-red-600 hover:text-red-700"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(playlist.id)}
+                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </div>
             </div>
           ))
         )}
