@@ -1,6 +1,11 @@
 "use client";
 
 import { SignedIn, UserButton, OrganizationSwitcher } from "@clerk/nextjs";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 const links = [
   { href: "/", label: "Home" },
