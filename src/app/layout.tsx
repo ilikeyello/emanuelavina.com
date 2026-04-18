@@ -25,6 +25,12 @@ export const metadata: Metadata = {
   description: "Emanuel Web Design crafts peaceful, accessible church websites with managed content, pricing, and a secure client portal.",
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

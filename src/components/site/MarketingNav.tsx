@@ -38,7 +38,7 @@ export default function MarketingNav() {
 
   return (
     <header
-      className={`w-full sticky top-0 z-50 transition-colors duration-300 ${
+      className={`w-full sticky top-0 z-50 transition-colors duration-300 pt-[env(safe-area-inset-top)] ${
         isScrolled || open
           ? "border-b border-[color:var(--border)] bg-[color:var(--background)]/95 backdrop-blur-md shadow-sm"
           : "border-b border-transparent bg-transparent backdrop-blur-none"
