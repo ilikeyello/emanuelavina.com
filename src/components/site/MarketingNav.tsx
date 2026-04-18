@@ -19,7 +19,7 @@ export default function MarketingNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const isDashboardPage = pathname?.startsWith('/dashboard');
+  const isDashboardPage = pathname?.includes('/dashboard');
   const isHomePage = pathname === '/';
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const globeSrc = isLogoHovered ? '/logo/globehover.png' : '/logo/globe.png';
@@ -40,12 +40,12 @@ export default function MarketingNav() {
     <header
       className={`w-full sticky top-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)] ${
         isScrolled || open || isDashboardPage
-          ? "border-b border-[color:var(--border)] bg-[color:var(--background)]/95 backdrop-blur-md shadow-sm"
+          ? "border-b border-[color:var(--border)] bg-background backdrop-blur-md shadow-sm"
           : "border-b border-transparent bg-transparent backdrop-blur-none"
       }`}
     >
       {/* Essential background to cover system area regardless of scroll state */}
-      <div className="absolute top-0 left-0 right-0 h-[env(safe-area-inset-top)] bg-[color:var(--background)] -z-10" />
+      <div className={`absolute top-0 left-0 right-0 h-[env(safe-area-inset-top)] bg-background -z-10 ${isDashboardPage ? "block" : "hidden sm:block"}`} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-20">
         <div className="flex items-center gap-4">
           <Link
