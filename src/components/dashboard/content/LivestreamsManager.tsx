@@ -79,12 +79,19 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
     }
   };
 
-  const toggleLive = async (id: number, currentStatus: boolean) => {
+  const toggleLive = async (id: number, currentStatus: boolean, autoTrigger = false) => {
     try {
+      const isLiveNow = !currentStatus;
+      const body: any = { id, is_live: isLiveNow };
+
+      if (!isLiveNow && !autoTrigger) {
+        body.clear_schedule = true;
+      }
+
       const response = await fetch('/api/livestreams', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, is_live: !currentStatus }),
+        body: JSON.stringify(body),
       });
 
       if (response.ok) {
@@ -94,6 +101,22 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
       console.error('Error toggling live status:', error);
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      livestreams.forEach((stream) => {
+        if (!stream.is_live && stream.scheduled_start) {
+          const streamTime = new Date(stream.scheduled_start);
+          const now = new Date();
+          if (streamTime <= now) {
+            toggleLive(stream.id, stream.is_live, true);
+          }
+        }
+      });
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [livestreams]);
 
   if (loading) return <div>Loading livestreams...</div>;
 

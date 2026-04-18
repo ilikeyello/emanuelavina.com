@@ -35,9 +35,15 @@ export async function PATCH(request: Request) {
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
+  const updateData: any = { is_live: body.is_live };
+
+  if (body.is_live === false && body.clear_schedule) {
+    updateData.scheduled_start = null;
+  }
+
   const { data, error } = await getSupabaseAdmin()
     .from('livestreams')
-    .update({ is_live: body.is_live })
+    .update(updateData)
     .eq('id', body.id)
     .eq('organization_id', orgId)
     .select()
