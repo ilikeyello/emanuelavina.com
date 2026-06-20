@@ -56,11 +56,20 @@ export async function PUT(request: Request) {
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
+  const title = body.title || body.title_en || '';
+  const description = body.description || body.description_en || null;
   const { data, error } = await getSupabaseAdmin()
     .from('events')
     .update({
-      title: body.title || body.title_en || '',
-      description: body.description || body.description_en || null,
+      // Keep the legacy and bilingual columns in sync — the apps read the
+      // *_en/*_es columns, so updating only `title`/`description` left edits
+      // invisible on the site and app.
+      title,
+      title_en: title,
+      title_es: title,
+      description,
+      description_en: description,
+      description_es: description,
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
