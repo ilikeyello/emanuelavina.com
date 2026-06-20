@@ -84,12 +84,14 @@ export default function ImageUpload({ value, onChange, label = 'Featured image' 
 
       {value ? (
         <div className="relative inline-block">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={value}
-            alt={label}
-            className="max-h-64 w-auto max-w-full rounded-lg border border-gray-200 object-contain"
-          />
+          <div className="aspect-video w-72 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={value}
+              alt={label}
+              className="h-full w-full object-contain"
+            />
+          </div>
           <button
             type="button"
             onClick={() => onChange(null)}
