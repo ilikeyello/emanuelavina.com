@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
+      image_url: body.image_url || null,
       rsvp_fields: Array.isArray(body.rsvp_fields) ? body.rsvp_fields : [],
       created_by: 'admin',
     }])
@@ -63,6 +64,7 @@ export async function PUT(request: Request) {
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
+      ...(body.image_url !== undefined ? { image_url: body.image_url || null } : {}),
       ...(Array.isArray(body.rsvp_fields) ? { rsvp_fields: body.rsvp_fields } : {}),
     })
     .eq('id', body.id)

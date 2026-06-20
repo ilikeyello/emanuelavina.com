@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import RichTextEditor from '@/components/ui/RichTextEditor';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 interface AnnouncementsManagerProps {
   orgId: string;
@@ -189,6 +190,15 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
                 content={formData.content}
                 onChange={(content) => setFormData({ ...formData, content: content })}
                 placeholder="Write your announcement..."
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Featured Image</Label>
+              <ImageUpload
+                value={formData.image_url || null}
+                onChange={(url) => setFormData({ ...formData, image_url: url || '' })}
+                label="Announcement image"
               />
             </div>
           </div>

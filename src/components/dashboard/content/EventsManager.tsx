@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Plus, Trash2, Calendar, MapPin, Users, ChevronDown, ChevronUp, Pencil, GripVertical } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import RichTextEditor from '@/components/ui/RichTextEditor';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 interface EventsManagerProps {
   orgId: string;
@@ -47,6 +48,7 @@ interface ChurchEvent {
   event_date: string;
   location: string | null;
   max_attendees: number | null;
+  image_url?: string | null;
   rsvp_fields?: RsvpField[] | null;
   created_at: string;
   rsvps?: EventRsvp[];
@@ -68,6 +70,7 @@ const emptyForm = {
   event_date: '',
   location: '',
   max_attendees: '',
+  image_url: '',
 };
 
 const makeKey = () => `f_${Math.random().toString(36).slice(2, 9)}`;
@@ -161,6 +164,7 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
       event_date: toLocalInput(event.event_date),
       location: event.location ?? '',
       max_attendees: event.max_attendees != null ? String(event.max_attendees) : '',
+      image_url: event.image_url ?? '',
     });
     setFields(toBuilderFields(event.rsvp_fields));
     setShowForm(true);
@@ -214,6 +218,7 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
         event_date: new Date(formData.event_date).toISOString(),
         location: formData.location || null,
         max_attendees: formData.max_attendees ? parseInt(formData.max_attendees) : null,
+        image_url: formData.image_url || null,
         rsvp_fields: toStoredFields(fields),
       };
       const response = await fetch('/api/events', {
@@ -285,6 +290,14 @@ export default function EventsManager({ orgId }: EventsManagerProps) {
                 content={formData.description}
                 onChange={(content) => setFormData({ ...formData, description: content })}
                 placeholder="Describe your event..."
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Featured Image</Label>
+              <ImageUpload
+                value={formData.image_url || null}
+                onChange={(url) => setFormData({ ...formData, image_url: url || '' })}
+                label="Event image"
               />
             </div>
           </div>
