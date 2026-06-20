@@ -88,7 +88,7 @@ export default function ImageUpload({ value, onChange, label = 'Featured image' 
           <img
             src={value}
             alt={label}
-            className="h-40 w-auto max-w-full rounded-lg border border-gray-200 object-cover"
+            className="max-h-64 w-auto max-w-full rounded-lg border border-gray-200 object-contain"
           />
           <button
             type="button"
