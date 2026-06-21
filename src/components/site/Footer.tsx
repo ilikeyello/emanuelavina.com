@@ -9,6 +9,7 @@ export default function Footer() {
           <p className="text-sm text-[color:var(--muted-foreground)]">Emanuel Web Design, open your doors to the world.</p>
         </div>
         <div className="flex items-center gap-4 text-sm text-[color:var(--muted-foreground)]">
+          <Link href="/privacy" className="hover:text-[color:var(--foreground)] transition-colors">Privacy Policy</Link>
           <Link href="/contact" className="hover:text-[color:var(--foreground)] transition-colors">Contact</Link>
           <Link href="/dashboard/client-portal" className="hover:text-[color:var(--foreground)] transition-colors">Client Portal</Link>
         </div>
