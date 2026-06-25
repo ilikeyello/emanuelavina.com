@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Minimal full-bleed YouTube embed page.
+
+  Why this exists: the CNE Capacitor iOS app serves its WebView pages from
+  `capacitor://localhost`. YouTube rejects that scheme as a Referer for *live*
+  embeds with "error 153". Loading the player inside this real https page makes
+  YouTube see a valid https Referer (www.emanuelavina.com), so live streams play.
+  The app points its livestream <iframe> at:
+      https://www.emanuelavina.com/youtube-embed.html?v=<VIDEO_ID>
+
+  Served as a static file from /public, so Next.js middleware (Clerk auth) does
+  not run on it (the middleware matcher excludes *.html).
+-->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Livestream</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  .wrap { position: fixed; inset: 0; }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .msg { position: fixed; inset: 0; display: flex; align-items: center;
+         justify-content: center; color: rgba(255,255,255,.6);
+         font-family: -apple-system, system-ui, sans-serif; font-size: 14px;
+         padding: 0 24px; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="wrap" id="wrap"></div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      // YouTube ids are [A-Za-z0-9_-]; strip anything else to avoid injection.
+      var videoId = (params.get('v') || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64);
+      var autoplay = params.get('autoplay') === '1' ? '1' : '0';
+      var wrap = document.getElementById('wrap');
+
+      if (!videoId) {
+        var m = document.createElement('div');
+        m.className = 'msg';
+        m.textContent = 'No video specified.';
+        document.body.appendChild(m);
+        return;
+      }
+
+      var src = 'https://www.youtube-nocookie.com/embed/' + videoId +
+        '?playsinline=1&controls=1&modestbranding=1&rel=0&autoplay=' + autoplay;
+
+      var iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = 'Livestream';
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      iframe.setAttribute('allow',
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('allowfullscreen', '');
+      wrap.appendChild(iframe);
+    })();
+  </script>
+</body>
+</html>
