@@ -1,272 +1,230 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import * as UpChunk from '@mux/upchunk';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2, Music, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, Music, UploadCloud, Loader2, CheckCircle2, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 interface MusicPlaylistsManagerProps {
   orgId: string;
 }
 
-interface MusicContent {
-  id: string;
+interface Track {
+  id: number;
   title: string;
-  youtube_playlist_url: string | null;
-  description: string | null;
-  created_at: string;
+  artist: string | null;
+  mux_playback_id: string | null;
+  mux_status: string | null;
+  duration: number | null;
+  sort_order: number;
 }
+
+const STATUS_LABEL: Record<string, string> = {
+  pending: 'Uploading…',
+  preparing: 'Processing…',
+  ready: 'Ready',
+  errored: 'Failed',
+};
 
 export default function MusicPlaylistsManager({ orgId }: MusicPlaylistsManagerProps) {
   const { toast } = useToast();
-  const [playlists, setPlaylists] = useState<MusicContent[]>([]);
+  const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [progress, setProgress] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    title: '',
-    youtube_playlist_url: '',
-    description: '',
-  });
+  const [file, setFile] = useState<File | null>(null);
+  const [formData, setFormData] = useState({ title: '', artist: '' });
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
-    fetchPlaylists();
-  }, [orgId]);
-
-  const fetchPlaylists = async () => {
+  const fetchTracks = useCallback(async () => {
     try {
-      const response = await fetch(`/api/church-content?type=music`);
-      if (response.ok) {
-        const data = await response.json();
-        setPlaylists(data);
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to load music playlists',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching playlists:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load music playlists',
-        variant: 'destructive',
-      });
+      const res = await fetch('/api/music-tracks');
+      if (res.ok) setTracks(await res.json());
+    } catch (e) {
+      console.error('Error fetching tracks:', e);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchTracks();
+  }, [fetchTracks]);
+
+  useEffect(() => {
+    const anyPending = tracks.some(
+      (t) => t.mux_status && t.mux_status !== 'ready' && t.mux_status !== 'errored'
+    );
+    if (anyPending && !pollRef.current) {
+      pollRef.current = setInterval(fetchTracks, 5000);
+    } else if (!anyPending && pollRef.current) {
+      clearInterval(pollRef.current);
+      pollRef.current = null;
+    }
+    return () => {
+      if (pollRef.current && !anyPending) {
+        clearInterval(pollRef.current);
+        pollRef.current = null;
+      }
+    };
+  }, [tracks, fetchTracks]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!file) {
+      toast({ title: 'Pick an audio file', variant: 'destructive' });
+      return;
+    }
     setSubmitting(true);
-
+    setProgress(0);
     try {
-      const response = await fetch('/api/church-content', {
+      const res = await fetch('/api/mux/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'music',
-          title: formData.title,
-          youtube_playlist_url: formData.youtube_playlist_url,
-          description: formData.description || null,
-        }),
+        body: JSON.stringify({ kind: 'music', ...formData, sort_order: tracks.length }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Could not start upload');
+      }
+      const { uploadUrl } = await res.json();
+
+      await new Promise<void>((resolve, reject) => {
+        const upload = UpChunk.createUpload({ endpoint: uploadUrl, file });
+        upload.on('error', (err: { detail: unknown }) => reject(err.detail));
+        upload.on('progress', (p: { detail: number }) => setProgress(Math.round(p.detail)));
+        upload.on('success', () => resolve());
       });
 
-      if (response.ok) {
-        toast({
-          title: 'Success',
-          description: 'Music playlist added successfully',
-        });
-        setFormData({ title: '', youtube_playlist_url: '', description: '' });
-        setShowForm(false);
-        fetchPlaylists();
-      } else {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        toast({
-          title: 'Error',
-          description: errorData.error || 'Failed to add playlist',
-          variant: 'destructive',
-        });
-      }
+      toast({ title: 'Uploaded', description: 'Mux is processing the track.' });
+      setFormData({ title: '', artist: '' });
+      setFile(null);
+      setShowForm(false);
+      fetchTracks();
     } catch (error) {
-      console.error('Error adding playlist:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to add playlist',
+        title: 'Upload failed',
+        description: error instanceof Error ? error.message : 'Unknown error',
         variant: 'destructive',
       });
     } finally {
       setSubmitting(false);
+      setProgress(null);
     }
   };
 
-  const handleUpdate = async (id: string, youtube_playlist_url: string) => {
-    try {
-      const response = await fetch('/api/church-content', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, youtube_playlist_url }),
-      });
-
-      if (response.ok) {
-        toast({
-          title: 'Success',
-          description: 'Playlist URL updated',
-        });
-        fetchPlaylists();
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to update playlist',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      console.error('Error updating playlist:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update playlist',
-        variant: 'destructive',
-      });
+  const handleDelete = async (id: number) => {
+    if (!confirm('Delete this track? This also removes the audio from Mux.')) return;
+    const res = await fetch(`/api/music-tracks?id=${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      toast({ title: 'Deleted' });
+      fetchTracks();
+    } else {
+      toast({ title: 'Error', description: 'Failed to delete', variant: 'destructive' });
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this playlist?')) return;
-
-    try {
-      const response = await fetch(`/api/church-content?id=${id}`, { method: 'DELETE' });
-      if (response.ok) {
-        toast({
-          title: 'Success',
-          description: 'Playlist deleted successfully',
-        });
-        fetchPlaylists();
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to delete playlist',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      console.error('Error deleting playlist:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to delete playlist',
-        variant: 'destructive',
-      });
-    }
+  const move = async (index: number, dir: -1 | 1) => {
+    const target = index + dir;
+    if (target < 0 || target >= tracks.length) return;
+    const a = tracks[index];
+    const b = tracks[target];
+    // Swap sort_order values.
+    await Promise.all([
+      fetch('/api/music-tracks', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: a.id, sort_order: b.sort_order }),
+      }),
+      fetch('/api/music-tracks', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: b.id, sort_order: a.sort_order }),
+      }),
+    ]);
+    fetchTracks();
   };
 
-  if (loading) return <div>Loading music playlists...</div>;
+  if (loading) return <div>Loading music…</div>;
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-lg font-semibold">Music Playlists</h3>
-          <p className="text-sm text-gray-500">
-            Add YouTube playlist URLs for worship music on your church site
-          </p>
+          <h3 className="text-lg font-semibold">Worship Music</h3>
+          <p className="text-sm text-gray-500">Upload worship tracks. They stream as audio through Mux in the app.</p>
         </div>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Playlist
+          Add Track
         </Button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Playlist Name *</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Worship Playlist"
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title *</Label>
+              <Input id="title" value={formData.title} required
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="artist">Artist</Label>
+              <Input id="artist" value={formData.artist}
+                onChange={(e) => setFormData({ ...formData, artist: e.target.value })} />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="youtube_playlist_url">YouTube Playlist URL *</Label>
-            <Input
-              id="youtube_playlist_url"
-              type="url"
-              value={formData.youtube_playlist_url}
-              onChange={(e) => setFormData({ ...formData, youtube_playlist_url: e.target.value })}
-              placeholder="https://www.youtube.com/playlist?list=PLxxxxxxx"
-              required
-            />
-            <p className="text-xs text-gray-400">
-              Paste the full YouTube playlist URL. The church site will automatically embed it.
-            </p>
+            <Label htmlFor="audio">Audio file *</Label>
+            <Input id="audio" type="file" accept="audio/*"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)} required />
+            {file && <p className="text-xs text-gray-500">{file.name} ({(file.size / 1e6).toFixed(1)} MB)</p>}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Input
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Optional description"
-            />
-          </div>
+          {progress !== null && (
+            <div className="space-y-1">
+              <div className="h-2 w-full rounded bg-gray-200 overflow-hidden">
+                <div className="h-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
+              </div>
+              <p className="text-xs text-gray-500">{progress}% uploaded</p>
+            </div>
+          )}
 
           <div className="flex gap-2">
             <Button type="submit" disabled={submitting}>
-              {submitting ? 'Saving...' : 'Save Playlist'}
+              {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Uploading…</> : <><UploadCloud className="h-4 w-4 mr-2" />Upload</>}
             </Button>
-            <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={submitting}>
-              Cancel
-            </Button>
+            <Button type="button" variant="outline" onClick={() => setShowForm(false)} disabled={submitting}>Cancel</Button>
           </div>
         </form>
       )}
 
       <div className="space-y-2">
-        {playlists.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">
-            No music playlists yet. Add a YouTube playlist URL to display on your church site.
-          </p>
+        {tracks.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">No tracks yet. Upload your first worship track!</p>
         ) : (
-          playlists.map((playlist) => (
-            <div key={playlist.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
-              <div className="flex-1 min-w-0 w-full">
-                <div className="flex items-center gap-2">
-                  <Music className="h-4 w-4 text-gray-500 shrink-0" />
-                  <h4 className="font-semibold truncate">{playlist.title}</h4>
+          tracks.map((track, i) => (
+            <div key={track.id} className="border rounded-lg p-4 flex justify-between items-center gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded bg-gray-100 flex items-center justify-center shrink-0">
+                  {track.mux_status === 'ready' ? <Music className="h-4 w-4 text-gray-500" />
+                    : track.mux_status === 'errored' ? <AlertTriangle className="h-4 w-4 text-red-500" />
+                    : <Loader2 className="h-4 w-4 text-gray-400 animate-spin" />}
                 </div>
-                {playlist.description && (
-                  <p className="text-sm text-gray-600 mt-1 break-words">{playlist.description}</p>
-                )}
-                {playlist.youtube_playlist_url && (
-                  <a
-                    href={playlist.youtube_playlist_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 hover:underline mt-1 inline-flex items-center gap-1 break-all"
-                  >
-                    <ExternalLink className="h-3 w-3 shrink-0" />
-                    <span className="break-all">{playlist.youtube_playlist_url}</span>
-                  </a>
-                )}
+                <div className="min-w-0">
+                  <h4 className="font-semibold truncate">{track.title}</h4>
+                  {track.artist && <p className="text-sm text-gray-600 truncate">{track.artist}</p>}
+                  <StatusBadge status={track.mux_status} />
+                </div>
               </div>
-              <div className="flex gap-2 w-full sm:w-auto justify-end">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(playlist.id)}
-                  className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </Button>
+              <div className="flex gap-1 items-center shrink-0">
+                <Button variant="ghost" size="sm" disabled={i === 0} onClick={() => move(i, -1)}><ArrowUp className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="sm" disabled={i === tracks.length - 1} onClick={() => move(i, 1)}><ArrowDown className="h-4 w-4" /></Button>
+                <Button variant="outline" size="sm" onClick={() => handleDelete(track.id)}
+                  className="text-red-600 hover:text-red-700"><Trash2 className="h-4 w-4" /></Button>
               </div>
             </div>
           ))
@@ -274,4 +232,14 @@ export default function MusicPlaylistsManager({ orgId }: MusicPlaylistsManagerPr
       </div>
     </div>
   );
+}
+
+function StatusBadge({ status }: { status: string | null }) {
+  const s = status || 'ready';
+  const label = STATUS_LABEL[s] || s;
+  const color =
+    s === 'ready' ? 'bg-green-100 text-green-700'
+      : s === 'errored' ? 'bg-red-100 text-red-700'
+      : 'bg-amber-100 text-amber-700';
+  return <span className={`inline-block mt-0.5 text-xs px-2 py-0.5 rounded ${color}`}>{label}</span>;
 }

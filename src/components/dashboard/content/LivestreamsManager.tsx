@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Copy, Check, Eye, EyeOff, Radio } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 interface LivestreamsManagerProps {
   orgId: string;
@@ -12,211 +13,204 @@ interface LivestreamsManagerProps {
 
 interface Livestream {
   id: number;
-  stream_url: string;
   title: string | null;
   is_live: boolean;
   scheduled_start: string | null;
+  mux_stream_id: string | null;
+  mux_stream_key: string | null;
+  mux_playback_id: string | null;
+  mux_status: string | null;
 }
 
+const RTMPS_URL = 'rtmps://global-live.mux.com:443/app';
+
 export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
+  const { toast } = useToast();
   const [livestreams, setLivestreams] = useState<Livestream[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    stream_url: '',
-    title: '',
-    is_live: false,
-    scheduled_start: '',
-  });
+  const [creating, setCreating] = useState(false);
+  const [title, setTitle] = useState('Sunday Service');
+  const [showKey, setShowKey] = useState<Record<number, boolean>>({});
+  const [copied, setCopied] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchLivestreams();
-  }, [orgId]);
-
-  const fetchLivestreams = async () => {
+  const fetchLivestreams = useCallback(async () => {
     try {
       const response = await fetch(`/api/livestreams?orgId=${orgId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setLivestreams(data);
-      }
+      if (response.ok) setLivestreams(await response.json());
     } catch (error) {
       console.error('Error fetching livestreams:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [orgId]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchLivestreams();
+  }, [fetchLivestreams]);
+
+  // Refresh periodically so the live indicator (driven by Mux webhooks) updates.
+  useEffect(() => {
+    const interval = setInterval(fetchLivestreams, 15000);
+    return () => clearInterval(interval);
+  }, [fetchLivestreams]);
+
+  const createStream = async () => {
+    setCreating(true);
     try {
-      const response = await fetch('/api/livestreams', {
+      const res = await fetch('/api/mux/livestream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, organization_id: orgId }),
+        body: JSON.stringify({ title }),
       });
-
-      if (response.ok) {
-        setFormData({ stream_url: '', title: '', is_live: false, scheduled_start: '' });
-        setShowForm(false);
-        fetchLivestreams();
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Failed to create livestream');
       }
+      toast({ title: 'Livestream created', description: 'Copy the stream key into OBS to go live.' });
+      fetchLivestreams();
     } catch (error) {
-      console.error('Error adding livestream:', error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to create',
+        variant: 'destructive',
+      });
+    } finally {
+      setCreating(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this livestream?')) return;
-
+    if (!confirm('Delete this livestream? The Mux stream and its key will stop working.')) return;
     try {
-      const response = await fetch(`/api/livestreams?id=${id}`, { method: 'DELETE' });
-      if (response.ok) {
+      const res = await fetch(`/api/mux/livestream?id=${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        toast({ title: 'Deleted' });
         fetchLivestreams();
       }
-    } catch (error) {
-      console.error('Error deleting livestream:', error);
+    } catch {
+      toast({ title: 'Error', description: 'Failed to delete', variant: 'destructive' });
     }
   };
 
-  const toggleLive = async (id: number, currentStatus: boolean, autoTrigger = false) => {
+  const toggleLive = async (stream: Livestream) => {
     try {
-      const isLiveNow = !currentStatus;
-      const body: any = { id, is_live: isLiveNow };
-
-      if (!isLiveNow && !autoTrigger) {
-        body.clear_schedule = true;
-      }
-
-      const response = await fetch('/api/livestreams', {
+      const res = await fetch('/api/livestreams', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ id: stream.id, is_live: !stream.is_live }),
       });
-
-      if (response.ok) {
-        fetchLivestreams();
-      }
-    } catch (error) {
-      console.error('Error toggling live status:', error);
+      if (res.ok) fetchLivestreams();
+    } catch {
+      toast({ title: 'Error', description: 'Failed to update', variant: 'destructive' });
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      livestreams.forEach((stream) => {
-        if (!stream.is_live && stream.scheduled_start) {
-          const streamTime = new Date(stream.scheduled_start);
-          const now = new Date();
-          if (streamTime <= now) {
-            toggleLive(stream.id, stream.is_live, true);
-          }
-        }
-      });
-    }, 10000);
+  const copy = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 1500);
+  };
 
-    return () => clearInterval(interval);
-  }, [livestreams]);
-
-  if (loading) return <div>Loading livestreams...</div>;
+  if (loading) return <div>Loading livestreams…</div>;
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Livestreams</h3>
-        <Button onClick={() => setShowForm(!showForm)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Livestream
-        </Button>
-      </div>
-
-      {showForm && (
-        <form onSubmit={handleSubmit} className="border rounded-lg p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="stream_url">Stream URL *</Label>
-              <Input
-                id="stream_url"
-                type="url"
-                value={formData.stream_url}
-                onChange={(e) => setFormData({ ...formData, stream_url: e.target.value })}
-                placeholder="https://youtube.com/live/..."
-                required
-              />
+      <div className="flex justify-between items-center flex-wrap gap-2">
+        <div>
+          <h3 className="text-lg font-semibold">Livestream</h3>
+          <p className="text-sm text-gray-500">Broadcast with OBS (or any RTMP encoder) through Mux.</p>
+        </div>
+        {livestreams.length === 0 && (
+          <div className="flex items-end gap-2">
+            <div className="space-y-1">
+              <Label htmlFor="ls-title">Title</Label>
+              <Input id="ls-title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-48" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Sunday Service"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="scheduled_start">Scheduled Start</Label>
-            <Input
-              id="scheduled_start"
-              type="datetime-local"
-              value={formData.scheduled_start}
-              onChange={(e) => setFormData({ ...formData, scheduled_start: e.target.value })}
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <Button type="submit">Save Livestream</Button>
-            <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-              Cancel
+            <Button onClick={createStream} disabled={creating}>
+              <Plus className="h-4 w-4 mr-2" />
+              {creating ? 'Creating…' : 'Create Livestream'}
             </Button>
           </div>
-        </form>
-      )}
+        )}
+      </div>
 
-      <div className="space-y-2">
-        {livestreams.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No livestreams configured.</p>
-        ) : (
-          livestreams.map((stream) => (
-            <div key={stream.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
-              <div className="flex-1 min-w-0 w-full">
-                <div className="flex items-center flex-wrap gap-2">
-                  <h4 className="font-semibold truncate">{stream.title || 'Livestream'}</h4>
-                  {stream.is_live && (
-                    <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">LIVE</span>
+      {livestreams.length === 0 ? (
+        <p className="text-gray-500 text-center py-8">No livestream yet. Create one to get your OBS stream key.</p>
+      ) : (
+        livestreams.map((stream) => {
+          const keyVisible = showKey[stream.id];
+          return (
+            <div key={stream.id} className="border rounded-lg p-4 space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <Radio className="h-4 w-4 text-gray-500" />
+                  <h4 className="font-semibold">{stream.title || 'Livestream'}</h4>
+                  {stream.is_live ? (
+                    <span className="bg-red-600 text-white text-xs px-2 py-1 rounded animate-pulse">● LIVE</span>
+                  ) : (
+                    <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">Offline</span>
                   )}
                 </div>
-                <a
-                  href={stream.stream_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline break-all block mt-1"
-                >
-                  {stream.stream_url}
-                </a>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => toggleLive(stream)}>
+                    {stream.is_live ? 'Force Offline' : 'Force Live'}
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleDelete(stream.id)}
+                    className="text-red-600 hover:text-red-700">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-              <div className="flex gap-2 w-full sm:w-auto justify-end">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => toggleLive(stream.id, stream.is_live)}
-                  className="flex-1 sm:flex-none"
-                >
-                  {stream.is_live ? 'Set Offline' : 'Set Live'}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(stream.id)}
-                  className="text-red-600 hover:text-red-700 flex-none"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+
+              <div className="rounded-md bg-gray-50 border p-3 space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">OBS / Encoder settings</p>
+
+                <CopyRow label="Server (RTMPS URL)" value={RTMPS_URL}
+                  onCopy={() => copy(RTMPS_URL, `url-${stream.id}`)} copied={copied === `url-${stream.id}`} />
+
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-600">Stream key</span>
+                    <button type="button" className="text-xs text-gray-500 flex items-center gap-1"
+                      onClick={() => setShowKey({ ...showKey, [stream.id]: !keyVisible })}>
+                      {keyVisible ? <><EyeOff className="h-3 w-3" />Hide</> : <><Eye className="h-3 w-3" />Show</>}
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <code className="flex-1 text-xs bg-white border rounded px-2 py-1 truncate">
+                      {keyVisible ? (stream.mux_stream_key || '—') : '•'.repeat(28)}
+                    </code>
+                    <Button variant="outline" size="sm"
+                      onClick={() => copy(stream.mux_stream_key || '', `key-${stream.id}`)}>
+                      {copied === `key-${stream.id}` ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-gray-400">Keep this private. Anyone with the key can broadcast to your channel.</p>
+                </div>
+
+                <p className="text-[11px] text-gray-500 leading-relaxed">
+                  In OBS: <strong>Settings → Stream → Service: Custom</strong>. Paste the Server URL and Stream Key above,
+                  then click <strong>Start Streaming</strong>. The app shows the stream automatically once Mux detects it
+                  (no need to toggle manually).
+                </p>
               </div>
             </div>
-          ))
-        )}
+          );
+        })
+      )}
+    </div>
+  );
+}
+
+function CopyRow({ label, value, onCopy, copied }: { label: string; value: string; onCopy: () => void; copied: boolean }) {
+  return (
+    <div className="space-y-1">
+      <span className="text-xs text-gray-600">{label}</span>
+      <div className="flex items-center gap-2">
+        <code className="flex-1 text-xs bg-white border rounded px-2 py-1 truncate">{value}</code>
+        <Button variant="outline" size="sm" onClick={onCopy}>
+          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+        </Button>
       </div>
     </div>
   );

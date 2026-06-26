@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
+import { getMux } from '@/lib/mux';
 
 export async function GET(request: Request) {
   try {
@@ -64,7 +65,23 @@ export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
-  const { error } = await getSupabaseAdmin()
+  const supabase = getSupabaseAdmin();
+  const { data: row } = await supabase
+    .from('sermons')
+    .select('mux_asset_id')
+    .eq('id', id)
+    .eq('organization_id', orgId)
+    .single();
+
+  if (row?.mux_asset_id) {
+    try {
+      await getMux().video.assets.delete(row.mux_asset_id);
+    } catch (e) {
+      console.warn('Mux asset delete failed (continuing):', e);
+    }
+  }
+
+  const { error } = await supabase
     .from('sermons')
     .delete()
     .eq('id', id)
