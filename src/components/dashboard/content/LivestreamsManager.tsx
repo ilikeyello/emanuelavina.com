@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Trash2, Copy, Check, Eye, EyeOff, Radio } from 'lucide-react';
+import { Plus, Trash2, Copy, Check, Eye, EyeOff, Radio, Pencil, X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 interface LivestreamsManagerProps {
@@ -32,6 +32,9 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
   const [title, setTitle] = useState('Sunday Service');
   const [showKey, setShowKey] = useState<Record<number, boolean>>({});
   const [copied, setCopied] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [savingTitle, setSavingTitle] = useState(false);
 
   const fetchLivestreams = useCallback(async () => {
     try {
@@ -105,6 +108,37 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
     }
   };
 
+  const startEditTitle = (stream: Livestream) => {
+    setEditingId(stream.id);
+    setEditTitle(stream.title || '');
+  };
+
+  const cancelEditTitle = () => {
+    setEditingId(null);
+    setEditTitle('');
+  };
+
+  const saveTitle = async (id: number) => {
+    setSavingTitle(true);
+    try {
+      const res = await fetch('/api/livestreams', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, title: editTitle.trim() || null }),
+      });
+      if (res.ok) {
+        setEditingId(null);
+        fetchLivestreams();
+      } else {
+        toast({ title: 'Error', description: 'Failed to update title', variant: 'destructive' });
+      }
+    } catch {
+      toast({ title: 'Error', description: 'Failed to update title', variant: 'destructive' });
+    } finally {
+      setSavingTitle(false);
+    }
+  };
+
   const copy = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
     setCopied(key);
@@ -144,7 +178,38 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <div className="flex items-center gap-2">
                   <Radio className="h-4 w-4 text-gray-500" />
-                  <h4 className="font-semibold">{stream.title || 'Livestream'}</h4>
+                  {editingId === stream.id ? (
+                    <div className="flex items-center gap-1">
+                      <Input
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') saveTitle(stream.id);
+                          if (e.key === 'Escape') cancelEditTitle();
+                        }}
+                        className="h-8 w-48"
+                        autoFocus
+                      />
+                      <Button size="sm" variant="outline" disabled={savingTitle} onClick={() => saveTitle(stream.id)}>
+                        <Check className="h-4 w-4" />
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={cancelEditTitle}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <h4 className="font-semibold">{stream.title || 'Livestream'}</h4>
+                      <button
+                        type="button"
+                        className="text-gray-400 hover:text-gray-600"
+                        onClick={() => startEditTitle(stream)}
+                        aria-label="Edit title"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  )}
                   {stream.is_live ? (
                     <span className="bg-red-600 text-white text-xs px-2 py-1 rounded animate-pulse">● LIVE</span>
                   ) : (

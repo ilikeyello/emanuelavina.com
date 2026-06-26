@@ -35,7 +35,10 @@ export async function PATCH(request: Request) {
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
-  const updateData: any = { is_live: body.is_live };
+  const updateData: any = {};
+
+  if (body.is_live !== undefined) updateData.is_live = body.is_live;
+  if (body.title !== undefined) updateData.title = body.title;
 
   if (body.is_live === false && body.clear_schedule) {
     updateData.scheduled_start = null;
