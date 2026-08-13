@@ -52,6 +52,8 @@ export async function POST(request: Request) {
             description: body.description || null,
             speaker: body.speaker || null,
             sermon_date: body.sermon_date || null,
+            source: 'upload',
+            published: true,
             mux_upload_id: upload.id,
             mux_status: 'pending',
             created_by: userId || null,

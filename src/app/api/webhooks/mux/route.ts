@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { getMux } from '@/lib/mux';
+import { saveLivestreamRecording } from '@/lib/livestream-recordings';
 
 // Webhooks must read the raw body for signature verification.
 export const runtime = 'nodejs';
@@ -8,14 +9,20 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Receives Mux webhooks and keeps Supabase in sync:
- *  - video.upload.asset_created : link the asset id to the pending row
- *  - video.asset.ready          : store playback id + duration, mark "ready"
- *  - video.asset.errored        : mark "errored"
- *  - video.live_stream.active   : flip the livestream to live
- *  - video.live_stream.idle     : flip the livestream off
+ *  - video.upload.asset_created        : link the asset id to the pending row
+ *  - video.asset.ready                 : store playback id + duration, mark "ready"
+ *  - video.asset.errored               : mark "errored"
+ *  - video.live_stream.active          : flip the livestream to live
+ *  - video.live_stream.idle            : flip the livestream off
+ *  - video.asset.live_stream_completed : finalize the saved recording
  *
- * Both `sermons` (devotionals) and `music_tracks` rows are matched by their
+ * Both `sermons` and `music_tracks` rows are matched by their
  * mux_upload_id / mux_asset_id, so one handler serves video and audio.
+ *
+ * Livestream recordings: the live stream is created with `new_asset_settings`,
+ * so Mux automatically produces an on-demand asset for every broadcast. That
+ * asset arrives here with a `live_stream_id` and no upload id, so we create a
+ * `sermons` row for it (source = 'livestream') instead of trying to match one.
  */
 export async function POST(request: Request) {
   const rawBody = await request.text();
@@ -59,6 +66,7 @@ export async function POST(request: Request) {
       case 'video.asset.ready': {
         const assetId = data.id as string | undefined;
         const uploadId = data.upload_id as string | undefined;
+        const liveStreamId = data.live_stream_id as string | undefined;
         const playbackId =
           (Array.isArray(data.playback_ids) &&
             (data.playback_ids[0] as { id?: string })?.id) ||
@@ -77,6 +85,40 @@ export async function POST(request: Request) {
           : 0;
         if (!updated && uploadId) {
           updated = await updateByUploadId(supabase, uploadId, patch);
+        }
+
+        // For a live asset this event fires shortly after the broadcast
+        // *starts*, so the duration is still partial. We deliberately don't
+        // create a sermon here — video.asset.live_stream_completed does that
+        // once the recording is final.
+        if (!updated && liveStreamId) {
+          console.log(
+            `Asset ${assetId} belongs to live stream ${liveStreamId}; waiting for live_stream_completed`
+          );
+        }
+        break;
+      }
+
+      case 'video.asset.live_stream_completed': {
+        // Fires once the broadcast ends and the recording is finalized. The
+        // duration on video.asset.ready can be partial while still live, so we
+        // (re)write the row here with the final numbers.
+        const assetId = data.id as string | undefined;
+        const liveStreamId = data.live_stream_id as string | undefined;
+        const playbackId =
+          (Array.isArray(data.playback_ids) &&
+            (data.playback_ids[0] as { id?: string })?.id) ||
+          undefined;
+        const duration = (data.duration as number | undefined) ?? null;
+
+        if (assetId && liveStreamId) {
+          await saveLivestreamRecording(supabase, {
+            assetId,
+            liveStreamId,
+            playbackId: playbackId ?? null,
+            duration,
+            createdAt: data.created_at as string | number | undefined,
+          });
         }
         break;
       }

@@ -23,11 +23,11 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="devotionals" className="w-full">
+        <Tabs defaultValue="sermons" className="w-full">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="devotionals" className="flex items-center gap-2">
+            <TabsTrigger value="sermons" className="flex items-center gap-2">
               <Video className="h-4 w-4" />
-              <span className="hidden sm:inline">Devotionals</span>
+              <span className="hidden sm:inline">Sermons</span>
             </TabsTrigger>
             <TabsTrigger value="livestreams" className="flex items-center gap-2">
               <Radio className="h-4 w-4" />
@@ -47,7 +47,7 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="devotionals" className="mt-6">
+          <TabsContent value="sermons" className="mt-6">
             <SermonsManager orgId={orgId} />
           </TabsContent>
 
