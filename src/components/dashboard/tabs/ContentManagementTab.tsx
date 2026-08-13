@@ -2,12 +2,13 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Video, Radio, Music, Gamepad2, Bell } from 'lucide-react';
+import { Video, Radio, Music, Gamepad2, Bell, BookOpen } from 'lucide-react';
 import SermonsManager from '../content/SermonsManager';
 import LivestreamsManager from '../content/LivestreamsManager';
 import MusicPlaylistsManager from '../content/MusicPlaylistsManager';
 import GamesManager from '../content/GamesManager';
 import NotificationsManager from '../content/NotificationsManager';
+import VersesOfTheDayManager from '../content/VersesOfTheDayManager';
 
 interface ContentManagementTabProps {
   orgId: string;
@@ -24,7 +25,7 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="sermons" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="sermons" className="flex items-center gap-2">
               <Video className="h-4 w-4" />
               <span className="hidden sm:inline">Sermons</span>
@@ -36,6 +37,10 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
             <TabsTrigger value="music" className="flex items-center gap-2">
               <Music className="h-4 w-4" />
               <span className="hidden sm:inline">Music</span>
+            </TabsTrigger>
+            <TabsTrigger value="verse" className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4" />
+              <span className="hidden sm:inline">Verse</span>
             </TabsTrigger>
             <TabsTrigger value="games" className="flex items-center gap-2">
               <Gamepad2 className="h-4 w-4" />
@@ -57,6 +62,10 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
 
           <TabsContent value="music" className="mt-6">
             <MusicPlaylistsManager orgId={orgId} />
+          </TabsContent>
+
+          <TabsContent value="verse" className="mt-6">
+            <VersesOfTheDayManager />
           </TabsContent>
 
           <TabsContent value="games" className="mt-6">
