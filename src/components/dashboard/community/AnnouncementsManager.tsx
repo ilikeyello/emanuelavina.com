@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import RichTextEditor from '@/components/ui/RichTextEditor';
-import ImageUpload from '@/components/ui/ImageUpload';
+import MultiImageUpload from '@/components/ui/MultiImageUpload';
 
 interface AnnouncementsManagerProps {
   orgId: string;
@@ -20,6 +20,7 @@ interface Announcement {
   content: string;
   priority: string;
   image_url: string | null;
+  image_urls: string[] | null;
   expires_at: string | null;
   created_at: string;
 }
@@ -34,7 +35,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
     title: '',
     content: '',
     priority: 'normal',
-    image_url: '',
+    image_urls: [] as string[],
     expires_at: '',
   });
 
@@ -79,7 +80,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
           title: formData.title,
           content: formData.content,
           priority: formData.priority,
-          image_url: formData.image_url || null,
+          image_urls: formData.image_urls,
           expires_at: formData.expires_at || null,
         }),
       });
@@ -93,7 +94,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
           title: '',
           content: '',
           priority: 'normal',
-          image_url: '',
+          image_urls: [],
           expires_at: '',
         });
         setShowForm(false);
@@ -194,11 +195,11 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
             </div>
 
             <div className="space-y-2">
-              <Label>Featured Image</Label>
-              <ImageUpload
-                value={formData.image_url || null}
-                onChange={(url) => setFormData({ ...formData, image_url: url || '' })}
-                label="Announcement image"
+              <Label>Photos</Label>
+              <MultiImageUpload
+                value={formData.image_urls}
+                onChange={(urls) => setFormData({ ...formData, image_urls: urls })}
+                label="Announcement photo"
               />
             </div>
           </div>

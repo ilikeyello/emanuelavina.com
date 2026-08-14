@@ -2,6 +2,23 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
+/**
+ * Photos arrive as an ordered array. Older admin builds (and any other caller)
+ * may still send a single `image_url`, so accept both. The database trigger
+ * mirrors the first entry back into `image_url` for app builds that predate
+ * galleries, so we only ever have to write the array.
+ */
+function toImageUrls(body: { image_urls?: unknown; image_url?: unknown }): string[] {
+  if (Array.isArray(body.image_urls)) {
+    return body.image_urls.filter(
+      (url): url is string => typeof url === 'string' && url.length > 0
+    );
+  }
+  return typeof body.image_url === 'string' && body.image_url.length > 0
+    ? [body.image_url]
+    : [];
+}
+
 export async function GET(request: Request) {
   const { orgId } = await auth();
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -38,7 +55,7 @@ export async function POST(request: Request) {
       content_en: body.content || '',
       content_es: body.content || '',
       priority: body.priority || 'normal',
-      image_url: body.image_url || null,
+      image_urls: toImageUrls(body),
       expires_at: body.expires_at || null,
       created_by: 'admin',
     }])

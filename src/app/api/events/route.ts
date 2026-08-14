@@ -2,6 +2,23 @@ import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
+/**
+ * Photos arrive as an ordered array. Older admin builds (and any other caller)
+ * may still send a single `image_url`, so accept both. The database trigger
+ * mirrors the first entry back into `image_url` for app builds that predate
+ * galleries, so we only ever have to write the array.
+ */
+function toImageUrls(body: { image_urls?: unknown; image_url?: unknown }): string[] {
+  if (Array.isArray(body.image_urls)) {
+    return body.image_urls.filter(
+      (url): url is string => typeof url === 'string' && url.length > 0
+    );
+  }
+  return typeof body.image_url === 'string' && body.image_url.length > 0
+    ? [body.image_url]
+    : [];
+}
+
 export async function GET(request: Request) {
   const { orgId } = await auth();
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -40,7 +57,7 @@ export async function POST(request: Request) {
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
-      image_url: body.image_url || null,
+      image_urls: toImageUrls(body),
       rsvp_fields: Array.isArray(body.rsvp_fields) ? body.rsvp_fields : [],
       created_by: 'admin',
     }])
@@ -73,7 +90,9 @@ export async function PUT(request: Request) {
       event_date: body.event_date,
       location: body.location || null,
       max_attendees: body.max_attendees || null,
-      ...(body.image_url !== undefined ? { image_url: body.image_url || null } : {}),
+      ...(body.image_urls !== undefined || body.image_url !== undefined
+        ? { image_urls: toImageUrls(body) }
+        : {}),
       ...(Array.isArray(body.rsvp_fields) ? { rsvp_fields: body.rsvp_fields } : {}),
     })
     .eq('id', body.id)
