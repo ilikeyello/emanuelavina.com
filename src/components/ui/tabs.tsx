@@ -7,9 +7,12 @@ import { cn } from "@/lib/utils"
 const Tabs = TabsPrimitive.Root
 
 /**
- * TabsList scrolls horizontally instead of squeezing triggers together.
- * On small screens a 5- or 6-item tab bar cannot fit, so we let it overflow
- * and swipe rather than collapsing every label down to a bare icon.
+ * TabsList scrolls horizontally rather than squeezing triggers together, so a
+ * long bar degrades into a swipe instead of unreadable slivers.
+ *
+ * Callers with more tabs than fit on a phone should override the layout instead
+ * of relying on that scroll — see CommunityTab, which switches to a grid of
+ * icons below sm so nothing has to be swiped to reach.
  */
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
