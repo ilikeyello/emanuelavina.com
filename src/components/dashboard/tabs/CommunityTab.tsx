@@ -2,44 +2,53 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Heart, MessageCircle, Megaphone, CalendarDays, Flag, Ban } from 'lucide-react';
+import { Radio, Video, BookOpen, Megaphone, CalendarDays, Music, Gamepad2 } from 'lucide-react';
+import LivestreamsManager from '../content/LivestreamsManager';
+import SermonsManager from '../content/SermonsManager';
+import VersesOfTheDayManager from '../content/VersesOfTheDayManager';
 import AnnouncementsManager from '../community/AnnouncementsManager';
 import EventsManager from '../content/EventsManager';
+import MusicPlaylistsManager from '../content/MusicPlaylistsManager';
+import GamesManager from '../content/GamesManager';
 
 interface CommunityTabProps {
   orgId: string;
 }
 
-// Shown in place of the prayer/bulletin/flagged managers while the in-app
-// Community section (user-generated content) is disabled. To bring these back,
-// restore the original manager components and re-enable UGC in the app.
-function DisabledNotice({ title }: { title: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-muted-foreground/30 bg-muted/30 px-6 py-16 text-center">
-      <Ban className="mb-4 h-10 w-10 text-muted-foreground/60" />
-      <h3 className="text-lg font-semibold text-foreground">
-        {title} — Temporarily Disabled
-      </h3>
-      <p className="mt-2 max-w-md text-sm text-muted-foreground">
-        This feature is turned off while the in-app Community section is disabled.
-        Nothing needs to be managed here for now.
-      </p>
-    </div>
-  );
-}
+// Everything the church publishes to the app lives here — what used to be split
+// across the Content and Community tabs. Sub-tabs are ordered by how often they
+// get touched in a normal week, most-used first.
+//
+// Notifications, Prayer Requests, Bulletin Posts, and Flagged Content are
+// intentionally not wired up: the in-app Community (user-generated) section is
+// off. Their manager components and API routes are still in the repo — re-add a
+// TabsTrigger/TabsContent pair here to bring one back.
 
 export default function CommunityTab({ orgId }: CommunityTabProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Community Management</CardTitle>
+        <CardTitle>Community</CardTitle>
         <CardDescription>
-          Manage announcements and events. Prayer requests and bulletin posts are temporarily disabled.
+          Manage everything your congregation sees in the app — livestreams, sermons,
+          verses, announcements, events, music, and games.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="announcements" className="w-full">
+        <Tabs defaultValue="livestreams" className="w-full">
           <TabsList>
+            <TabsTrigger value="livestreams">
+              <Radio className="h-4 w-4 shrink-0" />
+              <span>Livestream</span>
+            </TabsTrigger>
+            <TabsTrigger value="sermons">
+              <Video className="h-4 w-4 shrink-0" />
+              <span>Sermons</span>
+            </TabsTrigger>
+            <TabsTrigger value="verse">
+              <BookOpen className="h-4 w-4 shrink-0" />
+              <span>Verse</span>
+            </TabsTrigger>
             <TabsTrigger value="announcements">
               <Megaphone className="h-4 w-4 shrink-0" />
               <span>Announcements</span>
@@ -48,26 +57,26 @@ export default function CommunityTab({ orgId }: CommunityTabProps) {
               <CalendarDays className="h-4 w-4 shrink-0" />
               <span>Events</span>
             </TabsTrigger>
-            <TabsTrigger value="prayers" className="opacity-60">
-              <Heart className="h-4 w-4 shrink-0" />
-              <span>Prayer Requests</span>
+            <TabsTrigger value="music">
+              <Music className="h-4 w-4 shrink-0" />
+              <span>Music</span>
             </TabsTrigger>
-            <TabsTrigger value="bulletin" className="opacity-60">
-              <MessageCircle className="h-4 w-4 shrink-0" />
-              <span>Bulletin Posts</span>
-            </TabsTrigger>
-            <TabsTrigger value="flagged" className="opacity-60">
-              <Flag className="h-4 w-4 shrink-0" />
-              <span>Flagged</span>
+            <TabsTrigger value="games">
+              <Gamepad2 className="h-4 w-4 shrink-0" />
+              <span>Games</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="prayers" className="mt-6">
-            <DisabledNotice title="Prayer Requests" />
+          <TabsContent value="livestreams" className="mt-6">
+            <LivestreamsManager orgId={orgId} />
           </TabsContent>
 
-          <TabsContent value="bulletin" className="mt-6">
-            <DisabledNotice title="Bulletin Posts" />
+          <TabsContent value="sermons" className="mt-6">
+            <SermonsManager orgId={orgId} />
+          </TabsContent>
+
+          <TabsContent value="verse" className="mt-6">
+            <VersesOfTheDayManager />
           </TabsContent>
 
           <TabsContent value="announcements" className="mt-6">
@@ -78,8 +87,12 @@ export default function CommunityTab({ orgId }: CommunityTabProps) {
             <EventsManager orgId={orgId} />
           </TabsContent>
 
-          <TabsContent value="flagged" className="mt-6">
-            <DisabledNotice title="Flagged Content" />
+          <TabsContent value="music" className="mt-6">
+            <MusicPlaylistsManager orgId={orgId} />
+          </TabsContent>
+
+          <TabsContent value="games" className="mt-6">
+            <GamesManager orgId={orgId} />
           </TabsContent>
         </Tabs>
       </CardContent>

@@ -1,5 +1,9 @@
 'use client';
 
+// SUPERSEDED — not rendered anywhere. The Content tab was merged into
+// CommunityTab, which now hosts all of these managers. Kept only as a reference
+// for the old grouping (including the Notifications sub-tab); safe to delete.
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Video, Radio, Music, Gamepad2, Bell, BookOpen } from 'lucide-react';
