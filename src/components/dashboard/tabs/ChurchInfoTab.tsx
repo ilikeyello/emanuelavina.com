@@ -165,7 +165,7 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="facebook">Facebook Page URL</Label>
               <Input
@@ -214,7 +214,7 @@ export default function ChurchInfoTab({ orgId }: ChurchInfoTabProps) {
             </p>
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="flex flex-col-reverse gap-2 pt-4 sm:flex-row sm:justify-end">
             <Button onClick={handleSave} disabled={saving}>
               <Save className="h-4 w-4 mr-2" />
               {saving ? 'Saving...' : 'Save Changes'}

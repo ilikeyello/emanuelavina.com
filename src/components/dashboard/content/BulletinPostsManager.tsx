@@ -87,16 +87,16 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">User Bulletin Posts</h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-muted-foreground">
           Posts created by church members on the website
         </p>
       </div>
 
       <div className="space-y-2">
         {posts.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">
+          <p className="text-muted-foreground text-center py-8">
             No bulletin posts yet. Users can create posts from the church website.
           </p>
         ) : (
@@ -104,8 +104,8 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
             <div key={post.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1 min-w-0 w-full">
                 <h4 className="font-semibold truncate">{post.title}</h4>
-                <p className="text-sm text-gray-600 mt-1 break-words">{post.content}</p>
-                <div className="text-xs text-gray-500 mt-2 flex flex-wrap gap-x-2">
+                <p className="text-sm text-muted-foreground mt-1 break-words">{post.content}</p>
+                <div className="text-xs text-muted-foreground mt-2 flex flex-wrap gap-x-2">
                    <span>By: {post.author_name}</span>
                    <span className="opacity-50">•</span>
                    <span>{new Date(post.created_at).toLocaleString()}</span>

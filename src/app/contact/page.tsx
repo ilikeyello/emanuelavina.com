@@ -13,10 +13,10 @@ export default function ContactPage() {
       <MarketingNav />
 
       <main className="flex-1">
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
           <div className="space-y-4 text-center max-w-3xl mx-auto">
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Contact</p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">Let’s plan your build.</h1>
+            <h1 className="text-3xl sm:text-5xl font-serif font-bold leading-tight">Let’s plan your build.</h1>
             <p className="text-lg text-[color:var(--muted-foreground)] max-w-3xl mx-auto">
               Tell me about your church and the site you need. I’ll reply within one business day with next steps.
             </p>

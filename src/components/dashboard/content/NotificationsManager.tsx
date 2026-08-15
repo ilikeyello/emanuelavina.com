@@ -94,7 +94,7 @@ export default function NotificationsManager() {
         <Bell className="h-6 w-6 text-blue-500" />
         <div>
           <h3 className="text-lg font-semibold">Push Notifications</h3>
-          <p className="text-sm text-gray-500">Send notifications to all subscribed users</p>
+          <p className="text-sm text-muted-foreground">Send notifications to all subscribed users</p>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ export default function NotificationsManager() {
                 value={formData.url}
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 When users click the notification, they'll be taken to this page
               </p>
             </div>
@@ -156,7 +156,7 @@ export default function NotificationsManager() {
         <CardContent className="pt-6">
           <div className="space-y-2">
             <h4 className="font-semibold text-sm">💡 Tips for Effective Notifications</h4>
-            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-foreground/80 space-y-1 list-disc list-inside">
               <li>Keep titles short and clear (under 50 characters)</li>
               <li>Messages should be concise but informative</li>
               <li>Use notifications sparingly to avoid overwhelming users</li>

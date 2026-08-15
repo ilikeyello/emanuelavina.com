@@ -92,7 +92,7 @@ export default function DevotionalsManager({ orgId }: DevotionalsManagerProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Devotionals</h3>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
@@ -154,7 +154,7 @@ export default function DevotionalsManager({ orgId }: DevotionalsManagerProps) {
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row [&>button]:w-full sm:[&>button]:w-auto">
             <Button type="submit">Save Devotional</Button>
             <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
               Cancel
@@ -165,17 +165,17 @@ export default function DevotionalsManager({ orgId }: DevotionalsManagerProps) {
 
       <div className="space-y-2">
         {devotionals.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No devotionals yet.</p>
+          <p className="text-muted-foreground text-center py-8">No devotionals yet.</p>
         ) : (
           devotionals.map((devotional) => (
             <div key={devotional.id} className="border rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1 min-w-0 w-full">
                 <h4 className="font-semibold truncate">{devotional.title}</h4>
                 {devotional.scripture_reference && (
-                  <p className="text-sm text-gray-600">Scripture: {devotional.scripture_reference}</p>
+                  <p className="text-sm text-muted-foreground">Scripture: {devotional.scripture_reference}</p>
                 )}
-                {devotional.author && <p className="text-sm text-gray-600">By: {devotional.author}</p>}
-                <p className="text-sm text-gray-500 mt-2 line-clamp-2 break-words text-ellipsis overflow-hidden">
+                {devotional.author && <p className="text-sm text-muted-foreground">By: {devotional.author}</p>}
+                <p className="text-sm text-muted-foreground mt-2 line-clamp-2 break-words text-ellipsis overflow-hidden">
                   {devotional.content}
                 </p>
               </div>

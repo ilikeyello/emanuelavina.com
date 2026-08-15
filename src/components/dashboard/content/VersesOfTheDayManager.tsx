@@ -271,7 +271,7 @@ export default function VersesOfTheDayManager() {
             RV1909 or SPNBES), so you only choose the reference — not the wording.
           </p>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row [&>button]:w-full sm:[&>button]:w-auto">
             <Button onClick={save} disabled={saving}>
               {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save verse

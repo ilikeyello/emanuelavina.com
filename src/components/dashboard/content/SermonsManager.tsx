@@ -195,10 +195,10 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-lg font-semibold">Sermons</h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             Livestreams are recorded and added here automatically when the broadcast ends.
             You can also upload a devotional by hand.
           </p>
@@ -234,7 +234,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
             <Label htmlFor="video">Video file *</Label>
             <Input id="video" type="file" accept="video/*"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)} required />
-            {file && <p className="text-xs text-gray-500">{file.name} ({(file.size / 1e6).toFixed(1)} MB)</p>}
+            {file && <p className="text-xs text-muted-foreground">{file.name} ({(file.size / 1e6).toFixed(1)} MB)</p>}
           </div>
 
           <div className="space-y-2">
@@ -245,14 +245,14 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
 
           {progress !== null && (
             <div className="space-y-1">
-              <div className="h-2 w-full rounded bg-gray-200 overflow-hidden">
+              <div className="h-2 w-full rounded bg-muted overflow-hidden">
                 <div className="h-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
               </div>
-              <p className="text-xs text-gray-500">{progress}% uploaded</p>
+              <p className="text-xs text-muted-foreground">{progress}% uploaded</p>
             </div>
           )}
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row [&>button]:w-full sm:[&>button]:w-auto">
             <Button type="submit" disabled={submitting}>
               {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Uploading…</> : <><UploadCloud className="h-4 w-4 mr-2" />Upload</>}
             </Button>
@@ -265,7 +265,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
 
       <div className="space-y-2">
         {sermons.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">
+          <p className="text-muted-foreground text-center py-8">
             No sermons yet. Start a livestream and the recording will appear here, or upload a devotional.
           </p>
         ) : (
@@ -280,7 +280,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
                     <div className="relative shrink-0">
                       <img
                         src={`https://image.mux.com/${sermon.mux_playback_id}/thumbnail.jpg?width=160&height=90&fit_mode=preserve`}
-                        alt="" className="w-28 h-16 object-cover rounded bg-gray-100" />
+                        alt="" className="w-28 h-16 object-cover rounded bg-muted" />
                       {length && (
                         <span className="absolute bottom-1 right-1 bg-black/75 text-white text-[10px] px-1 rounded">
                           {length}
@@ -288,7 +288,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
                       )}
                     </div>
                   ) : (
-                    <div className="w-28 h-16 rounded bg-gray-100 flex items-center justify-center shrink-0">
+                    <div className="w-28 h-16 rounded bg-muted flex items-center justify-center shrink-0">
                       <StatusIcon status={sermon.mux_status} />
                     </div>
                   )}
@@ -317,7 +317,7 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
                         <h4 className="font-semibold truncate">{sermon.title}</h4>
                         <button
                           type="button"
-                          className="text-gray-400 hover:text-gray-600 shrink-0"
+                          className="text-muted-foreground/70 hover:text-foreground shrink-0"
                           onClick={() => { setEditingId(sermon.id); setEditTitle(sermon.title); }}
                           aria-label="Rename"
                         >
@@ -325,18 +325,18 @@ export default function SermonsManager({ orgId }: SermonsManagerProps) {
                         </button>
                       </div>
                     )}
-                    {sermon.speaker && <p className="text-sm text-gray-600">Speaker: {sermon.speaker}</p>}
-                    {sermon.description && <p className="text-sm text-gray-600 mt-1 break-words line-clamp-2">{sermon.description}</p>}
+                    {sermon.speaker && <p className="text-sm text-muted-foreground">Speaker: {sermon.speaker}</p>}
+                    {sermon.description && <p className="text-sm text-muted-foreground mt-1 break-words line-clamp-2">{sermon.description}</p>}
                     <div className="flex items-center gap-2 flex-wrap mt-1">
                       <SourceBadge isRecording={isRecording} />
                       <StatusBadge status={sermon.mux_status} />
                       {sermon.published === false && (
-                        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded bg-gray-200 text-gray-600">
+                        <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
                           <EyeOff className="h-3 w-3" />Hidden
                         </span>
                       )}
                       {sermon.sermon_date && (
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                           {new Date(`${sermon.sermon_date}T00:00:00`).toLocaleDateString()}
                         </span>
                       )}
@@ -382,7 +382,7 @@ function SourceBadge({ isRecording }: { isRecording: boolean }) {
 function StatusIcon({ status }: { status: string | null }) {
   if (status === 'errored') return <AlertTriangle className="h-5 w-5 text-red-500" />;
   if (status === 'ready') return <CheckCircle2 className="h-5 w-5 text-green-600" />;
-  return <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />;
+  return <Loader2 className="h-5 w-5 text-muted-foreground/70 animate-spin" />;
 }
 
 function StatusBadge({ status }: { status: string | null }) {

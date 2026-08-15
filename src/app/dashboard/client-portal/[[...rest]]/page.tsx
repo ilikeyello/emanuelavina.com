@@ -11,8 +11,8 @@ export default async function ClientPortalPage() {
   if (!orgId) {
     return (
       <div className="max-w-3xl mx-auto">
-        <div className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-8 shadow-sm text-center">
-          <h2 className="text-2xl font-serif font-semibold text-[color:var(--foreground)] mb-2">
+        <div className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-6 sm:p-8 shadow-sm text-center">
+          <h2 className="text-xl sm:text-2xl font-serif font-semibold text-[color:var(--foreground)] mb-2">
             Organization Required
           </h2>
           <p className="text-[color:var(--muted-foreground)] mb-6">
@@ -32,8 +32,8 @@ export default async function ClientPortalPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-serif font-semibold text-[color:var(--foreground)]">Client Portal</h1>
-        <p className="mt-1 text-[color:var(--muted-foreground)]">Manage your church site, content, and project tasks.</p>
+        <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-[color:var(--foreground)]">Client Portal</h1>
+        <p className="mt-1 text-sm sm:text-base text-[color:var(--muted-foreground)]">Manage your church site, content, and project tasks.</p>
       </div>
       <ClientPortalTabs orgId={orgId} />
     </div>

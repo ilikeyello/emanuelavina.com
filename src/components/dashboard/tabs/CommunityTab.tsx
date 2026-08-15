@@ -39,26 +39,26 @@ export default function CommunityTab({ orgId }: CommunityTabProps) {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="announcements" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="prayers" className="flex items-center gap-2 opacity-60">
-              <Heart className="h-4 w-4" />
-              <span className="hidden sm:inline">Prayer Requests</span>
+          <TabsList>
+            <TabsTrigger value="announcements">
+              <Megaphone className="h-4 w-4 shrink-0" />
+              <span>Announcements</span>
             </TabsTrigger>
-            <TabsTrigger value="bulletin" className="flex items-center gap-2 opacity-60">
-              <MessageCircle className="h-4 w-4" />
-              <span className="hidden sm:inline">Bulletin Posts</span>
+            <TabsTrigger value="events">
+              <CalendarDays className="h-4 w-4 shrink-0" />
+              <span>Events</span>
             </TabsTrigger>
-            <TabsTrigger value="announcements" className="flex items-center gap-2">
-              <Megaphone className="h-4 w-4" />
-              <span className="hidden sm:inline">Announcements</span>
+            <TabsTrigger value="prayers" className="opacity-60">
+              <Heart className="h-4 w-4 shrink-0" />
+              <span>Prayer Requests</span>
             </TabsTrigger>
-            <TabsTrigger value="events" className="flex items-center gap-2">
-              <CalendarDays className="h-4 w-4" />
-              <span className="hidden sm:inline">Events</span>
+            <TabsTrigger value="bulletin" className="opacity-60">
+              <MessageCircle className="h-4 w-4 shrink-0" />
+              <span>Bulletin Posts</span>
             </TabsTrigger>
-            <TabsTrigger value="flagged" className="flex items-center gap-2 opacity-60">
-              <Flag className="h-4 w-4" />
-              <span className="hidden sm:inline">Flagged</span>
+            <TabsTrigger value="flagged" className="opacity-60">
+              <Flag className="h-4 w-4 shrink-0" />
+              <span>Flagged</span>
             </TabsTrigger>
           </TabsList>
 

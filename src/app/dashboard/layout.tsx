@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { Toaster } from '@/components/ui/toaster';
 import MarketingNav from '@/components/site/MarketingNav';
+import Footer from '@/components/site/Footer';
 
 // Force dynamic rendering for dashboard routes
 export const dynamic = 'force-dynamic';
@@ -19,18 +20,18 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="min-h-screen bg-[color:var(--background)]">
+    // Same shell as every marketing page: nav, flex-1 main, footer. This is
+    // what makes the portal read as part of the same site.
+    <div className="min-h-screen flex flex-col bg-[color:var(--background)] text-[color:var(--foreground)]">
       <MarketingNav />
-      {/* Spacer to push content below the fixed standalone navbar on iOS */}
-      <div 
-        className="w-full shrink-0 h-16 sm:h-20" 
-        style={{ marginTop: 'env(safe-area-inset-top, 0px)' }} 
-      />
-      <main className="pb-10">
+      {/* The nav is sticky (not fixed), so no spacer is needed — it occupies
+          normal flow just like it does on the marketing pages. */}
+      <main className="flex-1 pt-6 pb-12 sm:pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {children}
         </div>
       </main>
+      <Footer />
       <Toaster />
     </div>
   );

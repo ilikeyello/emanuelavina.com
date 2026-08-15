@@ -149,10 +149,10 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center flex-wrap gap-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div>
           <h3 className="text-lg font-semibold">Livestream</h3>
-          <p className="text-sm text-gray-500">Broadcast with OBS (or any RTMP encoder) through Mux.</p>
+          <p className="text-sm text-muted-foreground">Broadcast with OBS (or any RTMP encoder) through Mux.</p>
         </div>
         {livestreams.length === 0 && (
           <div className="flex items-end gap-2">
@@ -169,15 +169,15 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
       </div>
 
       {livestreams.length === 0 ? (
-        <p className="text-gray-500 text-center py-8">No livestream yet. Create one to get your OBS stream key.</p>
+        <p className="text-muted-foreground text-center py-8">No livestream yet. Create one to get your OBS stream key.</p>
       ) : (
         livestreams.map((stream) => {
           const keyVisible = showKey[stream.id];
           return (
             <div key={stream.id} className="border rounded-lg p-4 space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <div className="flex items-center gap-2">
-                  <Radio className="h-4 w-4 text-gray-500" />
+                  <Radio className="h-4 w-4 text-muted-foreground" />
                   {editingId === stream.id ? (
                     <div className="flex items-center gap-1">
                       <Input
@@ -202,7 +202,7 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
                       <h4 className="font-semibold">{stream.title || 'Livestream'}</h4>
                       <button
                         type="button"
-                        className="text-gray-400 hover:text-gray-600"
+                        className="text-muted-foreground/70 hover:text-muted-foreground"
                         onClick={() => startEditTitle(stream)}
                         aria-label="Edit title"
                       >
@@ -213,7 +213,7 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
                   {stream.is_live ? (
                     <span className="bg-red-600 text-white text-xs px-2 py-1 rounded animate-pulse">● LIVE</span>
                   ) : (
-                    <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">Offline</span>
+                    <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">Offline</span>
                   )}
                 </div>
                 <div className="flex gap-2">
@@ -227,22 +227,22 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
                 </div>
               </div>
 
-              <div className="rounded-md bg-gray-50 border p-3 space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">OBS / Encoder settings</p>
+              <div className="rounded-md bg-muted/40 border p-3 space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">OBS / Encoder settings</p>
 
                 <CopyRow label="Server (RTMPS URL)" value={RTMPS_URL}
                   onCopy={() => copy(RTMPS_URL, `url-${stream.id}`)} copied={copied === `url-${stream.id}`} />
 
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Stream key</span>
-                    <button type="button" className="text-xs text-gray-500 flex items-center gap-1"
+                    <span className="text-xs text-muted-foreground">Stream key</span>
+                    <button type="button" className="text-xs text-muted-foreground flex items-center gap-1"
                       onClick={() => setShowKey({ ...showKey, [stream.id]: !keyVisible })}>
                       {keyVisible ? <><EyeOff className="h-3 w-3" />Hide</> : <><Eye className="h-3 w-3" />Show</>}
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <code className="flex-1 text-xs bg-white border rounded px-2 py-1 truncate">
+                    <code className="flex-1 text-xs bg-card border rounded px-2 py-1 truncate">
                       {keyVisible ? (stream.mux_stream_key || '—') : '•'.repeat(28)}
                     </code>
                     <Button variant="outline" size="sm"
@@ -250,10 +250,10 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
                       {copied === `key-${stream.id}` ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     </Button>
                   </div>
-                  <p className="text-[11px] text-gray-400">Keep this private. Anyone with the key can broadcast to your channel.</p>
+                  <p className="text-[11px] text-muted-foreground/70">Keep this private. Anyone with the key can broadcast to your channel.</p>
                 </div>
 
-                <p className="text-[11px] text-gray-500 leading-relaxed">
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
                   In OBS: <strong>Settings → Stream → Service: Custom</strong>. Paste the Server URL and Stream Key above,
                   then click <strong>Start Streaming</strong>. The app shows the stream automatically once Mux detects it
                   (no need to toggle manually).
@@ -270,9 +270,9 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
 function CopyRow({ label, value, onCopy, copied }: { label: string; value: string; onCopy: () => void; copied: boolean }) {
   return (
     <div className="space-y-1">
-      <span className="text-xs text-gray-600">{label}</span>
+      <span className="text-xs text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2">
-        <code className="flex-1 text-xs bg-white border rounded px-2 py-1 truncate">{value}</code>
+        <code className="flex-1 text-xs bg-card border rounded px-2 py-1 truncate">{value}</code>
         <Button variant="outline" size="sm" onClick={onCopy}>
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         </Button>

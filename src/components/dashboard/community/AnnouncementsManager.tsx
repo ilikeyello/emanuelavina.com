@@ -152,8 +152,8 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
       case 'urgent': return 'bg-red-100 text-red-800';
       case 'high': return 'bg-orange-100 text-orange-800';
       case 'normal': return 'bg-blue-100 text-blue-800';
-      case 'low': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'low': return 'bg-muted text-foreground';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -161,7 +161,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Announcements</h3>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
@@ -204,7 +204,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
               <Select value={formData.priority} onValueChange={(value) => setFormData({ ...formData, priority: value })}>
@@ -230,7 +230,7 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
             </div>
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end [&>button]:w-full sm:[&>button]:w-auto">
             <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
               Cancel
             </Button>
@@ -243,10 +243,10 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
 
       <div className="space-y-2">
         {announcements.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No announcements yet.</p>
+          <p className="text-muted-foreground text-center py-8">No announcements yet.</p>
         ) : (
           announcements.map((announcement) => (
-            <div key={announcement.id} className="border rounded-lg p-4 flex justify-between items-start">
+            <div key={announcement.id} className="border rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h4 className="font-medium">{announcement.title}</h4>
@@ -254,10 +254,10 @@ export default function AnnouncementsManager({ orgId }: AnnouncementsManagerProp
                     {announcement.priority}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   <div dangerouslySetInnerHTML={{ __html: announcement.content }} className="prose prose-sm max-w-none" />
                 </div>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-muted-foreground/70 mt-2">
                   Created: {new Date(announcement.created_at).toLocaleString()}
                   {announcement.expires_at && ` | Expires: ${new Date(announcement.expires_at).toLocaleString()}`}
                 </p>

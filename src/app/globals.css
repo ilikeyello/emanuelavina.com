@@ -120,7 +120,30 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Stop iOS Safari from auto-inflating text in landscape. */
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     @apply bg-background text-foreground;
+    /* Nothing should ever cause a horizontal scrollbar on mobile. */
+    overflow-x: hidden;
+  }
+  /* Long unbroken strings (URLs, emails, stream keys) must not blow out
+     their container on narrow screens. */
+  h1, h2, h3, h4, p, li, td, th, label, span, a {
+    overflow-wrap: break-word;
+  }
+}
+
+@layer utilities {
+  /* Horizontal swipe areas (tab strips, tables) without a visible scrollbar. */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -14,22 +14,22 @@ interface ClientPortalTabsProps {
 export default function ClientPortalTabs({ orgId }: ClientPortalTabsProps) {
   return (
     <Tabs defaultValue="church-info" className="w-full">
-      <TabsList className="grid w-full grid-cols-4 lg:w-auto">
-        <TabsTrigger value="church-info" className="flex items-center gap-2">
-          <Building2 className="h-4 w-4" />
-          <span className="hidden sm:inline">Church Info</span>
+      <TabsList>
+        <TabsTrigger value="church-info">
+          <Building2 className="h-4 w-4 shrink-0" />
+          <span>Church Info</span>
         </TabsTrigger>
-        <TabsTrigger value="billing" className="flex items-center gap-2">
-          <CreditCard className="h-4 w-4" />
-          <span className="hidden sm:inline">Billing</span>
+        <TabsTrigger value="billing">
+          <CreditCard className="h-4 w-4 shrink-0" />
+          <span>Billing</span>
         </TabsTrigger>
-        <TabsTrigger value="content" className="flex items-center gap-2">
-          <Upload className="h-4 w-4" />
-          <span className="hidden sm:inline">Content</span>
+        <TabsTrigger value="content">
+          <Upload className="h-4 w-4 shrink-0" />
+          <span>Content</span>
         </TabsTrigger>
-        <TabsTrigger value="community" className="flex items-center gap-2">
-          <MessageSquare className="h-4 w-4" />
-          <span className="hidden sm:inline">Community</span>
+        <TabsTrigger value="community">
+          <MessageSquare className="h-4 w-4 shrink-0" />
+          <span>Community</span>
         </TabsTrigger>
       </TabsList>
 

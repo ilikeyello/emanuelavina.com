@@ -68,13 +68,13 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col bg-[color:var(--background)] text-[color:var(--foreground)]">
       <MarketingNav />
       <main className="flex-1">
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
           <div className="space-y-4 text-center max-w-3xl mx-auto">
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">About</p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-serif font-bold leading-tight">
               I'm Emanuel, a web designer and church consultant from rural Colorado.
             </h1>
-            <p className="text-lg text-[color:var(--muted-foreground)]">
+            <p className="text-base sm:text-lg text-[color:var(--muted-foreground)]">
               I build peaceful, reliable websites so your ministry can thrive online.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function AboutPage() {
           ))}
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Showcase</p>
                 <h2 className="text-2xl font-serif font-semibold text-[color:var(--foreground)]">Ministry Showcase</h2>
@@ -136,12 +136,12 @@ export default function AboutPage() {
 
           <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm">
             <div className="space-y-2 max-w-xl">
-              <h2 className="text-2xl sm:text-3xl font-serif font-semibold">Ready to modernize your church’s digital front door?</h2>
+              <h2 className="text-xl sm:text-3xl font-serif font-semibold">Ready to modernize your church’s digital front door?</h2>
               <p className="text-[color:var(--muted-foreground)] leading-relaxed">
                 Tell me about your congregation, and I’ll handle the technical details—the site, the dashboard, and the support—so you can stay focused on your ministry.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"

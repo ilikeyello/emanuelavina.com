@@ -140,10 +140,10 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-lg font-semibold">User Bulletin Posts</h3>
-          <p className="text-sm text-gray-500">Posts created by church members on the website</p>
+          <p className="text-sm text-muted-foreground">Posts created by church members on the website</p>
         </div>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
@@ -185,7 +185,7 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row [&>button]:w-full sm:[&>button]:w-auto">
             <Button type="submit">Save Post</Button>
             <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
               Cancel
@@ -196,31 +196,31 @@ export default function BulletinPostsManager({ orgId }: BulletinPostsManagerProp
 
       <div className="space-y-2">
         {posts.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">
+          <p className="text-muted-foreground text-center py-8">
             No bulletin posts yet. Users can create posts from the church website.
           </p>
         ) : (
           posts.map((post) => (
-            <div key={post.id} className="border rounded-lg p-4 flex justify-between items-start">
+            <div key={post.id} className="border rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
               <div className="flex-1 space-y-3">
                 <h4 className="font-semibold">{post.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{post.content}</p>
-                <div className="text-xs text-gray-500 mt-2">
+                <p className="text-sm text-muted-foreground mt-1">{post.content}</p>
+                <div className="text-xs text-muted-foreground mt-2">
                   <span>By: {post.author_name}</span>
                   <span className="mx-2">•</span>
                   <span>{new Date(post.created_at).toLocaleString()}</span>
                 </div>
 
-                <div className="rounded-md bg-gray-50 p-3">
-                  <p className="text-xs font-semibold text-gray-600">Comments</p>
+                <div className="rounded-md bg-muted/40 p-3">
+                  <p className="text-xs font-semibold text-muted-foreground">Comments</p>
                   {(post.bulletin_comments ?? []).length === 0 ? (
-                    <p className="mt-2 text-sm text-gray-500">No comments yet.</p>
+                    <p className="mt-2 text-sm text-muted-foreground">No comments yet.</p>
                   ) : (
                     <div className="mt-2 space-y-2">
                       {(post.bulletin_comments ?? []).map((comment) => (
-                        <div key={comment.id} className="rounded border bg-white p-2">
-                          <p className="text-sm text-gray-700">{comment.content}</p>
-                          <p className="mt-1 text-xs text-gray-500">
+                        <div key={comment.id} className="rounded border bg-card p-2">
+                          <p className="text-sm text-foreground/80">{comment.content}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">
                             {comment.author_name} • {new Date(comment.created_at).toLocaleString()}
                           </p>
                         </div>

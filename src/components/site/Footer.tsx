@@ -8,7 +8,7 @@ export default function Footer() {
           <p className="text-sm text-[color:var(--muted-foreground)]">&copy; {new Date().getFullYear()} Emanuel Avina. All rights reserved.</p>
           <p className="text-sm text-[color:var(--muted-foreground)]">Emanuel Web Design, open your doors to the world.</p>
         </div>
-        <div className="flex items-center gap-4 text-sm text-[color:var(--muted-foreground)]">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[color:var(--muted-foreground)]">
           <Link href="/privacy" className="hover:text-[color:var(--foreground)] transition-colors">Privacy Policy</Link>
           <Link href="/contact" className="hover:text-[color:var(--foreground)] transition-colors">Contact</Link>
           <Link href="/dashboard/client-portal" className="hover:text-[color:var(--foreground)] transition-colors">Client Portal</Link>

@@ -151,10 +151,10 @@ export default function MusicPlaylistsManager({ orgId }: MusicPlaylistsManagerPr
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-lg font-semibold">Worship Music</h3>
-          <p className="text-sm text-gray-500">Upload worship tracks. They stream as audio through Mux in the app.</p>
+          <p className="text-sm text-muted-foreground">Upload worship tracks. They stream as audio through Mux in the app.</p>
         </div>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="h-4 w-4 mr-2" />
@@ -181,19 +181,19 @@ export default function MusicPlaylistsManager({ orgId }: MusicPlaylistsManagerPr
             <Label htmlFor="audio">Audio file *</Label>
             <Input id="audio" type="file" accept="audio/*"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)} required />
-            {file && <p className="text-xs text-gray-500">{file.name} ({(file.size / 1e6).toFixed(1)} MB)</p>}
+            {file && <p className="text-xs text-muted-foreground">{file.name} ({(file.size / 1e6).toFixed(1)} MB)</p>}
           </div>
 
           {progress !== null && (
             <div className="space-y-1">
-              <div className="h-2 w-full rounded bg-gray-200 overflow-hidden">
+              <div className="h-2 w-full rounded bg-muted overflow-hidden">
                 <div className="h-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
               </div>
-              <p className="text-xs text-gray-500">{progress}% uploaded</p>
+              <p className="text-xs text-muted-foreground">{progress}% uploaded</p>
             </div>
           )}
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row [&>button]:w-full sm:[&>button]:w-auto">
             <Button type="submit" disabled={submitting}>
               {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Uploading…</> : <><UploadCloud className="h-4 w-4 mr-2" />Upload</>}
             </Button>
@@ -204,19 +204,19 @@ export default function MusicPlaylistsManager({ orgId }: MusicPlaylistsManagerPr
 
       <div className="space-y-2">
         {tracks.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No tracks yet. Upload your first worship track!</p>
+          <p className="text-muted-foreground text-center py-8">No tracks yet. Upload your first worship track!</p>
         ) : (
           tracks.map((track, i) => (
-            <div key={track.id} className="border rounded-lg p-4 flex justify-between items-center gap-4">
+            <div key={track.id} className="border rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center sm:gap-4">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded bg-gray-100 flex items-center justify-center shrink-0">
-                  {track.mux_status === 'ready' ? <Music className="h-4 w-4 text-gray-500" />
+                <div className="w-9 h-9 rounded bg-muted flex items-center justify-center shrink-0">
+                  {track.mux_status === 'ready' ? <Music className="h-4 w-4 text-muted-foreground" />
                     : track.mux_status === 'errored' ? <AlertTriangle className="h-4 w-4 text-red-500" />
-                    : <Loader2 className="h-4 w-4 text-gray-400 animate-spin" />}
+                    : <Loader2 className="h-4 w-4 text-muted-foreground/70 animate-spin" />}
                 </div>
                 <div className="min-w-0">
                   <h4 className="font-semibold truncate">{track.title}</h4>
-                  {track.artist && <p className="text-sm text-gray-600 truncate">{track.artist}</p>}
+                  {track.artist && <p className="text-sm text-muted-foreground truncate">{track.artist}</p>}
                   <StatusBadge status={track.mux_status} />
                 </div>
               </div>

@@ -17,11 +17,11 @@ export default function PricingPage() {
       <MarketingNav />
 
       <main className="flex-1">
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Pricing</p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">Clear packages for every congregation.</h1>
-            <p className="text-lg text-[color:var(--muted-foreground)]">
+            <h1 className="text-3xl sm:text-5xl font-serif font-bold leading-tight">Clear packages for every congregation.</h1>
+            <p className="text-base sm:text-lg text-[color:var(--muted-foreground)]">
               Reliable builds with ongoing care, accessible design, and a client portal to keep communication peaceful.
             </p>
           </div>
@@ -65,7 +65,7 @@ export default function PricingPage() {
               <h2 className="text-2xl font-serif font-semibold">Need a custom scope?</h2>
               <p className="text-[color:var(--muted-foreground)]">We can tailor flows for multi-campuses, multilingual content, or unique integrations.</p>
             </div>
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:items-center">
               <Link
                 href="/sign-in"
                 className="text-[color:var(--primary)] hover:underline"

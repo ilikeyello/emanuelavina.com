@@ -82,10 +82,13 @@ export default function Home() {
       <MarketingNav />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden -mt-16 sm:-mt-18 pt-16 sm:pt-18">
+        {/* Pull the hero up behind the transparent nav. The offset must match
+            the nav's real height (h-16 / sm:h-20) plus the iOS safe area, or a
+            sliver of background shows through above the image on phones. */}
+        <section className="relative overflow-hidden -mt-[calc(4rem+env(safe-area-inset-top))] pt-[calc(4rem+env(safe-area-inset-top))] sm:-mt-[calc(5rem+env(safe-area-inset-top))] sm:pt-[calc(5rem+env(safe-area-inset-top))]">
           <div className="absolute inset-0 z-0">
             <div
-              className="absolute inset-0 bg-[length:cover] blur-[2px] opacity-95"
+              className="absolute inset-0 bg-cover bg-no-repeat blur-[2px] opacity-95"
               style={{
                 backgroundImage: `url(${heroImage})`,
                 backgroundPosition: "center center",
@@ -96,15 +99,15 @@ export default function Home() {
             <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[color:var(--background)]" />
           </div>
 
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-28">
             <div className="max-w-4xl mx-auto text-center space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-semibold text-[color:var(--foreground)] drop-shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
+              <h1 className="text-[2rem] leading-tight sm:text-5xl lg:text-6xl font-serif font-semibold text-[color:var(--foreground)] drop-shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
                 Open Your Doors to the World
               </h1>
-              <p className="text-lg sm:text-xl text-[color:var(--muted-foreground)] leading-relaxed max-w-3xl mx-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]">
+              <p className="text-base sm:text-xl text-[color:var(--muted-foreground)] leading-relaxed max-w-3xl mx-auto drop-shadow-[0_4px_10px_rgba(0,0,0,0.2)]">
                 I build and manage websites for local churches, handling everything from sermon archives to online giving so you can focus on your ministry.
               </p>
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
                 <Link
                   href="/pricing"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"
@@ -122,7 +125,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-10 lg:grid-cols-3">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid gap-10 lg:grid-cols-3">
           <div className="lg:col-span-1 space-y-3">
             <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Approach</p>
             <h2 className="text-3xl font-serif font-semibold">Your time is important.</h2>
@@ -144,7 +147,7 @@ export default function Home() {
         </section>
 
         <section className="bg-[color:var(--secondary)]/60 border-y border-[color:var(--border)]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
             <div className="space-y-3 text-center max-w-4xl mx-auto">
               <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Why it matters</p>
               <h2 className="text-3xl font-serif font-semibold">Your website is the new front door.</h2>
@@ -165,7 +168,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="space-y-8">
             <div className="space-y-2 text-center max-w-3xl mx-auto">
               <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">Capabilities</p>
@@ -185,15 +188,15 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-8 sm:p-10 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)]/80 p-6 sm:p-10 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-2 max-w-xl">
-              <h2 className="text-2xl sm:text-3xl font-serif font-semibold">Ready to modernize your church’s digital front door?</h2>
+              <h2 className="text-xl sm:text-3xl font-serif font-semibold">Ready to modernize your church’s digital front door?</h2>
               <p className="text-[color:var(--muted-foreground)] leading-relaxed">
                 Tell me about your congregation, and I’ll handle the technical details—the site, the dashboard, and the support—so you can stay focused on your ministry.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[color:var(--primary)] text-[color:var(--primary-foreground)] text-base font-semibold shadow-[0_14px_32px_rgba(0,0,0,0.3)] ring-1 ring-[color:var(--primary)]/65 transition hover:bg-[color:var(--primary)]/90 hover:shadow-[0_16px_34px_rgba(0,0,0,0.32)]"

@@ -25,30 +25,30 @@ export default function ContentManagementTab({ orgId }: ContentManagementTabProp
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="sermons" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="sermons" className="flex items-center gap-2">
-              <Video className="h-4 w-4" />
-              <span className="hidden sm:inline">Sermons</span>
+          <TabsList>
+            <TabsTrigger value="sermons">
+              <Video className="h-4 w-4 shrink-0" />
+              <span>Sermons</span>
             </TabsTrigger>
-            <TabsTrigger value="livestreams" className="flex items-center gap-2">
-              <Radio className="h-4 w-4" />
-              <span className="hidden sm:inline">Livestream</span>
+            <TabsTrigger value="livestreams">
+              <Radio className="h-4 w-4 shrink-0" />
+              <span>Livestream</span>
             </TabsTrigger>
-            <TabsTrigger value="music" className="flex items-center gap-2">
-              <Music className="h-4 w-4" />
-              <span className="hidden sm:inline">Music</span>
+            <TabsTrigger value="music">
+              <Music className="h-4 w-4 shrink-0" />
+              <span>Music</span>
             </TabsTrigger>
-            <TabsTrigger value="verse" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">Verse</span>
+            <TabsTrigger value="verse">
+              <BookOpen className="h-4 w-4 shrink-0" />
+              <span>Verse</span>
             </TabsTrigger>
-            <TabsTrigger value="games" className="flex items-center gap-2">
-              <Gamepad2 className="h-4 w-4" />
-              <span className="hidden sm:inline">Games</span>
+            <TabsTrigger value="games">
+              <Gamepad2 className="h-4 w-4 shrink-0" />
+              <span>Games</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
-              <Bell className="h-4 w-4" />
-              <span className="hidden sm:inline">Notifications</span>
+            <TabsTrigger value="notifications">
+              <Bell className="h-4 w-4 shrink-0" />
+              <span>Notifications</span>
             </TabsTrigger>
           </TabsList>
 

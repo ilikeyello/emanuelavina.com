@@ -88,21 +88,21 @@ export default function PrayerRequestsManager({ orgId }: PrayerRequestsManagerPr
     <div className="space-y-4">
       <div>
         <h3 className="text-lg font-semibold">User Prayer Requests</h3>
-        <p className="text-sm text-gray-500">Prayer requests submitted by church members</p>
+        <p className="text-sm text-muted-foreground">Prayer requests submitted by church members</p>
       </div>
 
       <div className="space-y-2">
         {prayers.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">
+          <p className="text-muted-foreground text-center py-8">
             No prayer requests yet. Users can submit prayers from the church website.
           </p>
         ) : (
           prayers.map((prayer) => (
-            <div key={prayer.id} className="border rounded-lg p-4 flex justify-between items-start">
+            <div key={prayer.id} className="border rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
               <div className="flex-1">
                 <h4 className="font-semibold">{prayer.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{prayer.description}</p>
-                <div className="text-xs text-gray-500 mt-2">
+                <p className="text-sm text-muted-foreground mt-1">{prayer.description}</p>
+                <div className="text-xs text-muted-foreground mt-2">
                   <span>
                     By: {prayer.is_anonymous ? 'Anonymous' : (prayer.user_name || 'Anonymous')}
                   </span>

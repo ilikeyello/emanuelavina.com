@@ -258,14 +258,14 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">Games Management</h3>
       </div>
 
       {/* Bible Trivia Game */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
+          <CardTitle className="flex flex-wrap items-center justify-between gap-2">
             <span>🎯 Bible Trivia</span>
             <Badge variant="secondary">{triviaLevels.length} levels</Badge>
           </CardTitle>
@@ -273,13 +273,13 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
         <CardContent>
           <div className="space-y-3">
             {triviaLevels.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No trivia levels found. Add one to get started!</p>
+              <p className="text-muted-foreground text-center py-4">No trivia levels found. Add one to get started!</p>
             ) : (
               triviaLevels.map((level) => (
                 <div key={level.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 border rounded-lg gap-4">
                   <div className="flex-1">
                     <h4 className="font-semibold text-base">{level.name_en} / {level.name_es}</h4>
-                    <p className="text-sm text-gray-500 line-clamp-1">{level.description_en}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-1">{level.description_en}</p>
                     <div className="flex gap-2 mt-2">
                       <Badge 
                         variant="outline" 
@@ -305,14 +305,14 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
 
           {selectedTriviaLevel && (
             <div className="mt-6 border-t pt-4 space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h4 className="font-bold">Questions for: {selectedTriviaLevel.name_en}</h4>
                 <Button size="sm" variant="outline" onClick={() => setSelectedTriviaLevel(null)}>Close</Button>
               </div>
               
               <div className="space-y-2">
                 {loadingQuestions ? <p>Loading questions...</p> : triviaQuestions.map(q => (
-                  <div key={q.id} className="p-2 border rounded text-sm flex justify-between items-center bg-gray-50">
+                  <div key={q.id} className="p-2 border rounded text-sm flex justify-between items-center bg-muted/40">
                     <span className="line-clamp-1">{q.question_en}</span>
                     <Button size="icon" variant="ghost" onClick={() => deleteQuestion(q.id)}><Trash2 className="w-3 h-3 text-red-500" /></Button>
                   </div>
@@ -342,7 +342,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                 <DialogDescription>Define the game rules and language targets.</DialogDescription>
               </DialogHeader>
               <form onSubmit={createTriviaLevel} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Title (English)</Label>
                     <Input required value={triviaForm.name_en} onChange={e => setTriviaForm({...triviaForm, name_en: e.target.value})} />
@@ -372,7 +372,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                 <DialogTitle>Add Trivia Question</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSaveQuestion} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Question (EN)</Label>
                     <Input required value={questionForm.question_en} onChange={e => setQuestionForm({...questionForm, question_en: e.target.value})} />
@@ -388,8 +388,8 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                   <div className="grid grid-cols-2 gap-2">
                     {questionForm.options_en.map((opt, i) => (
                       <div key={i} className="flex flex-col gap-1">
-                        <div className="flex items-center justify-between">
-                          <Label className="text-[10px] uppercase text-gray-500">Option {i+1}</Label>
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <Label className="text-[10px] uppercase text-muted-foreground">Option {i+1}</Label>
                           <div className="flex items-center gap-1">
                             <input 
                               type="radio" 
@@ -416,7 +416,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                   <div className="grid grid-cols-2 gap-2">
                     {questionForm.options_es.map((opt, i) => (
                       <div key={i} className="flex flex-col gap-1">
-                        <Label className="text-[10px] uppercase text-gray-500">Opción {i+1}</Label>
+                        <Label className="text-[10px] uppercase text-muted-foreground">Opción {i+1}</Label>
                         <Input placeholder={`Opción ${i+1}`} value={opt} onChange={e => {
                           const next = [...questionForm.options_es];
                           next[i] = e.target.value;
@@ -444,7 +444,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
       {/* Word Search Game */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
+          <CardTitle className="flex flex-wrap items-center justify-between gap-2">
             <span>🔍 Word Search</span>
             <Badge variant="secondary">{wordSearchLevels.length} levels</Badge>
           </CardTitle>
@@ -452,7 +452,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
         <CardContent>
           <div className="space-y-3">
             {wordSearchLevels.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No word search levels found</p>
+              <p className="text-muted-foreground text-center py-4">No word search levels found</p>
             ) : (
               wordSearchLevels.map((level) => (
                 <div key={level.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 border rounded-lg gap-4">
@@ -483,7 +483,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
 
           {selectedWsLevel && (
             <div className="mt-6 border-t pt-4 space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h4 className="font-bold">Words for: {selectedWsLevel.name_en}</h4>
                 <Button size="sm" variant="outline" onClick={() => setSelectedWsLevel(null)}>Close</Button>
               </div>
@@ -512,7 +512,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                 <DialogDescription>Define the grid dimensions and title.</DialogDescription>
               </DialogHeader>
               <form onSubmit={createWsLevel} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Title (English)</Label>
                     <Input required value={wsForm.name_en} onChange={e => setWsForm({...wsForm, name_en: e.target.value})} />
@@ -522,7 +522,7 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
                     <Input required value={wsForm.name_es} onChange={e => setWsForm({...wsForm, name_es: e.target.value})} />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Grid Rows (e.g. 12)</Label>
                     <Input type="number" min="5" max="25" required value={wsForm.rows} onChange={e => setWsForm({...wsForm, rows: parseInt(e.target.value)})} />

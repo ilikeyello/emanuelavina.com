@@ -127,11 +127,11 @@ export default function FlaggedContentManager({ orgId }: FlaggedContentManagerPr
     <div className="space-y-4">
       <div>
         <h3 className="text-lg font-semibold">Flagged Content</h3>
-        <p className="text-sm text-gray-500">Comments and posts reported as inappropriate by users.</p>
+        <p className="text-sm text-muted-foreground">Comments and posts reported as inappropriate by users.</p>
       </div>
 
       {reports.length === 0 ? (
-        <p className="text-gray-500 text-center py-8">No flagged content. You're all caught up.</p>
+        <p className="text-muted-foreground text-center py-8">No flagged content. You're all caught up.</p>
       ) : (
         <div className="space-y-2">
           {reports.map((report) => {
@@ -139,21 +139,21 @@ export default function FlaggedContentManager({ orgId }: FlaggedContentManagerPr
             const key = `${report.content_type}-${report.content_id}`;
             const busy = busyKey === key;
             return (
-              <div key={report.id} className="border rounded-lg p-4 flex justify-between items-start gap-4">
+              <div key={report.id} className="border rounded-lg p-4 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start sm:gap-4">
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex items-center gap-1 rounded bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700">
                       <Flag className="h-3 w-3" />
                       {LABELS[report.content_type]}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-muted-foreground/70">
                       Reported {new Date(report.created_at).toLocaleString()}
                     </span>
                   </div>
                   {title && <p className="font-semibold">{title}</p>}
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap">{body}</p>
-                  {author && <p className="text-xs text-gray-500">By: {author}</p>}
-                  {report.reason && <p className="text-xs text-gray-500">Reason: {report.reason}</p>}
+                  <p className="text-sm text-foreground/80 whitespace-pre-wrap">{body}</p>
+                  {author && <p className="text-xs text-muted-foreground">By: {author}</p>}
+                  {report.reason && <p className="text-xs text-muted-foreground">Reason: {report.reason}</p>}
                 </div>
                 <div className="flex gap-2 shrink-0">
                   <Button variant="outline" size="sm" disabled={busy} onClick={() => handleDismiss(report)}>
