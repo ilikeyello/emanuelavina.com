@@ -2,7 +2,9 @@
 
 import { OrganizationProfile } from '@clerk/nextjs';
 
-export default function BillingTab() {
+// Clerk's OrganizationProfile — members, org settings, and billing all live
+// here, which is why the tab is "Org" rather than "Billing".
+export default function OrgTab() {
   return (
     <OrganizationProfile 
       routing="path"
