@@ -162,10 +162,11 @@ export default function GamesManager({ orgId }: GamesManagerProps) {
     e.preventDefault();
     if (!selectedTriviaLevel) return;
     try {
+      // options_en/options_es are jsonb columns, so the arrays go over as-is.
+      // Stringifying them first stored a JSON *string* inside jsonb, which the
+      // app then had to JSON.parse a second time to read.
       const payload = {
         ...questionForm,
-        options_en: JSON.stringify(questionForm.options_en),
-        options_es: JSON.stringify(questionForm.options_es),
         correct_answer: Number(questionForm.correct_answer),
         level_id: selectedTriviaLevel.id
       };
