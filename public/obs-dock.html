@@ -347,10 +347,10 @@ function render() {
   $("sermonBox").classList.toggle("active", live.mode === "sermon");
 
   let main = "Nothing (button hidden)", sub = "";
-  if (live.mode === "worship") { main = live.songTitle ? `♪ Now Playing: ${live.songTitle}` : "♪ Worship"; sub = live.songTitle ? "" : "Pick a song below"; }
-  if (live.mode === "offering") { main = "♥ Give"; sub = "Opens the giving page"; }
+  if (live.mode === "worship") { main = live.songTitle ? `Canción · ${live.songTitle}` : "Worship"; sub = live.songTitle ? "" : "Pick a song below"; }
+  if (live.mode === "offering") { main = "Apoyar el Ministerio"; sub = "Support the Ministry · opens the giving page"; }
   if (live.mode === "sermon") {
-    main = live.verse ? `📖 Go to Verse: ${referenceLabel(live.verse, "es")}` : "Sermon (no verse yet)";
+    main = live.verse ? `Ir al Versículo · ${referenceLabel(live.verse, "es")}` : "Sermon (no verse yet)";
     sub = live.verse ? referenceLabel(live.verse, "en") : "Send a verse below — the button shows up then";
   }
   const delay = Number(cfg.delay) || 0;

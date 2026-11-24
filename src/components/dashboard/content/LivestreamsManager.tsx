@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Plus, Trash2, Copy, Check, Eye, EyeOff, Radio, Pencil, X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 interface LivestreamsManagerProps {
   orgId: string;
@@ -262,6 +263,73 @@ export default function LivestreamsManager({ orgId }: LivestreamsManagerProps) {
             </div>
           );
         })
+      )}
+
+      <OfflineImageCard />
+    </div>
+  );
+}
+
+/**
+ * The picture the app shows in the livestream box when the church isn't live.
+ * Saves as soon as it's uploaded or removed.
+ */
+function OfflineImageCard() {
+  const { toast } = useToast();
+  const [url, setUrl] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/livestream-offline-image')
+      .then((r) => (r.ok ? r.json() : { url: null }))
+      .then((d) => setUrl(d.url ?? null))
+      .catch(() => {})
+      .finally(() => setLoaded(true));
+  }, []);
+
+  const save = async (next: string | null) => {
+    const previous = url;
+    setUrl(next);
+    setSaving(true);
+    try {
+      const res = await fetch('/api/livestream-offline-image', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: next }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Could not save');
+      }
+      toast({ title: next ? 'Offline picture saved' : 'Offline picture removed' });
+    } catch (error) {
+      setUrl(previous);
+      toast({
+        title: 'Could not save',
+        description: error instanceof Error ? error.message : 'Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="border rounded-lg p-4 space-y-3">
+      <div>
+        <h4 className="font-semibold">Offline picture</h4>
+        <p className="text-sm text-muted-foreground">
+          Shows in the app&apos;s livestream box when you&apos;re not live. Use a wide picture (16:9, like 1920×1080) —
+          it fills the video area. With no picture, the app shows the service time instead.
+        </p>
+      </div>
+      {loaded ? (
+        <div className={saving ? 'pointer-events-none opacity-60' : undefined}>
+          <ImageUpload value={url} onChange={save} label="Offline picture" />
+        </div>
+      ) : (
+        <p className="text-sm text-muted-foreground">Loading…</p>
       )}
     </div>
   );
