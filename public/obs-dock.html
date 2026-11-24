@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Control</title>
+<!--
+  OBS dock for the church app's livestream page.
+
+  Add it in OBS: Docks → Custom Browser Docks → name "Live Control",
+  URL https://emanuelavina.com/obs-dock.html#org=<church org id>&key=<church key>
+
+  It listens to OBS (Tools → WebSocket Server Settings must be on) and, when the
+  scene changes, tells the app what part of the service is on:
+    worship  → the button under the player shows the song title
+    offering → the button becomes "Give"
+    sermon   → the button becomes "Go to Verse" for the last verse sent here
+  Updates go to the obs-live-control Supabase edge function.
+-->
+<style>
+  :root {
+    --bg: #1d1f26; --panel: #272a33; --line: #3a3e4a; --text: #e8e9ee; --dim: #9aa0ad;
+    --accent: #7d9a7e; --accent-ink: #fff; --warn: #e0a84f; --bad: #e06a5f; --good: #6fbf73;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { padding: 10px; }
+  h2 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); margin: 0 0 6px; font-weight: 700; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+  section.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .row { display: flex; gap: 6px; align-items: center; }
+  .grow { flex: 1; min-width: 0; }
+  button, input, select, textarea { font: inherit; color: var(--text); }
+  input, select, textarea { background: #15161b; border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; width: 100%; }
+  textarea { resize: vertical; min-height: 70px; }
+  button { background: #343844; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+  button:hover { background: #3d4250; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .pills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .pills button { padding: 8px 4px; font-weight: 600; }
+  .pills button.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .status { display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--dim); margin-bottom: 8px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--bad); margin-right: 4px; vertical-align: 0; }
+  .dot.good { background: var(--good); } .dot.warn { background: var(--warn); }
+  .preview { font-size: 14px; font-weight: 600; padding: 8px 10px; border-radius: 6px; background: #15161b; border: 1px dashed var(--line); }
+  .preview small { display: block; font-weight: 400; color: var(--dim); font-size: 11px; margin-top: 2px; }
+  .list { display: flex; flex-direction: column; gap: 4px; margin: 6px 0; }
+  .list button { text-align: left; display: flex; gap: 8px; align-items: center; }
+  .list button .n { color: var(--dim); width: 16px; }
+  .list button.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .list button.on .n { color: var(--accent-ink); }
+  .hint { color: var(--dim); font-size: 11px; margin-top: 4px; }
+  .err { color: var(--bad); font-size: 12px; margin-top: 4px; min-height: 1em; }
+  .ok { color: var(--good); }
+  details summary { cursor: pointer; color: var(--dim); font-weight: 600; }
+  label { display: block; font-size: 11px; color: var(--dim); margin: 8px 0 3px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  td { padding: 3px 0; } td:first-child { padding-right: 6px; word-break: break-word; }
+  .link { background: none; border: none; color: var(--dim); text-decoration: underline; padding: 0; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="status">
+  <span><span id="obsDot" class="dot"></span><span id="obsText">OBS: not connected</span></span>
+  <span><span id="sendDot" class="dot warn"></span><span id="sendText">App: waiting</span></span>
+</div>
+
+<section>
+  <h2>What the app shows</h2>
+  <div class="pills" id="pills">
+    <button data-mode="worship">Worship</button>
+    <button data-mode="offering">Give</button>
+    <button data-mode="sermon">Sermon</button>
+    <button data-mode="off">Off</button>
+  </div>
+  <div class="hint" id="modeHint">Changes on its own when you switch scenes. Tap to change it by hand.</div>
+  <div class="preview" id="preview" style="margin-top:8px">Nothing<small>&nbsp;</small></div>
+</section>
+
+<section id="worshipBox">
+  <h2>Worship songs</h2>
+  <div class="list" id="songList"></div>
+  <div class="row">
+    <button id="nextSong" class="primary grow">Next song ▶</button>
+    <button id="editSongs">Edit list</button>
+  </div>
+  <div id="songEditor" hidden>
+    <label>One song per line, in order</label>
+    <textarea id="songText" placeholder="Way Maker&#10;Cuán Grande Es Él&#10;Te Doy Gloria"></textarea>
+    <div class="row" style="margin-top:6px"><button id="saveSongs" class="primary grow">Save list</button></div>
+  </div>
+  <div class="row" style="margin-top:6px">
+    <input id="songInput" class="grow" placeholder="Or type a song name…">
+    <button id="songSet">Show</button>
+  </div>
+</section>
+
+<section id="sermonBox">
+  <h2>Sermon verse</h2>
+  <div class="row">
+    <input id="verseInput" class="grow" placeholder="Juan 3:16  ·  Romans 8:28-30" autocomplete="off">
+    <button id="verseSend" class="primary">Send</button>
+  </div>
+  <div class="err" id="verseErr"></div>
+  <div class="list" id="verseList"></div>
+  <div class="row"><button id="editVerses" class="grow">Edit sermon verses</button></div>
+  <div id="verseEditor" hidden>
+    <label>Verses for today's sermon, one per line (tap one to send it)</label>
+    <textarea id="verseText" placeholder="Juan 3:16&#10;Salmos 23&#10;Filipenses 4:13"></textarea>
+    <div class="row" style="margin-top:6px"><button id="saveVerses" class="primary grow">Save list</button></div>
+  </div>
+</section>
+
+<section>
+  <details id="setup">
+    <summary>Setup</summary>
+
+    <label>Which scene is which?</label>
+    <table id="sceneTable"><tr><td class="hint">Connect to OBS to see your scenes.</td></tr></table>
+
+    <label>Video delay (seconds) — the app waits this long so it matches what viewers see</label>
+    <input id="delay" type="number" min="0" max="90" step="1">
+
+    <label>OBS WebSocket address</label>
+    <input id="wsUrl" placeholder="ws://127.0.0.1:4455">
+    <label>OBS WebSocket password (Tools → WebSocket Server Settings → Show Connect Info)</label>
+    <input id="wsPass" type="password" autocomplete="off">
+
+    <label>Church id</label>
+    <input id="org" autocomplete="off">
+    <label>Church key</label>
+    <input id="key" type="password" autocomplete="off">
+
+    <div class="row" style="margin-top:10px">
+      <button id="saveSetup" class="primary grow">Save &amp; connect</button>
+      <button id="testKey">Test key</button>
+    </div>
+    <div class="err" id="setupMsg"></div>
+  </details>
+</section>
+
+<script>
+// <core> — pure helpers (tested outside the page)
+const BOOKS = [["genesis","Genesis","Génesis",50],["exodus","Exodus","Éxodo",40],["leviticus","Leviticus","Levítico",27],["numbers","Numbers","Números",36],["deuteronomy","Deuteronomy","Deuteronomio",34],["joshua","Joshua","Josué",24],["judges","Judges","Jueces",21],["ruth","Ruth","Rut",4],["1-samuel","1 Samuel","1 Samuel",31],["2-samuel","2 Samuel","2 Samuel",24],["1-kings","1 Kings","1 Reyes",22],["2-kings","2 Kings","2 Reyes",25],["1-chronicles","1 Chronicles","1 Crónicas",29],["2-chronicles","2 Chronicles","2 Crónicas",36],["ezra","Ezra","Esdras",10],["nehemiah","Nehemiah","Nehemías",13],["esther","Esther","Ester",10],["job","Job","Job",42],["psalms","Psalms","Salmos",150],["proverbs","Proverbs","Proverbios",31],["ecclesiastes","Ecclesiastes","Eclesiastés",12],["song-of-solomon","Song of Solomon","Cantares",8],["isaiah","Isaiah","Isaías",66],["jeremiah","Jeremiah","Jeremías",52],["lamentations","Lamentations","Lamentaciones",5],["ezekiel","Ezekiel","Ezequiel",48],["daniel","Daniel","Daniel",12],["hosea","Hosea","Oseas",14],["joel","Joel","Joel",3],["amos","Amos","Amós",9],["obadiah","Obadiah","Abdías",1],["jonah","Jonah","Jonás",4],["micah","Micah","Miqueas",7],["nahum","Nahum","Nahúm",3],["habakkuk","Habakkuk","Habacuc",3],["zephaniah","Zephaniah","Sofonías",3],["haggai","Haggai","Hageo",2],["zechariah","Zechariah","Zacarías",14],["malachi","Malachi","Malaquías",4],["matthew","Matthew","Mateo",28],["mark","Mark","Marcos",16],["luke","Luke","Lucas",24],["john","John","Juan",21],["acts","Acts","Hechos",28],["romans","Romans","Romanos",16],["1-corinthians","1 Corinthians","1 Corintios",16],["2-corinthians","2 Corinthians","2 Corintios",13],["galatians","Galatians","Gálatas",6],["ephesians","Ephesians","Efesios",6],["philippians","Philippians","Filipenses",4],["colossians","Colossians","Colosenses",4],["1-thessalonians","1 Thessalonians","1 Tesalonicenses",5],["2-thessalonians","2 Thessalonians","2 Tesalonicenses",3],["1-timothy","1 Timothy","1 Timoteo",6],["2-timothy","2 Timothy","2 Timoteo",4],["titus","Titus","Tito",3],["philemon","Philemon","Filemón",1],["hebrews","Hebrews","Hebreos",13],["james","James","Santiago",5],["1-peter","1 Peter","1 Pedro",5],["2-peter","2 Peter","2 Pedro",3],["1-john","1 John","1 Juan",5],["2-john","2 John","2 Juan",1],["3-john","3 John","3 Juan",1],["jude","Jude","Judas",1],["revelation","Revelation","Apocalipsis",22]]; // [id, English, Spanish, chapters]
+
+const EXTRA_NAMES = {
+  genesis: ["gen", "gn", "ge"], exodus: ["exo", "ex", "exodo"], leviticus: ["lev", "lv"],
+  numbers: ["num", "nm", "nu"], deuteronomy: ["deut", "dt", "deu"], joshua: ["josh", "jos"],
+  judges: ["judg", "jdg", "jue", "jueces"], ruth: ["rt", "rut"], "1-samuel": ["1 sam", "1 sa", "1 s"],
+  "2-samuel": ["2 sam", "2 sa", "2 s"], "1-kings": ["1 ki", "1 kgs", "1 re", "1 rey"],
+  "2-kings": ["2 ki", "2 kgs", "2 re", "2 rey"], "1-chronicles": ["1 chr", "1 ch", "1 cr", "1 cro", "1 cron"],
+  "2-chronicles": ["2 chr", "2 ch", "2 cr", "2 cro", "2 cron"], ezra: ["ezr", "esd"], nehemiah: ["neh", "ne"],
+  esther: ["est", "esth"], job: [], psalms: ["psalm", "ps", "psa", "sal", "salmo", "sl"],
+  proverbs: ["prov", "pr", "pro", "proverbio", "prv"], ecclesiastes: ["eccl", "ecc", "ec", "qoh", "ecl"],
+  "song-of-solomon": ["song of songs", "song", "sos", "cantar de los cantares", "cnt", "cant"],
+  isaiah: ["isa", "is"], jeremiah: ["jer", "jr"], lamentations: ["lam", "la"], ezekiel: ["ezek", "ez", "eze"],
+  daniel: ["dan", "dn"], hosea: ["hos", "os"], joel: ["jl"], amos: ["am"], obadiah: ["obad", "ob", "abd"],
+  jonah: ["jon", "jnh"], micah: ["mic", "mi", "miq"], nahum: ["nah", "na"], habakkuk: ["hab", "hb"],
+  zephaniah: ["zeph", "zep", "sof"], haggai: ["hag", "hg"], zechariah: ["zech", "zec", "zac"],
+  malachi: ["mal", "ml"], matthew: ["matt", "mt", "mat"], mark: ["mk", "mrk", "mr", "mc", "mar"],
+  luke: ["lk", "luk", "lc", "luc"], john: ["jn", "jhn", "jo"], acts: ["act", "hch", "hech", "hechos de los apostoles"],
+  romans: ["rom", "ro", "rm"], "1-corinthians": ["1 cor", "1 co"], "2-corinthians": ["2 cor", "2 co"],
+  galatians: ["gal", "ga"], ephesians: ["eph", "ef", "efe"], philippians: ["phil", "php", "flp", "fil"],
+  colossians: ["col"], "1-thessalonians": ["1 thess", "1 th", "1 ts", "1 tes"],
+  "2-thessalonians": ["2 thess", "2 th", "2 ts", "2 tes"], "1-timothy": ["1 tim", "1 ti", "1 tm"],
+  "2-timothy": ["2 tim", "2 ti", "2 tm"], titus: ["tit", "ti"], philemon: ["phlm", "phm", "flm"],
+  hebrews: ["heb", "he"], james: ["jas", "jm", "stg", "sant", "san"], "1-peter": ["1 pet", "1 pe", "1 pd", "1 ped"],
+  "2-peter": ["2 pet", "2 pe", "2 pd", "2 ped"], "1-john": ["1 jn", "1 jo"], "2-john": ["2 jn", "2 jo"],
+  "3-john": ["3 jn", "3 jo"], jude: ["jud", "jd"], revelation: ["rev", "re", "apoc", "ap", "revelacion", "revelations"],
+};
+
+function normalizeName(text) {
+  let s = String(text).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  s = s.replace(/[.]/g, " ").replace(/\s+/g, " ").trim();
+  // "1ra de Juan", "primera de Corintios", "I Juan", "San Juan" → "1 juan", "1 corintios", "1 juan", "juan"
+  s = s.replace(/^(san|st|saint|s)\s+/, "");
+  s = s.replace(/^(primera|primero|primer|first|1ra|1ro|1st|1a|1o|i)\s+(de\s+|of\s+)?/, "1 ");
+  s = s.replace(/^(segunda|segundo|second|2da|2do|2nd|2a|2o|ii)\s+(de\s+|of\s+)?/, "2 ");
+  s = s.replace(/^(tercera|tercero|third|3ra|3ro|3rd|3a|3o|iii)\s+(de\s+|of\s+)?/, "3 ");
+  s = s.replace(/^([123])(?=[a-z])/, "$1 "); // "1juan" → "1 juan"
+  return s;
+}
+
+const NAME_INDEX = (() => {
+  const index = new Map(); // normalized name → book id
+  for (const [id, en, es] of BOOKS) {
+    for (const name of [en, es, id.replace(/-/g, " "), ...(EXTRA_NAMES[id] || [])]) {
+      const key = normalizeName(name);
+      if (!index.has(key)) index.set(key, id);
+    }
+  }
+  return index;
+})();
+
+function findBook(bookText) {
+  const key = normalizeName(bookText);
+  if (!key) return null;
+  if (NAME_INDEX.has(key)) return BOOKS.find((b) => b[0] === NAME_INDEX.get(key));
+  if (key.replace(/^[123] /, "").length < 3) return null;
+  // "corin" alone is ambiguous (1 or 2), "1 corin" is not; "filip" → Philippians.
+  const ids = new Set();
+  for (const [name, id] of NAME_INDEX) if (name.startsWith(key)) ids.add(id);
+  return ids.size === 1 ? BOOKS.find((b) => b[0] === [...ids][0]) : null;
+}
+
+/** "Juan 3:16-18" → { book:"john", chapter:3, verse:16, endVerse:18 } or { error } */
+function parseReference(text) {
+  const clean = String(text || "").trim().replace(/[–—]/g, "-");
+  if (!clean) return { error: "Type a verse like Juan 3:16" };
+  const m = clean.match(/^(.+?)\s*(\d{1,3})(?:\s*[:.,]\s*|\s+)?(\d{1,3})?(?:\s*-\s*(\d{1,3}))?\s*$/);
+  if (!m) return { error: "Use a format like Juan 3:16" };
+  const book = findBook(m[1]);
+  if (!book) return { error: `Don't know the book "${m[1].trim()}"` };
+  const chapter = Number(m[2]);
+  if (chapter < 1 || chapter > book[3]) return { error: `${book[2]} has ${book[3]} chapters` };
+  const verse = m[3] ? Number(m[3]) : null;
+  let endVerse = m[4] ? Number(m[4]) : null;
+  if (verse == null) endVerse = null;
+  if (verse != null && verse < 1) return { error: "Verse must be 1 or more" };
+  if (endVerse != null && endVerse <= verse) endVerse = null;
+  return { book: book[0], chapter, verse, endVerse };
+}
+
+function referenceLabel(ref, lang) {
+  const book = BOOKS.find((b) => b[0] === ref.book);
+  if (!book) return "";
+  const name = lang === "en" ? book[1] : book[2];
+  if (ref.verse == null) return `${name} ${ref.chapter}`;
+  return `${name} ${ref.chapter}:${ref.verse}${ref.endVerse ? "-" + ref.endVerse : ""}`;
+}
+
+/** Best guess for a scene name → service part. */
+function guessMode(sceneName) {
+  const s = normalizeName(sceneName);
+  if (/(worship|alabanza|adoracion|musica|music|praise|cantos|band)/.test(s)) return "worship";
+  if (/(offer|ofrenda|diezmo|tith|giv|announce|anuncio|intermis|intermedio|break)/.test(s)) return "offering";
+  if (/(sermon|predica|preach|mensaje|message|palabra|pastor|word)/.test(s)) return "sermon";
+  return "ignore";
+}
+
+async function sha256Base64(text) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  let bin = "";
+  for (const b of new Uint8Array(digest)) bin += String.fromCharCode(b);
+  return btoa(bin);
+}
+
+/** obs-websocket v5 login: base64(sha256(base64(sha256(password + salt)) + challenge)) */
+async function obsAuth(password, salt, challenge) {
+  return sha256Base64((await sha256Base64(password + salt)) + challenge);
+}
+// </core>
+
+// ── Page ──────────────────────────────────────────────────────────────────
+const FUNCTION_URL = "https://wreovuejotnudkpaaffz.supabase.co/functions/v1/obs-live-control";
+const STORE = "cne-obs-dock-v1";
+const $ = (id) => document.getElementById(id);
+
+const saved = (() => { try { return JSON.parse(localStorage.getItem(STORE) || "{}"); } catch { return {}; } })();
+const cfg = Object.assign({
+  wsUrl: "ws://127.0.0.1:4455", wsPass: "", org: "", key: "", delay: 15,
+  sceneModes: {}, songs: [], verses: [],
+}, saved);
+
+// The dock URL can carry the church id and key: #org=...&key=...
+(() => {
+  const params = new URLSearchParams(location.hash.slice(1));
+  if (params.get("org")) cfg.org = params.get("org");
+  if (params.get("key")) cfg.key = params.get("key");
+})();
+
+function persist() { try { localStorage.setItem(STORE, JSON.stringify(cfg)); } catch {} }
+persist();
+
+// What the app should show right now
+const live = { mode: "off", songIndex: -1, songTitle: null, verse: null, verseText: null, scene: null, streaming: false };
+
+// ── Sending to the app ──
+// Only the newest state matters: if something changes while a send is in
+// flight, send again right after; if a send fails, retry every 3s.
+let sending = false, pending = false, retryTimer = null;
+
+function setSendStatus(kind, text) {
+  $("sendDot").className = "dot " + (kind === "good" ? "good" : kind === "warn" ? "warn" : "");
+  $("sendText").textContent = text;
+}
+
+function queueSend() { pending = true; void flush(); }
+
+async function flush() {
+  if (sending) { pending = true; return; }
+  if (!cfg.org || !cfg.key) { setSendStatus("bad", "App: add church id + key in Setup"); return; }
+  clearTimeout(retryTimer); retryTimer = null;
+  sending = true; pending = false;
+  let failed = false;
+  const body = {
+    org: cfg.org, key: cfg.key, mode: live.mode,
+    songTitle: live.songTitle, verse: live.verse, delaySeconds: Number(cfg.delay) || 0,
+  };
+  try {
+    const res = await fetch(FUNCTION_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
+    setSendStatus("good", `App: updated ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" })}`);
+  } catch (err) {
+    failed = true;
+    setSendStatus("bad", `App: not sent (${err.message}) — retrying`);
+  } finally {
+    sending = false;
+  }
+  if (pending) return flush();
+  if (failed) retryTimer = setTimeout(flush, 3000);
+}
+
+function setMode(mode) {
+  live.mode = mode;
+  render();
+  queueSend();
+}
+
+function setSong(index, title) {
+  live.songIndex = index;
+  live.songTitle = title || null;
+  render();
+  if (live.mode === "worship") queueSend();
+}
+
+function sendVerse(text) {
+  const ref = parseReference(text);
+  if (ref.error) { $("verseErr").textContent = ref.error; return false; }
+  $("verseErr").textContent = "";
+  live.verse = { book: ref.book, chapter: ref.chapter, verse: ref.verse, endVerse: ref.endVerse };
+  live.verseText = text.trim();
+  // A verse only shows during the sermon, so sending one switches to Sermon.
+  live.mode = "sermon";
+  render();
+  queueSend();
+  return true;
+}
+
+// ── Drawing ──
+function render() {
+  document.querySelectorAll("#pills button").forEach((b) => b.classList.toggle("on", b.dataset.mode === live.mode));
+  $("worshipBox").classList.toggle("active", live.mode === "worship");
+  $("sermonBox").classList.toggle("active", live.mode === "sermon");
+
+  let main = "Nothing (button hidden)", sub = "";
+  if (live.mode === "worship") { main = live.songTitle ? `♪ Now Playing: ${live.songTitle}` : "♪ Worship"; sub = live.songTitle ? "" : "Pick a song below"; }
+  if (live.mode === "offering") { main = "♥ Give"; sub = "Opens the giving page"; }
+  if (live.mode === "sermon") {
+    main = live.verse ? `📖 Go to Verse: ${referenceLabel(live.verse, "es")}` : "Sermon (no verse yet)";
+    sub = live.verse ? referenceLabel(live.verse, "en") : "Send a verse below — the button shows up then";
+  }
+  const delay = Number(cfg.delay) || 0;
+  $("preview").innerHTML = "";
+  $("preview").append(main);
+  const small = document.createElement("small");
+  small.textContent = [sub, delay ? `Shows in the app after ${delay}s` : ""].filter(Boolean).join(" · ") || " ";
+  $("preview").append(small);
+  $("modeHint").textContent = live.scene
+    ? `Scene: ${live.scene}. Changes on its own when you switch scenes.`
+    : "Changes on its own when you switch scenes. Tap to change it by hand.";
+
+  const songList = $("songList");
+  songList.innerHTML = "";
+  cfg.songs.forEach((title, i) => {
+    const b = document.createElement("button");
+    b.className = i === live.songIndex ? "on" : "";
+    const n = document.createElement("span"); n.className = "n"; n.textContent = i + 1;
+    const t = document.createElement("span"); t.className = "grow"; t.textContent = title;
+    b.append(n, t);
+    b.onclick = () => setSong(i, title);
+    songList.append(b);
+  });
+  if (!cfg.songs.length) songList.innerHTML = '<div class="hint">Add this week’s songs with Edit list.</div>';
+  $("nextSong").disabled = !cfg.songs.length;
+
+  const verseList = $("verseList");
+  verseList.innerHTML = "";
+  cfg.verses.forEach((text) => {
+    const ref = parseReference(text);
+    const b = document.createElement("button");
+    b.className = live.verseText === text.trim() && live.mode === "sermon" ? "on" : "";
+    b.textContent = ref.error ? `⚠ ${text}` : text;
+    b.title = ref.error || referenceLabel(ref, "en");
+    b.onclick = () => sendVerse(text);
+    verseList.append(b);
+  });
+}
+
+// ── OBS connection (obs-websocket v5, built into OBS 28+) ──
+let ws = null, reconnectTimer = null, reqId = 0;
+const waiting = new Map();
+
+function setObsStatus(kind, text) {
+  $("obsDot").className = "dot " + (kind === "good" ? "good" : kind === "warn" ? "warn" : "");
+  $("obsText").textContent = text;
+}
+
+function obsRequest(requestType, requestData) {
+  return new Promise((resolve, reject) => {
+    if (!ws || ws.readyState !== 1) return reject(new Error("not connected"));
+    const requestId = String(++reqId);
+    waiting.set(requestId, { resolve, reject });
+    ws.send(JSON.stringify({ op: 6, d: { requestType, requestId, requestData } }));
+  });
+}
+
+function connectObs() {
+  clearTimeout(reconnectTimer);
+  if (ws) { ws.onclose = null; try { ws.close(); } catch {} }
+  setObsStatus("warn", "OBS: connecting…");
+  let socket;
+  try { socket = new WebSocket(cfg.wsUrl || "ws://127.0.0.1:4455"); }
+  catch { setObsStatus("bad", "OBS: bad address"); return; }
+  ws = socket;
+
+  socket.onmessage = async (msg) => {
+    const { op, d } = JSON.parse(msg.data);
+    if (op === 0) { // Hello
+      const identify = { rpcVersion: 1, eventSubscriptions: 1 | 4 | 64 }; // General, Scenes, Outputs
+      if (d.authentication) identify.authentication = await obsAuth(cfg.wsPass || "", d.authentication.salt, d.authentication.challenge);
+      socket.send(JSON.stringify({ op: 1, d: identify }));
+    } else if (op === 2) { // Identified
+      setObsStatus("good", "OBS: connected");
+      await loadObsState();
+    } else if (op === 5) { // Event
+      onObsEvent(d.eventType, d.eventData || {});
+    } else if (op === 7) { // Request response
+      const w = waiting.get(d.requestId);
+      if (!w) return;
+      waiting.delete(d.requestId);
+      d.requestStatus.result ? w.resolve(d.responseData || {}) : w.reject(new Error(d.requestStatus.comment || "request failed"));
+    }
+  };
+
+  socket.onclose = (e) => {
+    waiting.forEach((w) => w.reject(new Error("closed")));
+    waiting.clear();
+    if (e.code === 4009) { setObsStatus("bad", "OBS: wrong WebSocket password (Setup)"); $("setup").open = true; }
+    else setObsStatus("bad", "OBS: not connected — is OBS open and the WebSocket server on?");
+    reconnectTimer = setTimeout(connectObs, 4000);
+  };
+}
+
+let sceneNames = [];
+
+async function loadObsState() {
+  try {
+    const list = await obsRequest("GetSceneList");
+    sceneNames = (list.scenes || []).slice().sort((a, b) => b.sceneIndex - a.sceneIndex).map((s) => s.sceneName);
+    drawSceneTable();
+    const stream = await obsRequest("GetStreamStatus").catch(() => ({}));
+    live.streaming = Boolean(stream.outputActive);
+    onScene(list.currentProgramSceneName);
+  } catch (err) {
+    setObsStatus("warn", "OBS: connected, but could not read scenes");
+  }
+}
+
+function modeForScene(name) {
+  if (!name) return "ignore";
+  if (!(name in cfg.sceneModes)) { cfg.sceneModes[name] = guessMode(name); persist(); }
+  return cfg.sceneModes[name];
+}
+
+function onScene(name) {
+  live.scene = name || null;
+  const mode = modeForScene(name);
+  // Scenes marked "Keep as is" (camera angles, slides…) don't change the button.
+  if (mode !== "ignore") { live.mode = mode; queueSend(); }
+  render();
+}
+
+function onObsEvent(type, data) {
+  if (type === "CurrentProgramSceneChanged") onScene(data.sceneName);
+  else if (type === "SceneListChanged" || type === "SceneNameChanged") void loadObsState();
+  else if (type === "StreamStateChanged") {
+    if (data.outputState === "OBS_WEBSOCKET_OUTPUT_STARTED") {
+      live.streaming = true;
+      live.verse = null; live.verseText = null; // fresh service
+      onScene(live.scene);
+    } else if (data.outputState === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
+      live.streaming = false;
+      live.verse = null; live.verseText = null; live.songIndex = -1; live.songTitle = null;
+      setMode("off");
+    }
+  }
+}
+
+function drawSceneTable() {
+  const table = $("sceneTable");
+  table.innerHTML = "";
+  if (!sceneNames.length) { table.innerHTML = '<tr><td class="hint">No scenes found.</td></tr>'; return; }
+  for (const name of sceneNames) {
+    const tr = document.createElement("tr");
+    const tdName = document.createElement("td"); tdName.textContent = name;
+    const tdSel = document.createElement("td"); tdSel.style.width = "48%";
+    const sel = document.createElement("select");
+    [["worship", "Worship"], ["offering", "Give"], ["sermon", "Sermon"], ["off", "Off (hide button)"], ["ignore", "Keep as is"]]
+      .forEach(([v, label]) => { const o = document.createElement("option"); o.value = v; o.textContent = label; sel.append(o); });
+    sel.value = modeForScene(name);
+    sel.onchange = () => { cfg.sceneModes[name] = sel.value; persist(); if (name === live.scene) onScene(name); };
+    tdSel.append(sel);
+    tr.append(tdName, tdSel);
+    table.append(tr);
+  }
+}
+
+// ── Controls ──
+document.querySelectorAll("#pills button").forEach((b) => (b.onclick = () => setMode(b.dataset.mode)));
+
+$("nextSong").onclick = () => {
+  if (!cfg.songs.length) return;
+  const i = Math.min(live.songIndex + 1, cfg.songs.length - 1);
+  setSong(i, cfg.songs[i]);
+};
+$("editSongs").onclick = () => { $("songText").value = cfg.songs.join("\n"); $("songEditor").hidden = !$("songEditor").hidden; };
+$("saveSongs").onclick = () => {
+  cfg.songs = $("songText").value.split("\n").map((s) => s.trim()).filter(Boolean);
+  persist(); $("songEditor").hidden = true;
+  live.songIndex = cfg.songs.indexOf(live.songTitle);
+  render();
+};
+$("songSet").onclick = () => { const v = $("songInput").value.trim(); if (v) { setSong(-1, v); $("songInput").value = ""; } };
+$("songInput").onkeydown = (e) => { if (e.key === "Enter") $("songSet").click(); };
+
+$("verseSend").onclick = () => { if (sendVerse($("verseInput").value)) $("verseInput").value = ""; };
+$("verseInput").onkeydown = (e) => { if (e.key === "Enter") $("verseSend").click(); };
+$("verseInput").oninput = () => {
+  const v = $("verseInput").value;
+  if (!v.trim()) { $("verseErr").textContent = ""; return; }
+  const ref = parseReference(v);
+  $("verseErr").innerHTML = "";
+  if (ref.error) return;
+  const span = document.createElement("span"); span.className = "ok";
+  span.textContent = `✓ ${referenceLabel(ref, "es")} · ${referenceLabel(ref, "en")}`;
+  $("verseErr").append(span);
+};
+$("editVerses").onclick = () => { $("verseText").value = cfg.verses.join("\n"); $("verseEditor").hidden = !$("verseEditor").hidden; };
+$("saveVerses").onclick = () => {
+  cfg.verses = $("verseText").value.split("\n").map((s) => s.trim()).filter(Boolean);
+  persist(); $("verseEditor").hidden = true; render();
+};
+
+function fillSetup() {
+  $("wsUrl").value = cfg.wsUrl; $("wsPass").value = cfg.wsPass;
+  $("org").value = cfg.org; $("key").value = cfg.key; $("delay").value = cfg.delay;
+}
+function readSetup() {
+  cfg.wsUrl = $("wsUrl").value.trim() || "ws://127.0.0.1:4455";
+  cfg.wsPass = $("wsPass").value;
+  cfg.org = $("org").value.trim(); cfg.key = $("key").value.trim();
+  cfg.delay = Math.min(90, Math.max(0, Number($("delay").value) || 0));
+  persist();
+}
+$("saveSetup").onclick = () => { readSetup(); $("setupMsg").textContent = ""; connectObs(); render(); queueSend(); };
+$("delay").onchange = () => { readSetup(); render(); };
+$("testKey").onclick = async () => {
+  readSetup();
+  $("setupMsg").textContent = "Checking…";
+  try {
+    const res = await fetch(FUNCTION_URL, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ org: cfg.org, key: cfg.key, action: "ping" }) });
+    const data = await res.json().catch(() => ({}));
+    $("setupMsg").innerHTML = "";
+    const span = document.createElement("span");
+    span.className = res.ok ? "ok" : "";
+    span.textContent = res.ok ? "✓ Key works" : (data.error || `Error ${res.status}`);
+    $("setupMsg").append(span);
+  } catch (err) { $("setupMsg").textContent = "Could not reach the app server: " + err.message; }
+};
+
+fillSetup();
+if (!cfg.org || !cfg.key || !cfg.wsPass) $("setup").open = true;
+render();
+connectObs();
+</script>
+</body>
+</html>
