@@ -421,7 +421,7 @@ function connectObs() {
     const { op, d } = JSON.parse(msg.data);
     if (op === 0) { // Hello
       const identify = { rpcVersion: 1, eventSubscriptions: 1 | 4 | 64 }; // General, Scenes, Outputs
-      if (d.authentication) identify.authentication = await obsAuth(cfg.wsPass || "", d.authentication.salt, d.authentication.challenge);
+      if (d.authentication) identify.authentication = await obsAuth((cfg.wsPass || "").trim(), d.authentication.salt, d.authentication.challenge);
       socket.send(JSON.stringify({ op: 1, d: identify }));
     } else if (op === 2) { // Identified
       setObsStatus("good", "OBS: connected");
@@ -439,7 +439,12 @@ function connectObs() {
   socket.onclose = (e) => {
     waiting.forEach((w) => w.reject(new Error("closed")));
     waiting.clear();
-    if (e.code === 4009) { setObsStatus("bad", "OBS: wrong WebSocket password (Setup)"); $("setup").open = true; }
+    if (e.code === 4009) {
+      setObsStatus("bad", cfg.wsPass
+        ? "OBS: wrong WebSocket password — paste it in Setup, then press Save & connect"
+        : "OBS: needs the WebSocket password — paste it in Setup, then press Save & connect");
+      $("setup").open = true;
+    }
     else setObsStatus("bad", "OBS: not connected — is OBS open and the WebSocket server on?");
     reconnectTimer = setTimeout(connectObs, 4000);
   };
@@ -551,13 +556,14 @@ function fillSetup() {
 }
 function readSetup() {
   cfg.wsUrl = $("wsUrl").value.trim() || "ws://127.0.0.1:4455";
-  cfg.wsPass = $("wsPass").value;
+  cfg.wsPass = $("wsPass").value.trim();
   cfg.org = $("org").value.trim(); cfg.key = $("key").value.trim();
   cfg.delay = Math.min(90, Math.max(0, Number($("delay").value) || 0));
   persist();
 }
 $("saveSetup").onclick = () => { readSetup(); $("setupMsg").textContent = ""; connectObs(); render(); queueSend(); };
 $("delay").onchange = () => { readSetup(); render(); };
+$("wsPass").onchange = () => { readSetup(); connectObs(); };
 $("testKey").onclick = async () => {
   readSetup();
   $("setupMsg").textContent = "Checking…";
